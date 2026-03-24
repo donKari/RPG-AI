@@ -6,7 +6,6 @@
   <title>Magie & Dragons • Éveil des Rêves</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
     :root {
       --col-accent: #a855f7;
@@ -30,7 +29,6 @@
       --col-header-bg: rgba(0,0,0,0.85);
     }
 
-    /* === THÈMES === */
     body.theme-foret {
       --col-accent: #4ade80; --col-accent2: #86efac; --col-border: #16a34a; --col-border-light: #4ade80;
       --col-bg: #030f05; --col-sidebar: rgba(5,22,11,0.97); --col-btn-from: #15803d; --col-btn-to: #166534;
@@ -66,123 +64,696 @@
 
     body {
       background-color: var(--col-bg);
-      color: #ffffff;                    /* Force le texte principal en blanc */
+      color: #ffffff;
       font-family: 'Cinzel', serif;
       transition: background-color 0.6s ease;
-    }
-
-    /* On force aussi les textes secondaires à rester très clairs sur tous les thèmes */
-    .text-slate-300, .text-gray-300, p, h1, h2, h3, h4, button, input::placeholder {
-      color: #f1f5f9 !important;
+      overflow: hidden;
     }
 
     .rune-font { font-family: 'UnifrakturMaguntia', cursive; }
-    .magic-glow { 
-      text-shadow: 0 0 15px var(--col-glow1), 0 0 30px var(--col-glow2); 
+    .magic-glow {
+      text-shadow: 0 0 15px var(--col-glow1), 0 0 30px var(--col-glow2);
       color: #ffffff !important;
     }
 
-    /* === BANDEAU THÈMES DÉPLACÉ DANS LE HEADER === */
-    #theme-band {
-      display: flex;
-      gap: 12px;
-      flex-wrap: nowrap;
+    /* ===========================
+       FOND COMMUN
+    =========================== */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
     }
 
+    /* ===========================
+       THÈME DÉSERT
+    =========================== */
+    .desert-bg {
+      display: none;
+      position: absolute;
+      inset: 0;
+    }
+    body.theme-desert .desert-bg { display: block; }
+
+    .desert-sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        #7c2d00 0%,
+        #b45309 25%,
+        #d97706 50%,
+        #f59e0b 70%,
+        #fbbf24 85%,
+        #fde68a 100%
+      );
+    }
+
+    /* Grain sable */
+    .desert-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 300px;
+      opacity: 0.4;
+      mix-blend-mode: overlay;
+    }
+
+    /* Dunes */
+    .dune {
+      position: absolute;
+      bottom: 0;
+      width: 200%;
+      border-radius: 50% 50% 0 0;
+    }
+    .dune-1 {
+      height: 38%;
+      background: linear-gradient(180deg, #92400e 0%, #78350f 100%);
+      animation: duneDrift 18s linear infinite;
+      bottom: 0;
+      opacity: 0.95;
+    }
+    .dune-2 {
+      height: 28%;
+      background: linear-gradient(180deg, #b45309 0%, #92400e 100%);
+      animation: duneDrift 13s linear infinite reverse;
+      bottom: 5%;
+      opacity: 0.85;
+    }
+    .dune-3 {
+      height: 18%;
+      background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
+      animation: duneDrift 8s linear infinite;
+      bottom: 12%;
+      opacity: 0.7;
+    }
+    @keyframes duneDrift {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Vent sable */
+    .sand-wind {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .wind-streak {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.5), transparent);
+      animation: windBlow linear infinite;
+      border-radius: 2px;
+    }
+    .wind-streak:nth-child(1)  { top: 15%; width: 60%; animation-duration: 2.1s; animation-delay: 0s; opacity: 0.6; }
+    .wind-streak:nth-child(2)  { top: 22%; width: 40%; animation-duration: 1.7s; animation-delay: 0.3s; opacity: 0.4; }
+    .wind-streak:nth-child(3)  { top: 30%; width: 70%; animation-duration: 2.5s; animation-delay: 0.8s; opacity: 0.5; height: 2px; }
+    .wind-streak:nth-child(4)  { top: 40%; width: 50%; animation-duration: 1.9s; animation-delay: 1.2s; opacity: 0.35; }
+    .wind-streak:nth-child(5)  { top: 50%; width: 80%; animation-duration: 3.1s; animation-delay: 0.5s; opacity: 0.6; height: 2px; }
+    .wind-streak:nth-child(6)  { top: 58%; width: 45%; animation-duration: 2.3s; animation-delay: 1.5s; opacity: 0.45; }
+    .wind-streak:nth-child(7)  { top: 67%; width: 65%; animation-duration: 1.8s; animation-delay: 0.2s; opacity: 0.55; }
+    .wind-streak:nth-child(8)  { top: 75%; width: 35%; animation-duration: 2.8s; animation-delay: 1.0s; opacity: 0.4; }
+    .wind-streak:nth-child(9)  { top: 10%; width: 55%; animation-duration: 2.0s; animation-delay: 0.7s; opacity: 0.3; }
+    .wind-streak:nth-child(10) { top: 85%; width: 75%; animation-duration: 1.6s; animation-delay: 0.4s; opacity: 0.5; height: 2px; }
+    @keyframes windBlow {
+      0%   { transform: translateX(110vw); }
+      100% { transform: translateX(-150vw); }
+    }
+
+    /* Brume chaleur */
+    .heat-haze {
+      position: absolute;
+      bottom: 30%;
+      left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(180deg, transparent, rgba(251,191,36,0.15), transparent);
+      animation: heatPulse 4s ease-in-out infinite;
+    }
+    @keyframes heatPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 0.8; transform: scaleY(1.3); }
+    }
+
+    /* ===========================
+       THÈME FORÊT
+    =========================== */
+    .foret-bg {
+      display: none;
+      position: absolute;
+      inset: 0;
+    }
+    body.theme-foret .foret-bg { display: block; }
+
+    .foret-sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        #020c04 0%,
+        #052e16 30%,
+        #14532d 60%,
+        #15803d 80%,
+        #166534 100%
+      );
+    }
+
+    /* Rayons de lumière */
+    .god-rays {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .ray {
+      position: absolute;
+      top: -10%;
+      width: 60px;
+      height: 120%;
+      background: linear-gradient(180deg, rgba(134,239,172,0.18), transparent);
+      transform-origin: top center;
+      filter: blur(8px);
+      animation: rayFlicker ease-in-out infinite;
+    }
+    .ray:nth-child(1)  { left: 8%;  transform: rotate(-15deg); animation-duration: 7s;  animation-delay: 0s;   opacity: 0.7; }
+    .ray:nth-child(2)  { left: 20%; transform: rotate(-8deg);  animation-duration: 9s;  animation-delay: 1.5s; opacity: 0.5; width: 40px; }
+    .ray:nth-child(3)  { left: 35%; transform: rotate(5deg);   animation-duration: 11s; animation-delay: 3s;   opacity: 0.6; width: 80px; }
+    .ray:nth-child(4)  { left: 55%; transform: rotate(-12deg); animation-duration: 8s;  animation-delay: 2s;   opacity: 0.4; }
+    .ray:nth-child(5)  { left: 70%; transform: rotate(10deg);  animation-duration: 13s; animation-delay: 0.5s; opacity: 0.65; width: 50px; }
+    .ray:nth-child(6)  { left: 85%; transform: rotate(-5deg);  animation-duration: 6s;  animation-delay: 4s;   opacity: 0.5; width: 35px; }
+    @keyframes rayFlicker {
+      0%, 100% { opacity: var(--ray-op, 0.5); }
+      50%       { opacity: calc(var(--ray-op, 0.5) * 0.3); }
+    }
+
+    /* Feuilles qui tombent */
+    .leaves-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .leaf {
+      position: absolute;
+      top: -30px;
+      font-size: 14px;
+      animation: leafFall linear infinite;
+      will-change: transform;
+    }
+    .leaf:nth-child(1)  { left: 5%;  animation-duration: 8s;  animation-delay: 0s;   font-size: 12px; }
+    .leaf:nth-child(2)  { left: 15%; animation-duration: 12s; animation-delay: 2s;   font-size: 16px; }
+    .leaf:nth-child(3)  { left: 25%; animation-duration: 9s;  animation-delay: 4s;   font-size: 10px; }
+    .leaf:nth-child(4)  { left: 38%; animation-duration: 14s; animation-delay: 1s;   font-size: 14px; }
+    .leaf:nth-child(5)  { left: 50%; animation-duration: 10s; animation-delay: 6s;   font-size: 18px; }
+    .leaf:nth-child(6)  { left: 62%; animation-duration: 11s; animation-delay: 3s;   font-size: 12px; }
+    .leaf:nth-child(7)  { left: 74%; animation-duration: 7s;  animation-delay: 5s;   font-size: 10px; }
+    .leaf:nth-child(8)  { left: 85%; animation-duration: 13s; animation-delay: 0.5s; font-size: 16px; }
+    .leaf:nth-child(9)  { left: 92%; animation-duration: 9s;  animation-delay: 7s;   font-size: 14px; }
+    .leaf:nth-child(10) { left: 45%; animation-duration: 15s; animation-delay: 2.5s; font-size: 11px; }
+    @keyframes leafFall {
+      0%   { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(720deg) translateX(80px); opacity: 0; }
+    }
+
+    /* Brume sol */
+    .forest-mist {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      height: 200px;
+      overflow: hidden;
+    }
+    .mist-cloud {
+      position: absolute;
+      bottom: 0;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(134,239,172,0.12), transparent 70%);
+      filter: blur(20px);
+      animation: mistDrift ease-in-out infinite;
+    }
+    .mist-cloud:nth-child(1) { width: 500px; left: -100px; animation-duration: 14s; animation-delay: 0s; }
+    .mist-cloud:nth-child(2) { width: 400px; left: 30%;    animation-duration: 18s; animation-delay: 3s; }
+    .mist-cloud:nth-child(3) { width: 600px; left: 60%;    animation-duration: 12s; animation-delay: 6s; }
+    @keyframes mistDrift {
+      0%, 100% { transform: translateX(0) scaleY(1); opacity: 0.6; }
+      50%       { transform: translateX(40px) scaleY(1.3); opacity: 1; }
+    }
+
+    /* ===========================
+       THÈME CHÂTEAU
+    =========================== */
+    .chateau-bg {
+      display: none;
+      position: absolute;
+      inset: 0;
+    }
+    body.theme-chateau .chateau-bg { display: block; }
+
+    .chateau-sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        #000000 0%,
+        #020408 20%,
+        #0a0e1a 50%,
+        #0f172a 75%,
+        #1e293b 100%
+      );
+    }
+
+    /* Brume rampante */
+    .chateau-mist {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      height: 300px;
+      overflow: hidden;
+    }
+    .mist-strip {
+      position: absolute;
+      bottom: 0;
+      height: 80px;
+      background: linear-gradient(90deg, transparent, rgba(96,165,250,0.08), rgba(148,163,184,0.12), transparent);
+      filter: blur(15px);
+      animation: mistCrawl linear infinite;
+      border-radius: 50%;
+    }
+    .mist-strip:nth-child(1) { width: 120%; left: -10%; animation-duration: 20s; animation-delay: 0s;   bottom: 0; }
+    .mist-strip:nth-child(2) { width: 140%; left: -20%; animation-duration: 27s; animation-delay: 5s;   bottom: 30px; height: 60px; opacity: 0.7; }
+    .mist-strip:nth-child(3) { width: 110%; left: -5%;  animation-duration: 16s; animation-delay: 10s;  bottom: 60px; height: 50px; opacity: 0.5; }
+    .mist-strip:nth-child(4) { width: 130%; left: -15%; animation-duration: 22s; animation-delay: 2s;   bottom: 100px; height: 40px; opacity: 0.4; }
+    @keyframes mistCrawl {
+      0%   { transform: translateX(-20%); }
+      100% { transform: translateX(20%); }
+    }
+
+    /* Éclairs */
+    .lightning-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .lightning-flash {
+      position: absolute;
+      inset: 0;
+      background: rgba(147,197,253,0.03);
+      animation: lightningFlicker ease-in-out infinite;
+    }
+    .lightning-flash:nth-child(1) { animation-duration: 7s;  animation-delay: 0s; }
+    .lightning-flash:nth-child(2) { animation-duration: 11s; animation-delay: 3.5s; }
+    .lightning-flash:nth-child(3) { animation-duration: 13s; animation-delay: 7s; }
+    @keyframes lightningFlicker {
+      0%, 92%, 96%, 100% { opacity: 0; }
+      93%                 { opacity: 1; background: rgba(147,197,253,0.08); }
+      94%                 { opacity: 0; }
+      95%                 { opacity: 0.7; }
+    }
+
+    /* Silhouette château */
+    .castle-silhouette {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 200px;
+      opacity: 0.15;
+      background: #0a0e1a;
+      clip-path: polygon(
+        0% 100%, 0% 70%, 5% 70%, 5% 50%, 8% 50%, 8% 70%, 12% 70%, 12% 30%,
+        14% 30%, 14% 20%, 16% 20%, 16% 30%, 18% 30%, 18% 70%, 22% 70%,
+        22% 40%, 30% 40%, 30% 10%, 32% 10%, 32% 0%, 34% 0%, 34% 10%,
+        36% 10%, 36% 40%, 44% 40%, 44% 0%, 46% 0%, 46% 40%, 54% 40%,
+        54% 0%, 56% 0%, 56% 40%, 64% 40%, 64% 10%, 66% 10%, 66% 0%,
+        68% 0%, 68% 10%, 70% 10%, 70% 40%, 78% 40%, 78% 70%, 82% 70%,
+        82% 30%, 84% 30%, 84% 20%, 86% 20%, 86% 30%, 88% 30%, 88% 70%,
+        92% 70%, 92% 50%, 95% 50%, 95% 70%, 100% 70%, 100% 100%
+      );
+    }
+
+    /* Ombres voiles */
+    .shadow-veil {
+      position: absolute;
+      top: 0;
+      width: 120px;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(0,0,0,0.4), transparent);
+      filter: blur(30px);
+      animation: veilFloat ease-in-out infinite;
+    }
+    .shadow-veil:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; }
+    .shadow-veil:nth-child(2) { left: 40%; animation-duration: 20s; animation-delay: 5s; }
+    .shadow-veil:nth-child(3) { left: 70%; animation-duration: 17s; animation-delay: 9s; }
+    @keyframes veilFloat {
+      0%, 100% { transform: translateX(0) scaleX(1); opacity: 0.5; }
+      50%       { transform: translateX(30px) scaleX(1.5); opacity: 0.9; }
+    }
+
+    /* ===========================
+       THÈME SORCIER
+    =========================== */
+    .sorcier-bg {
+      display: none;
+      position: absolute;
+      inset: 0;
+    }
+    body.theme-sorcier .sorcier-bg { display: block; }
+
+    .sorcier-sky {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 40%, #3b0764 0%, #1a0030 40%, #0b0010 70%, #000005 100%);
+    }
+
+    /* Constellation runes */
+    .rune-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .rune-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(232,121,249,0.15);
+      animation: runeSpin linear infinite;
+    }
+    .rune-circle::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px dashed rgba(168,85,247,0.1);
+    }
+    .rune-circle:nth-child(1) { width: 600px; height: 600px; top: 50%; left: 50%; margin: -300px; animation-duration: 60s; }
+    .rune-circle:nth-child(2) { width: 400px; height: 400px; top: 20%; left: 20%; animation-duration: 45s; animation-direction: reverse; border-color: rgba(168,85,247,0.1); }
+    .rune-circle:nth-child(3) { width: 250px; height: 250px; top: 60%; left: 70%; animation-duration: 30s; border-color: rgba(232,121,249,0.08); }
+    @keyframes runeSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Flux d'énergie */
+    .magic-flux {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .flux-line {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-top-color: rgba(232,121,249,0.4);
+      border-left-color: rgba(168,85,247,0.2);
+      animation: fluxOrbit linear infinite;
+    }
+    .flux-line:nth-child(1) { width: 300px; height: 100px; top: 30%; left: 50%; margin-left: -150px; animation-duration: 8s; }
+    .flux-line:nth-child(2) { width: 200px; height: 60px;  top: 60%; left: 30%; animation-duration: 5s; animation-direction: reverse; border-top-color: rgba(168,85,247,0.5); }
+    .flux-line:nth-child(3) { width: 400px; height: 150px; top: 50%; left: 50%; margin: -75px -200px; animation-duration: 12s; opacity: 0.6; }
+    .flux-line:nth-child(4) { width: 150px; height: 50px;  top: 15%; left: 70%; animation-duration: 6s; border-top-color: rgba(232,121,249,0.6); }
+    @keyframes fluxOrbit {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Étincelles */
+    .sparks-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .spark {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #e879f9;
+      box-shadow: 0 0 6px #e879f9, 0 0 12px #a855f7;
+      animation: sparkTwinkle ease-in-out infinite;
+    }
+    .spark:nth-child(1)  { top: 10%; left: 15%; animation-duration: 2.1s; animation-delay: 0s; }
+    .spark:nth-child(2)  { top: 20%; left: 75%; animation-duration: 3.3s; animation-delay: 0.5s; width: 4px; height: 4px; }
+    .spark:nth-child(3)  { top: 35%; left: 40%; animation-duration: 1.8s; animation-delay: 1s; }
+    .spark:nth-child(4)  { top: 50%; left: 85%; animation-duration: 2.7s; animation-delay: 0.3s; width: 2px; height: 2px; background: #c084fc; }
+    .spark:nth-child(5)  { top: 65%; left: 25%; animation-duration: 3.1s; animation-delay: 1.5s; }
+    .spark:nth-child(6)  { top: 15%; left: 55%; animation-duration: 2.4s; animation-delay: 0.8s; background: #a855f7; }
+    .spark:nth-child(7)  { top: 75%; left: 60%; animation-duration: 1.9s; animation-delay: 2s; width: 4px; height: 4px; }
+    .spark:nth-child(8)  { top: 45%; left: 10%; animation-duration: 3.5s; animation-delay: 0.2s; background: #f0abfc; }
+    .spark:nth-child(9)  { top: 80%; left: 45%; animation-duration: 2.2s; animation-delay: 1.2s; }
+    .spark:nth-child(10) { top: 25%; left: 90%; animation-duration: 2.8s; animation-delay: 0.7s; background: #c084fc; }
+    .spark:nth-child(11) { top: 55%; left: 50%; animation-duration: 1.6s; animation-delay: 1.8s; width: 5px; height: 5px; }
+    .spark:nth-child(12) { top: 5%;  left: 35%; animation-duration: 3.0s; animation-delay: 0.4s; }
+    @keyframes sparkTwinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50%       { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Aura pulsante */
+    .magic-aura {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vw;
+      height: 80vh;
+      background: radial-gradient(ellipse, rgba(168,85,247,0.08) 0%, transparent 70%);
+      animation: auraPulse 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes auraPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.5; }
+      50%       { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    }
+
+    /* ===========================
+       UI COMMUN
+    =========================== */
+    #theme-band { display: flex; gap: 10px; flex-wrap: nowrap; }
+
     .theme-btn {
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 9999px;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 600;
       border: 2px solid transparent;
       background: rgba(255,255,255,0.07);
       color: #e2e8f0;
       transition: all 0.3s ease;
       white-space: nowrap;
+      cursor: pointer;
     }
-    .theme-btn:hover { transform: scale(1.06); }
+    .theme-btn:hover { transform: scale(1.06); background: rgba(255,255,255,0.12); }
     .theme-btn.active {
       border-color: var(--col-accent);
-      background: rgba(255,255,255,0.18);
-      box-shadow: 0 0 20px var(--col-accent);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 18px var(--col-accent);
     }
 
     .sidebar { background: var(--col-sidebar); }
-    .chat-bubble-gm, .chat-bubble-player {
-      color: #ffffff;
+
+    .chat-bubble-gm {
+      background: linear-gradient(135deg, var(--col-bubble-gm-from), var(--col-bubble-gm-to));
+      border: 1px solid var(--col-bubble-gm-border);
     }
+    .chat-bubble-player {
+      background: linear-gradient(135deg, var(--col-bubble-pl-from), var(--col-bubble-pl-to));
+      border: 1px solid var(--col-bubble-pl-border);
+    }
+
+    textarea, input {
+      color: #f1f5f9 !important;
+    }
+    input::placeholder { color: rgba(241,245,249,0.4) !important; }
+    textarea::placeholder { color: rgba(241,245,249,0.4) !important; }
+
+    #chat-container::-webkit-scrollbar { width: 4px; }
+    #chat-container::-webkit-scrollbar-track { background: transparent; }
+    #chat-container::-webkit-scrollbar-thumb { background: var(--col-border); border-radius: 2px; }
   </style>
 </head>
-<body class="theme-sorcier text-white min-h-screen overflow-hidden">
-  <!-- Particules -->
-  <div id="tsparticles" class="fixed inset-0 z-0"></div>
+<body class="theme-sorcier text-white min-h-screen">
 
-  <div class="pt-0 relative z-10 flex flex-col h-screen">
-    <!-- Header modifié : titre + bandeau thèmes côte à côte -->
-    <header class="border-b py-4 px-6 flex items-center justify-between backdrop-blur-md" 
+  <!-- ======= COUCHE DE FOND THÉMATIQUE ======= -->
+  <div id="bg-layer">
+
+    <!-- === DÉSERT === -->
+    <div class="desert-bg">
+      <div class="desert-sky"></div>
+      <div class="desert-grain"></div>
+      <div class="sand-wind">
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+        <div class="wind-streak"></div>
+      </div>
+      <div class="dune dune-3"></div>
+      <div class="dune dune-2"></div>
+      <div class="dune dune-1"></div>
+      <div class="heat-haze"></div>
+    </div>
+
+    <!-- === FORÊT === -->
+    <div class="foret-bg">
+      <div class="foret-sky"></div>
+      <div class="god-rays">
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+      </div>
+      <div class="leaves-layer">
+        <div class="leaf">🍃</div>
+        <div class="leaf">🌿</div>
+        <div class="leaf">🍂</div>
+        <div class="leaf">🍃</div>
+        <div class="leaf">🌿</div>
+        <div class="leaf">🍃</div>
+        <div class="leaf">🍂</div>
+        <div class="leaf">🍃</div>
+        <div class="leaf">🌿</div>
+        <div class="leaf">🍃</div>
+      </div>
+      <div class="forest-mist">
+        <div class="mist-cloud"></div>
+        <div class="mist-cloud"></div>
+        <div class="mist-cloud"></div>
+      </div>
+    </div>
+
+    <!-- === CHÂTEAU === -->
+    <div class="chateau-bg">
+      <div class="chateau-sky"></div>
+      <div class="shadow-veil"></div>
+      <div class="shadow-veil"></div>
+      <div class="shadow-veil"></div>
+      <div class="castle-silhouette"></div>
+      <div class="chateau-mist">
+        <div class="mist-strip"></div>
+        <div class="mist-strip"></div>
+        <div class="mist-strip"></div>
+        <div class="mist-strip"></div>
+      </div>
+      <div class="lightning-layer">
+        <div class="lightning-flash"></div>
+        <div class="lightning-flash"></div>
+        <div class="lightning-flash"></div>
+      </div>
+    </div>
+
+    <!-- === SORCIER === -->
+    <div class="sorcier-bg">
+      <div class="sorcier-sky"></div>
+      <div class="rune-layer">
+        <div class="rune-circle"></div>
+        <div class="rune-circle"></div>
+        <div class="rune-circle"></div>
+      </div>
+      <div class="magic-flux">
+        <div class="flux-line"></div>
+        <div class="flux-line"></div>
+        <div class="flux-line"></div>
+        <div class="flux-line"></div>
+      </div>
+      <div class="sparks-layer">
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+        <div class="spark"></div>
+      </div>
+      <div class="magic-aura"></div>
+    </div>
+
+  </div>
+  <!-- ======= FIN COUCHE DE FOND ======= -->
+
+  <div class="relative z-10 flex flex-col h-screen">
+    <!-- Header -->
+    <header class="border-b py-4 px-6 flex items-center justify-between backdrop-blur-md"
             style="background: var(--col-header-bg); border-color: var(--col-border);">
-      
-      <div class="flex items-center gap-6">
-        <!-- Titre -->
+
+      <div class="flex items-center gap-6 flex-wrap">
         <div class="flex items-center gap-4">
-          <span id="header-icon" class="text-4xl">🗡️</span>
+          <span id="header-icon" class="text-4xl">✨</span>
           <div>
             <h1 class="rune-font text-4xl tracking-widest magic-glow">Magie & Dragons</h1>
             <p class="text-sm" style="color: var(--col-text-secondary);">Crée ton scénario • L'IA devient ton Maître du Jeu</p>
           </div>
         </div>
 
-        <!-- Bandeau des thèmes (maintenant à côté) -->
         <div id="theme-band">
-          <button class="theme-btn active" onclick="setTheme('foret', this)">🌿 Forêt Magique</button>
+          <button class="theme-btn" onclick="setTheme('foret', this)">🌿 Forêt Magique</button>
           <button class="theme-btn" onclick="setTheme('desert', this)">🏜️ Désert Apocalypse</button>
           <button class="theme-btn" onclick="setTheme('chateau', this)">🏰 Château Hanté</button>
-          <button class="theme-btn" onclick="setTheme('sorcier', this)">✨ Sorcier & Magie</button>
+          <button class="theme-btn active" onclick="setTheme('sorcier', this)">✨ Sorcier & Magie</button>
         </div>
       </div>
 
-      <button onclick="window.location.href='index.html'"
+      <button onclick="history.back()"
               class="px-6 py-2 rounded-xl text-sm transition"
               style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
-        ← Retour à l'accueil
+        ← Retour
       </button>
     </header>
 
-    <!-- Le reste de la page reste identique -->
     <div class="flex flex-1 overflow-hidden">
-      <!-- Sidebar GAUCHE -->
+      <!-- Sidebar gauche -->
       <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col" style="border-color: var(--col-border);">
         <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Scénario</h3>
         <textarea id="scenario-input" rows="6"
-          class="bg-slate-900 border rounded-2xl p-4 text-sm resize-none focus:outline-none"
-          style="border-color: var(--col-border); background: rgba(15,23,42,0.9);"
+          class="border rounded-2xl p-4 text-sm resize-none focus:outline-none"
+          style="border-color: var(--col-border); background: rgba(15,23,42,0.7);"
           placeholder="Décris ton scénario ou ton personnage ici..."></textarea>
         <button onclick="startNewScenario()"
                 class="mt-4 w-full py-4 rounded-2xl font-bold transition"
                 style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
-          Lancer ce scénario
+          ▶ Lancer ce scénario
         </button>
         <div class="mt-8">
           <h4 class="mb-3 text-sm" style="color: var(--col-text-secondary);">Scénarios rapides</h4>
           <div class="space-y-2">
             <button onclick="loadQuickScenario('Je suis un guerrier qui affronte un dragon dans une montagne enneigée')"
-                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">🐉 Combat contre un dragon</button>
-            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d’une ancienne cité elfique')"
-                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">🏛️ Ruines elfiques</button>
+                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">
+              🐉 Combat contre un dragon
+            </button>
+            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d\'une ancienne cité elfique')"
+                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">
+              🏛️ Ruines elfiques
+            </button>
             <button onclick="loadQuickScenario('Je suis un apprenti sorcier dans une académie de magie où un traître se cache')"
-                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">🏫 Académie de magie</button>
+                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">
+              🏫 Académie de magie
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Chat Central -->
+      <!-- Chat central -->
       <div class="flex-1 flex flex-col">
-        <div id="chat-container" class="flex-1 overflow-y-auto p-6 parchment space-y-6"></div>
-        <div class="border-t p-6" style="border-color: var(--col-border); background: rgba(0,0,0,0.95);">
+        <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6"></div>
+        <div class="border-t p-6" style="border-color: var(--col-border); background: rgba(0,0,0,0.85);">
           <div class="max-w-3xl mx-auto flex gap-3">
-            <input id="user-input" type="text" placeholder="Que fais-tu maintenant ?"
+            <input id="user-input" type="text"
+                   placeholder="Que fais-tu maintenant ?"
                    class="flex-1 rounded-3xl px-6 py-4 text-lg border focus:outline-none"
-                   style="background: rgba(15,23,42,0.9); border-color: var(--col-border);">
+                   style="background: rgba(15,23,42,0.85); border-color: var(--col-border);">
             <button onclick="sendMessage()"
                     class="px-10 rounded-3xl font-bold text-lg transition"
                     style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
@@ -192,17 +763,25 @@
         </div>
       </div>
 
-      <!-- Sidebar DROITE -->
+      <!-- Sidebar droite -->
       <div class="w-72 sidebar border-l p-6 overflow-y-auto" style="border-color: var(--col-border);">
         <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Personnage</h3>
         <div id="character-info" class="space-y-6"></div>
         <div class="mt-10 pt-6 border-t" style="border-color: var(--col-border);">
           <h4 class="mb-3 text-sm" style="color: var(--col-text-secondary);">Actions rapides</h4>
           <div class="grid grid-cols-2 gap-3 text-sm">
-            <button onclick="quickAction('Explorer autour de moi')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Explorer</button>
-            <button onclick="quickAction('Lancer un sort')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Lancer un sort</button>
-            <button onclick="quickAction('Attaquer')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Attaquer</button>
-            <button onclick="quickAction('Parler à quelqu’un')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Parler</button>
+            <button onclick="quickAction('Explorer autour de moi')"
+                    class="p-3 rounded-xl transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">Explorer</button>
+            <button onclick="quickAction('Lancer un sort')"
+                    class="p-3 rounded-xl transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">Sort</button>
+            <button onclick="quickAction('Attaquer')"
+                    class="p-3 rounded-xl transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">Attaquer</button>
+            <button onclick="quickAction('Parler à quelqu\'un')"
+                    class="p-3 rounded-xl transition"
+                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">Parler</button>
           </div>
         </div>
       </div>
@@ -210,82 +789,216 @@
   </div>
 
   <script>
-    const THEMES = {
-      foret: { name: 'Forêt Magique', particles: ['#4ade80', '#86efac', '#a3e635'], bg: '#030f05' },
-      desert: { name: 'Désert Apocalypse', particles: ['#fb923c', '#fbbf24', '#f97316'], bg: '#0f0700' },
-      chateau: { name: 'Château Hanté', particles: ['#60a5fa', '#818cf8', '#a5b4fc'], bg: '#020408' },
-      sorcier: { name: 'Sorcier & Magie', particles: ['#e879f9', '#a855f7', '#c084fc'], bg: '#0b0010' }
-    };
+  // ==================== CONFIGURATION API ====================
+  const API_PROVIDER = 'groq';   
 
-    function setTheme(themeKey, btn) {
-      document.body.className = `theme-${themeKey} text-white`;
+  // ←←← REMPLIS TA CLÉ ICI ←←←
+  let GROQ_API_KEY = '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';
 
-      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  let OPENROUTER_API_KEY = ''; 
 
-      tsParticles.load("tsparticles", {
-        background: { color: THEMES[themeKey].bg },
-        particles: {
-          number: { value: 65 },
-          color: { value: THEMES[themeKey].particles },
-          shape: { type: ["circle", "star"] },
-          opacity: { value: { min: 0.3, max: 0.9 } },
-          size: { value: { min: 1, max: 5 } },
-          move: { enable: true, speed: 0.7, random: true }
-        }
-      });
-    }
+  // ==================== VARIABLES GLOBALES ====================
+  const chatContainer = document.getElementById('chat-container');
+  const userInput = document.getElementById('user-input');
 
-    // Le reste du script reste exactement le même que chez toi
-    const chatContainer = document.getElementById('chat-container');
-    const userInput = document.getElementById('user-input');
+  let conversationHistory = [];
+  let currentScenario = '';
 
-    function addMessage(text, isGM) {
-      const div = document.createElement('div');
-      div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
-      div.innerHTML = `
-        <div style="color: ${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size: 0.75rem; margin-bottom: 4px;">
-          ${isGM ? '🧙 Maître du Jeu' : 'Toi'}
-        </div>
-        <p class="leading-relaxed">${text}</p>
-      `;
-      chatContainer.appendChild(div);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
+  const THEMES = {
+    foret:   { icon: '🌿', name: 'Forêt Magique' },
+    desert:  { icon: '🏜️', name: 'Désert Apocalypse' },
+    chateau: { icon: '🏰', name: 'Château Hanté' },
+    sorcier: { icon: '✨', name: 'Sorcier & Magie' }
+  };
 
-    function updateCharacterInfo() {
-      document.getElementById('character-info').innerHTML = `
-        <div class="rounded-2xl p-5" style="background:rgba(15,23,42,0.85); border:1px solid var(--col-border);">
-          <p style="color:var(--col-text-secondary); font-size:0.75rem;">Nom</p>
-          <p class="text-2xl font-bold">Ton Héros</p>
-          <p style="color:var(--col-text-secondary); font-size:0.75rem; margin-top:12px;">Classe</p>
-          <p class="text-xl">Aventurier personnalisé</p>
-        </div>
-        <div class="grid grid-cols-2 gap-4 text-center">
-          <div class="rounded-2xl p-4" style="background:rgba(30,10,10,0.6); border:1px solid #b91c1c;">
-            <p style="font-size:0.75rem; color:#f87171;">Vie</p>
-            <p class="text-3xl font-bold" style="color:#f87171;">100 / 100</p>
+  // ==================== FONCTIONS UTILITAIRES ====================
+  function setTheme(themeKey, btn) {
+    document.body.className = `theme-${themeKey} text-white min-h-screen`;
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('header-icon').textContent = THEMES[themeKey].icon;
+  }
+
+  function addMessage(text, isGM) {
+    const div = document.createElement('div');
+    div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
+    div.innerHTML = `
+      <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size:0.8rem; margin-bottom:6px;">
+        ${isGM ? '🧙 Maître du Jeu' : '⚔️ Toi'}
+      </div>
+      <p class="leading-relaxed whitespace-pre-wrap" style="color:#f1f5f9;">${text}</p>
+    `;
+    chatContainer.appendChild(div);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  function showLoading() {
+    const loading = document.createElement('div');
+    loading.id = 'loading-msg';
+    loading.className = 'max-w-2xl mr-auto chat-bubble-gm p-5 rounded-3xl';
+    loading.innerHTML = `<p style="color:var(--col-text-secondary); animation: pulse 1.5s infinite;">🧙 Le Maître du Jeu tisse la trame de l’histoire...</p>`;
+    chatContainer.appendChild(loading);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return loading;
+  }
+
+  function updateCharacterInfo() {
+    document.getElementById('character-info').innerHTML = `
+      <div class="rounded-2xl p-5" style="background:rgba(15,23,42,0.7); border:1px solid var(--col-border);">
+        <p style="color:var(--col-text-secondary); font-size:0.75rem;">Nom du héros</p>
+        <p id="hero-name" class="text-2xl font-bold" style="color:#f1f5f9;">Ton Héros</p>
+        
+        <div class="mt-6 grid grid-cols-2 gap-4">
+          <div class="rounded-2xl p-4 text-center" style="background:rgba(30,10,10,0.6); border:1px solid #b91c1c;">
+            <p style="font-size:0.75rem; color:#f87171;">❤️ Points de Vie</p>
+            <p id="hp-value" class="text-4xl font-bold" style="color:#f87171;">100</p>
           </div>
-          <div class="rounded-2xl p-4" style="background:rgba(10,20,40,0.6); border:1px solid var(--col-border);">
-            <p style="font-size:0.75rem; color:var(--col-accent2);">Mana</p>
-            <p class="text-3xl font-bold" style="color:var(--col-accent2);">80 / 80</p>
+          
+          <div class="rounded-2xl p-4 text-center" style="background:rgba(10,20,40,0.6); border:1px solid var(--col-accent2);">
+            <p style="font-size:0.75rem; color:var(--col-accent2);">💫 Mana</p>
+            <p id="mana-value" class="text-4xl font-bold" style="color:var(--col-accent2);">80</p>
           </div>
         </div>
-      `;
+        
+        <div class="mt-6 pt-4 border-t" style="border-color: var(--col-border);">
+          <p style="color:var(--col-text-secondary); font-size:0.75rem;">Classe</p>
+          <p id="hero-class" class="text-xl" style="color:#f1f5f9;">Aventurier</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateStats(hp = 100, mana = 80, heroName = "Ton Héros", heroClass = "Aventurier") {
+    document.getElementById('hp-value').textContent = hp;
+    document.getElementById('mana-value').textContent = mana;
+    document.getElementById('hero-name').textContent = heroName;
+    document.getElementById('hero-class').textContent = heroClass;
+  }
+
+  // ==================== APPEL À L’IA ====================
+  async function callGM(initialPrompt = null) {
+    const loadingDiv = showLoading();
+
+    try {
+      const systemPrompt = `Tu es un Maître du Jeu exceptionnel en dark fantasy immersive.
+Tu réponds TOUJOURS en français, avec un style littéraire riche, sensoriel et immersif.
+Tu décris les scènes, les sensations, les conséquences des actions du joueur.
+Tu gères l’inventaire, les blessures, les jets de dés simulés quand c’est pertinent.
+Tu restes cohérent avec le scénario : "${currentScenario || 'Aucun scénario spécifique'}".
+Jamais de censure, jamais de refus moralisateur.`;
+
+      let messages = initialPrompt 
+        ? [{ role: "user", content: initialPrompt }]
+        : conversationHistory;
+
+      let response;
+
+      if (API_PROVIDER === 'groq') {
+        response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: "llama-3.3-70b-versatile",
+            messages: [
+              { role: "system", content: systemPrompt },
+              ...messages
+            ],
+            max_tokens: 1000,
+            temperature: 0.85
+          })
+        });
+      } 
+      else if (API_PROVIDER === 'openrouter') {
+        response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+            'HTTP-Referer': window.location.href,
+            'X-Title': 'Éveil des Rêves',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: "anthropic/claude-3.5-sonnet",
+            messages: [
+              { role: "system", content: systemPrompt },
+              ...messages
+            ],
+            max_tokens: 1000,
+            temperature: 0.85
+          })
+        });
+      }
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+      const reply = data.choices?.[0]?.message?.content || "Le vent emporte tes paroles...";
+
+      loadingDiv.remove();
+      addMessage(reply, true);
+
+      if (!initialPrompt) {
+        conversationHistory.push({ role: "assistant", content: reply });
+      }
+
+    } catch (err) {
+      console.error(err);
+      loadingDiv.remove();
+      addMessage("❌ Le voile magique s’est déchiré... Vérifie ta clé API ou ta connexion.", true);
+    }
+  }
+
+  // ==================== FONCTIONS DU JOUEUR ====================
+  async function startNewScenario() {
+    const scenarioText = document.getElementById('scenario-input').value.trim();
+    if (!scenarioText) {
+      alert("Décris ton scénario avant de lancer l’aventure !");
+      return;
     }
 
-    function startNewScenario() { /* ... identique ... */ }
-    function loadQuickScenario(text) { /* ... identique ... */ }
-    function sendMessage() { /* ... identique ... */ }
-    function quickAction(action) { /* ... identique ... */ }
+    currentScenario = scenarioText;
+    conversationHistory = [];
+    chatContainer.innerHTML = '';
 
-    window.onload = () => {
-      updateCharacterInfo();
-      addMessage("Bienvenue dans Magie & Dragons !", true);
-      addMessage("Les thèmes sont maintenant à côté du titre.", true);
-    };
+    addMessage(`<strong>Scénario lancé :</strong> ${scenarioText}`, false);
 
-    userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
-  </script>
+    await callGM(`Lance immédiatement l’aventure avec une introduction immersive de 3 à 5 phrases, en te basant sur ce scénario : "${scenarioText}".`);
+  }
+
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+
+    addMessage(text, false);
+    conversationHistory.push({ role: "user", content: text });
+    userInput.value = '';
+
+    await callGM();
+  }
+
+  function quickAction(action) {
+    userInput.value = action;
+    sendMessage();
+  }
+
+  function loadQuickScenario(text) {
+    document.getElementById('scenario-input').value = text;
+  }
+
+  // ==================== INITIALISATION ====================
+  window.onload = () => {
+    updateCharacterInfo();
+    
+    addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Choisis un thème, décris ton scénario à gauche et lance l’aventure !', true);
+  };
+
+  // Envoi avec la touche Entrée
+  userInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
 </body>
 </html>
