@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Éveil des Rêves • Aventures IA Magiques</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .title-font {
+      font-family: 'Cinzel', serif;
+    }
+    .magic-glow {
+      text-shadow: 0 0 15px #c026d3,
+                   0 0 30px #22d3ee,
+                   0 0 50px #a855f7;
+    }
+    .card {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .card:hover {
+      transform: translateY(-15px) scale(1.04);
+      box-shadow: 0 0 80px -20px rgb(168 85 247);
+    }
+    .hero-bg {
+      background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    }
+  </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+
+  <!-- Fond particules magiques -->
+  <div id="tsparticles" class="fixed inset-0 z-0"></div>
+
+  <div class="relative z-10 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="border-b border-white/10 bg-black/70 backdrop-blur-md fixed w-full z-50">
+      <div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="text-4xl">✨</span>
+          <h1 class="title-font text-3xl font-bold tracking-widest magic-glow">ÉVEIL DES RÊVES</h1>
+        </div>
+        <div class="text-sm text-purple-300">Aventures IA • Gratuit • Sans inscription</div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center hero-bg pt-20">
+      <div class="max-w-5xl mx-auto text-center px-6">
+        <div class="mb-8 inline-flex items-center gap-2 px-8 py-3 rounded-full border border-purple-400/30 bg-purple-950/50">
+          <span class="text-purple-400 animate-pulse">🌌</span>
+          <span class="text-sm uppercase tracking-widest">Nouveau monde ouvert en 2026</span>
+        </div>
+
+        <h2 class="title-font text-7xl md:text-8xl font-bold leading-none tracking-tighter magic-glow mb-6">
+          Tes histoires<br>prennent vie
+        </h2>
+
+        <p class="text-2xl text-gray-300 max-w-2xl mx-auto mb-12">
+          Plonge dans des aventures RPG magiques, romances envoûtantes et mondes infinis.<br>
+          L’IA devient ton maître du jeu. Tout est gratuit et immédiat.
+        </p>
+
+        <button onclick="alert('Super ! On va maintenant créer la page du chat. Dis-moi quand tu es prêt.')"
+                class="group relative inline-flex items-center gap-4 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 hover:from-purple-500 hover:via-fuchsia-500 hover:to-pink-500 px-12 py-7 rounded-3xl text-2xl font-semibold overflow-hidden">
+          <span>Commencer l’aventure</span>
+          <span class="group-hover:rotate-45 transition-transform">🗡️</span>
+        </button>
+
+        <p class="mt-10 text-sm text-gray-500">Aucune connexion • Aucune limite au démarrage • Fais tes propres règles</p>
+      </div>
+    </section>
+
+    <!-- Section Thèmes -->
+    <section class="py-24 px-8 bg-black/80">
+      <div class="max-w-6xl mx-auto">
+        <h3 class="title-font text-5xl font-bold text-center mb-16 tracking-wide">Choisis ton univers</h3>
+
+        <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+          
+          <!-- Carte Fantasy Magique -->
+          <div onclick="alert('Thème Magie & Dragons sélectionné – on va créer cette page ensuite !')" 
+               class="card group bg-gradient-to-br from-purple-950 to-black border border-purple-500/40 rounded-3xl p-12 cursor-pointer">
+            <div class="text-7xl mb-8">🗡️</div>
+            <h4 class="title-font text-5xl font-bold mb-6">Magie & Dragons</h4>
+            <p class="text-gray-300 text-lg leading-relaxed">
+              Deviens sorcier, guerrier légendaire ou explorateur des royaumes oubliés.<br><br>
+              Quêtes épiques, combats mythiques, artefacts puissants… L’IA raconte ton histoire en temps réel.
+            </p>
+            <div class="mt-12 text-purple-400 group-hover:text-white flex items-center gap-3 text-xl">
+              Entrer dans le royaume 
+              <span class="text-2xl transition-transform group-hover:translate-x-3">→</span>
+            </div>
+          </div>
+
+          <!-- Carte Romance Mystique -->
+          <div onclick="alert('Thème Romance & Destin sélectionné – on va créer cette page ensuite !')" 
+               class="card group bg-gradient-to-br from-pink-950 to-black border border-pink-500/40 rounded-3xl p-12 cursor-pointer">
+            <div class="text-7xl mb-8">❤️</div>
+            <h4 class="title-font text-5xl font-bold mb-6">Romance & Destin</h4>
+            <p class="text-gray-300 text-lg leading-relaxed">
+              Rencontres passionnées, amours interdites, romances sombres ou lumineuses.<br><br>
+              Laisse l’IA t’emporter dans une histoire d’amour inoubliable et personnalisée.
+            </p>
+            <div class="mt-12 text-pink-400 group-hover:text-white flex items-center gap-3 text-xl">
+              Ouvrir le grimoire des cœurs 
+              <span class="text-2xl transition-transform group-hover:translate-x-3">→</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center text-gray-500 border-t border-white/10">
+      <p>Fait avec beaucoup de magie ✨ • Site en construction • On ajoute le chat immersif très bientôt</p>
+    </footer>
+  </div>
+
+  <!-- Script des particules -->
+  <script>
+    tsParticles.load("tsparticles", {
+      background: { color: "#000000" },
+      particles: {
+        number: { value: 90 },
+        color: { value: ["#a855f7", "#22d3ee", "#ec4899"] },
+        shape: { type: "circle" },
+        opacity: { value: { min: 0.2, max: 0.8 } },
+        size: { value: { min: 1, max: 4 } },
+        move: {
+          enable: true,
+          speed: 0.8,
+          direction: "none",
+          random: true,
+          straight: false,
+          outModes: "out"
+        }
+      },
+      interactivity: {
+        events: {
+          onHover: { enable: true, mode: "repulse" }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
