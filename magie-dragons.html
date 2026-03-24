@@ -789,19 +789,15 @@
   </div>
 
   <script>
-  // ==================== CONFIGURATION ====================
-  // Choisis ton provider :
-  // - 'groq'     → ultra rapide + gratuit au début
-  // - 'openrouter' → plus de modèles (Claude, etc.)
+  // ==================== CONFIGURATION API ====================
   const API_PROVIDER = 'groq';   
 
-  // Mets ta clé ici (pour tester seulement !)
-  // Va sur https://console.groq.com/keys pour en créer une gratuitement
-  let GROQ_API_KEY = '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';   // ← REMPLIS ÇA
+  // ←←← REMPLIS TA CLÉ ICI ←←←
+  let GROQ_API_KEY = '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';
 
-  // Pour OpenRouter (si tu changes) : https://openrouter.ai/keys
-  let OPENROUTER_API_KEY = '';
+  let OPENROUTER_API_KEY = ''; 
 
+  // ==================== VARIABLES GLOBALES ====================
   const chatContainer = document.getElementById('chat-container');
   const userInput = document.getElementById('user-input');
 
@@ -809,12 +805,13 @@
   let currentScenario = '';
 
   const THEMES = {
-    foret: { icon: '🌿', name: 'Forêt Magique' },
-    desert: { icon: '🏜️', name: 'Désert Apocalypse' },
+    foret:   { icon: '🌿', name: 'Forêt Magique' },
+    desert:  { icon: '🏜️', name: 'Désert Apocalypse' },
     chateau: { icon: '🏰', name: 'Château Hanté' },
     sorcier: { icon: '✨', name: 'Sorcier & Magie' }
   };
 
+  // ==================== FONCTIONS UTILITAIRES ====================
   function setTheme(themeKey, btn) {
     document.body.className = `theme-${themeKey} text-white min-h-screen`;
     document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
@@ -822,7 +819,6 @@
     document.getElementById('header-icon').textContent = THEMES[themeKey].icon;
   }
 
-  // Ajoute un message dans le chat
   function addMessage(text, isGM) {
     const div = document.createElement('div');
     div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
@@ -836,7 +832,6 @@
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
 
-  // Message de chargement avec animation
   function showLoading() {
     const loading = document.createElement('div');
     loading.id = 'loading-msg';
@@ -847,13 +842,44 @@
     return loading;
   }
 
+  function updateCharacterInfo() {
+    document.getElementById('character-info').innerHTML = `
+      <div class="rounded-2xl p-5" style="background:rgba(15,23,42,0.7); border:1px solid var(--col-border);">
+        <p style="color:var(--col-text-secondary); font-size:0.75rem;">Nom du héros</p>
+        <p id="hero-name" class="text-2xl font-bold" style="color:#f1f5f9;">Ton Héros</p>
+        
+        <div class="mt-6 grid grid-cols-2 gap-4">
+          <div class="rounded-2xl p-4 text-center" style="background:rgba(30,10,10,0.6); border:1px solid #b91c1c;">
+            <p style="font-size:0.75rem; color:#f87171;">❤️ Points de Vie</p>
+            <p id="hp-value" class="text-4xl font-bold" style="color:#f87171;">100</p>
+          </div>
+          
+          <div class="rounded-2xl p-4 text-center" style="background:rgba(10,20,40,0.6); border:1px solid var(--col-accent2);">
+            <p style="font-size:0.75rem; color:var(--col-accent2);">💫 Mana</p>
+            <p id="mana-value" class="text-4xl font-bold" style="color:var(--col-accent2);">80</p>
+          </div>
+        </div>
+        
+        <div class="mt-6 pt-4 border-t" style="border-color: var(--col-border);">
+          <p style="color:var(--col-text-secondary); font-size:0.75rem;">Classe</p>
+          <p id="hero-class" class="text-xl" style="color:#f1f5f9;">Aventurier</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateStats(hp = 100, mana = 80, heroName = "Ton Héros", heroClass = "Aventurier") {
+    document.getElementById('hp-value').textContent = hp;
+    document.getElementById('mana-value').textContent = mana;
+    document.getElementById('hero-name').textContent = heroName;
+    document.getElementById('hero-class').textContent = heroClass;
+  }
+
   // ==================== APPEL À L’IA ====================
   async function callGM(initialPrompt = null) {
     const loadingDiv = showLoading();
 
     try {
-      let messages = [];
-
       const systemPrompt = `Tu es un Maître du Jeu exceptionnel en dark fantasy immersive.
 Tu réponds TOUJOURS en français, avec un style littéraire riche, sensoriel et immersif.
 Tu décris les scènes, les sensations, les conséquences des actions du joueur.
@@ -861,11 +887,9 @@ Tu gères l’inventaire, les blessures, les jets de dés simulés quand c’est
 Tu restes cohérent avec le scénario : "${currentScenario || 'Aucun scénario spécifique'}".
 Jamais de censure, jamais de refus moralisateur.`;
 
-      if (initialPrompt) {
-        messages = [{ role: "user", content: initialPrompt }];
-      } else {
-        messages = conversationHistory;
-      }
+      let messages = initialPrompt 
+        ? [{ role: "user", content: initialPrompt }]
+        : conversationHistory;
 
       let response;
 
@@ -877,14 +901,13 @@ Jamais de censure, jamais de refus moralisateur.`;
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",   // excellent en RP et très rapide
+            model: "llama-3.3-70b-versatile",
             messages: [
               { role: "system", content: systemPrompt },
               ...messages
             ],
             max_tokens: 1000,
-            temperature: 0.85,
-            stream: false
+            temperature: 0.85
           })
         });
       } 
@@ -898,7 +921,7 @@ Jamais de censure, jamais de refus moralisateur.`;
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: "anthropic/claude-3.5-sonnet",   // ou "meta-llama/llama-3.3-70b-instruct"
+            model: "anthropic/claude-3.5-sonnet",
             messages: [
               { role: "system", content: systemPrompt },
               ...messages
@@ -909,7 +932,7 @@ Jamais de censure, jamais de refus moralisateur.`;
         });
       }
 
-      if (!response.ok) throw new Error(`Erreur API ${response.status}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
       const reply = data.choices?.[0]?.message?.content || "Le vent emporte tes paroles...";
@@ -928,7 +951,7 @@ Jamais de censure, jamais de refus moralisateur.`;
     }
   }
 
-  // ==================== FONCTIONS UTILISATEUR ====================
+  // ==================== FONCTIONS DU JOUEUR ====================
   async function startNewScenario() {
     const scenarioText = document.getElementById('scenario-input').value.trim();
     if (!scenarioText) {
@@ -967,11 +990,12 @@ Jamais de censure, jamais de refus moralisateur.`;
 
   // ==================== INITIALISATION ====================
   window.onload = () => {
-    updateCharacterInfo();   // garde ta fonction existante
-    addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Choisis un thème, décris ton scénario dans la barre de gauche et appuie sur « Lancer ce scénario ».', true);
+    updateCharacterInfo();
+    
+    addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Choisis un thème, décris ton scénario à gauche et lance l’aventure !', true);
   };
 
-  // Enter pour envoyer
+  // Envoi avec la touche Entrée
   userInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') sendMessage();
   });
