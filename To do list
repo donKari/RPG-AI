@@ -1,1 +1,49 @@
 To do list
+Phase 0 – Ce qui est déjà fait (✅)
+
+Design global + thèmes animés magnifiques
+Interface chat 3 colonnes (sidebar gauche / chat / sidebar droite)
+Intégration IA Groq qui répond en français
+PV / Mana affichés dans la sidebar droite
+Changement de thème en 1 clic
+Scénarios rapides + input scénario
+
+
+Phase 1 – Priorités IMMÉDIATES (à faire cette semaine)
+1. Amélioration critique de l’expérience (2-3 jours)
+
+Ajouter un effet "typing" réaliste quand le MJ répond (très immersif)
+Améliorer le prompt système pour qu’il soit vraiment excellent en Maître du Jeu
+Gérer proprement l’historique (limiter la taille pour ne pas exploser le contexte)
+
+2. Création de personnage (très important)
+
+Formulaire au démarrage (ou bouton "Créer mon personnage")
+Nom, Race, Classe, Backstory courte
+Stats de base (Force, Dextérité, etc.) + PV/Mana calculés
+Affichage beau dans la sidebar droite
+
+3. Jets de dés avec animation
+
+Bouton "Lancer un D20" (ou D6, D8, etc.)
+Animation visuelle du dé qui roule
+Le MJ peut demander un jet et l’IA l’interprète
+
+
+Phase 2 – Améliorations importantes (semaine prochaine)
+
+Sauvegarde / Chargement d’aventure (localStorage + plusieurs slots)
+Faire que l’IA puisse modifier automatiquement les PV, Mana, inventaire
+Système d’inventaire simple (affiché dans la sidebar)
+Effet sonore subtil (optionnel mais cool)
+Bouton "Nouvelle aventure" qui reset tout proprement
+
+
+Phase 3 – Polish & Features avancées
+
+Génération d’image IA pour la scène actuelle (via Flux ou autre)
+Text-to-Speech pour les réponses du MJ
+Mode "Combat" avec système de tours plus structuré
+Responsive mobile amélioré
+Système de niveaux / XP léger
+Export de l’aventure en texte ou PDF
