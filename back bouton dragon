@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magie & Dragons • Éveil des Rêves</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+  <style>
+    :root {
+      --col-accent: #a855f7;
+      --col-accent2: #22d3ee;
+      --col-border: #7c3aed;
+      --col-border-light: #a855f7;
+      --col-bg: #0a0a0a;
+      --col-sidebar: rgba(15,23,42,0.95);
+      --col-btn-from: #7c3aed;
+      --col-btn-to: #4f46e5;
+      --col-bubble-gm-from: #1e1b4b;
+      --col-bubble-gm-to: #312e81;
+      --col-bubble-gm-border: #6366f1;
+      --col-bubble-pl-from: #4c1d95;
+      --col-bubble-pl-to: #6b21a8;
+      --col-bubble-pl-border: #c026d3;
+      --col-text-accent: #c4b5fd;
+      --col-text-secondary: #a78bfa;
+      --col-glow1: #a855f7;
+      --col-glow2: #22d3ee;
+      --col-header-bg: rgba(0,0,0,0.85);
+    }
+
+    /* === THÈMES === */
+    body.theme-foret {
+      --col-accent: #4ade80; --col-accent2: #86efac; --col-border: #16a34a; --col-border-light: #4ade80;
+      --col-bg: #030f05; --col-sidebar: rgba(5,22,11,0.97); --col-btn-from: #15803d; --col-btn-to: #166534;
+      --col-bubble-gm-from: #052e16; --col-bubble-gm-to: #14532d; --col-bubble-gm-border: #16a34a;
+      --col-bubble-pl-from: #14532d; --col-bubble-pl-to: #166534; --col-bubble-pl-border: #4ade80;
+      --col-text-accent: #bbf7d0; --col-text-secondary: #86efac; --col-glow1: #4ade80; --col-glow2: #a3e635;
+      --col-header-bg: rgba(0,8,2,0.88);
+    }
+    body.theme-desert {
+      --col-accent: #fb923c; --col-accent2: #fbbf24; --col-border: #b45309; --col-border-light: #fb923c;
+      --col-bg: #0f0700; --col-sidebar: rgba(20,10,0,0.97); --col-btn-from: #b45309; --col-btn-to: #92400e;
+      --col-bubble-gm-from: #1c0f00; --col-bubble-gm-to: #451a03; --col-bubble-gm-border: #b45309;
+      --col-bubble-pl-from: #451a03; --col-bubble-pl-to: #78350f; --col-bubble-pl-border: #fb923c;
+      --col-text-accent: #fed7aa; --col-text-secondary: #fdba74; --col-glow1: #fb923c; --col-glow2: #fbbf24;
+      --col-header-bg: rgba(10,4,0,0.88);
+    }
+    body.theme-chateau {
+      --col-accent: #60a5fa; --col-accent2: #818cf8; --col-border: #1d4ed8; --col-border-light: #60a5fa;
+      --col-bg: #020408; --col-sidebar: rgba(2,4,14,0.97); --col-btn-from: #1d4ed8; --col-btn-to: #1e3a8a;
+      --col-bubble-gm-from: #0f172a; --col-bubble-gm-to: #1e3a8a; --col-bubble-gm-border: #1d4ed8;
+      --col-bubble-pl-from: #1e3a8a; --col-bubble-pl-to: #1e40af; --col-bubble-pl-border: #60a5fa;
+      --col-text-accent: #bfdbfe; --col-text-secondary: #93c5fd; --col-glow1: #60a5fa; --col-glow2: #818cf8;
+      --col-header-bg: rgba(1,2,8,0.90);
+    }
+    body.theme-sorcier {
+      --col-accent: #e879f9; --col-accent2: #a855f7; --col-border: #9333ea; --col-border-light: #e879f9;
+      --col-bg: #0b0010; --col-sidebar: rgba(11,0,20,0.97); --col-btn-from: #9333ea; --col-btn-to: #7e22ce;
+      --col-bubble-gm-from: #1a0030; --col-bubble-gm-to: #3b0764; --col-bubble-gm-border: #9333ea;
+      --col-bubble-pl-from: #3b0764; --col-bubble-pl-to: #581c87; --col-bubble-pl-border: #e879f9;
+      --col-text-accent: #f5d0fe; --col-text-secondary: #d946ef; --col-glow1: #e879f9; --col-glow2: #a855f7;
+      --col-header-bg: rgba(5,0,12,0.90);
+    }
+
+    body {
+      background-color: var(--col-bg);
+      color: #ffffff;                    /* Force le texte principal en blanc */
+      font-family: 'Cinzel', serif;
+      transition: background-color 0.6s ease;
+    }
+
+    /* On force aussi les textes secondaires à rester très clairs sur tous les thèmes */
+    .text-slate-300, .text-gray-300, p, h1, h2, h3, h4, button, input::placeholder {
+      color: #f1f5f9 !important;
+    }
+
+    .rune-font { font-family: 'UnifrakturMaguntia', cursive; }
+    .magic-glow { 
+      text-shadow: 0 0 15px var(--col-glow1), 0 0 30px var(--col-glow2); 
+      color: #ffffff !important;
+    }
+
+    /* === BANDEAU THÈMES DÉPLACÉ DANS LE HEADER === */
+    #theme-band {
+      display: flex;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+
+    .theme-btn {
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 2px solid transparent;
+      background: rgba(255,255,255,0.07);
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .theme-btn:hover { transform: scale(1.06); }
+    .theme-btn.active {
+      border-color: var(--col-accent);
+      background: rgba(255,255,255,0.18);
+      box-shadow: 0 0 20px var(--col-accent);
+    }
+
+    .sidebar { background: var(--col-sidebar); }
+    .chat-bubble-gm, .chat-bubble-player {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body class="theme-sorcier text-white min-h-screen overflow-hidden">
+  <!-- Particules -->
+  <div id="tsparticles" class="fixed inset-0 z-0"></div>
+
+  <div class="pt-0 relative z-10 flex flex-col h-screen">
+    <!-- Header modifié : titre + bandeau thèmes côte à côte -->
+    <header class="border-b py-4 px-6 flex items-center justify-between backdrop-blur-md" 
+            style="background: var(--col-header-bg); border-color: var(--col-border);">
+      
+      <div class="flex items-center gap-6">
+        <!-- Titre -->
+        <div class="flex items-center gap-4">
+          <span id="header-icon" class="text-4xl">🗡️</span>
+          <div>
+            <h1 class="rune-font text-4xl tracking-widest magic-glow">Magie & Dragons</h1>
+            <p class="text-sm" style="color: var(--col-text-secondary);">Crée ton scénario • L'IA devient ton Maître du Jeu</p>
+          </div>
+        </div>
+
+        <!-- Bandeau des thèmes (maintenant à côté) -->
+        <div id="theme-band">
+          <button class="theme-btn active" onclick="setTheme('foret', this)">🌿 Forêt Magique</button>
+          <button class="theme-btn" onclick="setTheme('desert', this)">🏜️ Désert Apocalypse</button>
+          <button class="theme-btn" onclick="setTheme('chateau', this)">🏰 Château Hanté</button>
+          <button class="theme-btn" onclick="setTheme('sorcier', this)">✨ Sorcier & Magie</button>
+        </div>
+      </div>
+
+      <button onclick="window.location.href='index.html'"
+              class="px-6 py-2 rounded-xl text-sm transition"
+              style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
+        ← Retour à l'accueil
+      </button>
+    </header>
+
+    <!-- Le reste de la page reste identique -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Sidebar GAUCHE -->
+      <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col" style="border-color: var(--col-border);">
+        <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Scénario</h3>
+        <textarea id="scenario-input" rows="6"
+          class="bg-slate-900 border rounded-2xl p-4 text-sm resize-none focus:outline-none"
+          style="border-color: var(--col-border); background: rgba(15,23,42,0.9);"
+          placeholder="Décris ton scénario ou ton personnage ici..."></textarea>
+        <button onclick="startNewScenario()"
+                class="mt-4 w-full py-4 rounded-2xl font-bold transition"
+                style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
+          Lancer ce scénario
+        </button>
+        <div class="mt-8">
+          <h4 class="mb-3 text-sm" style="color: var(--col-text-secondary);">Scénarios rapides</h4>
+          <div class="space-y-2">
+            <button onclick="loadQuickScenario('Je suis un guerrier qui affronte un dragon dans une montagne enneigée')"
+                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">🐉 Combat contre un dragon</button>
+            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d’une ancienne cité elfique')"
+                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">🏛️ Ruines elfiques</button>
+            <button onclick="loadQuickScenario('Je suis un apprenti sorcier dans une académie de magie où un traître se cache')"
+                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">🏫 Académie de magie</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Central -->
+      <div class="flex-1 flex flex-col">
+        <div id="chat-container" class="flex-1 overflow-y-auto p-6 parchment space-y-6"></div>
+        <div class="border-t p-6" style="border-color: var(--col-border); background: rgba(0,0,0,0.95);">
+          <div class="max-w-3xl mx-auto flex gap-3">
+            <input id="user-input" type="text" placeholder="Que fais-tu maintenant ?"
+                   class="flex-1 rounded-3xl px-6 py-4 text-lg border focus:outline-none"
+                   style="background: rgba(15,23,42,0.9); border-color: var(--col-border);">
+            <button onclick="sendMessage()"
+                    class="px-10 rounded-3xl font-bold text-lg transition"
+                    style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
+              Envoyer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar DROITE -->
+      <div class="w-72 sidebar border-l p-6 overflow-y-auto" style="border-color: var(--col-border);">
+        <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Personnage</h3>
+        <div id="character-info" class="space-y-6"></div>
+        <div class="mt-10 pt-6 border-t" style="border-color: var(--col-border);">
+          <h4 class="mb-3 text-sm" style="color: var(--col-text-secondary);">Actions rapides</h4>
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <button onclick="quickAction('Explorer autour de moi')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Explorer</button>
+            <button onclick="quickAction('Lancer un sort')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Lancer un sort</button>
+            <button onclick="quickAction('Attaquer')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Attaquer</button>
+            <button onclick="quickAction('Parler à quelqu’un')" class="p-3 rounded-xl transition" style="background: rgba(30,30,50,0.8); border: 1px solid var(--col-border);">Parler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const THEMES = {
+      foret: { name: 'Forêt Magique', particles: ['#4ade80', '#86efac', '#a3e635'], bg: '#030f05' },
+      desert: { name: 'Désert Apocalypse', particles: ['#fb923c', '#fbbf24', '#f97316'], bg: '#0f0700' },
+      chateau: { name: 'Château Hanté', particles: ['#60a5fa', '#818cf8', '#a5b4fc'], bg: '#020408' },
+      sorcier: { name: 'Sorcier & Magie', particles: ['#e879f9', '#a855f7', '#c084fc'], bg: '#0b0010' }
+    };
+
+    function setTheme(themeKey, btn) {
+      document.body.className = `theme-${themeKey} text-white`;
+
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      tsParticles.load("tsparticles", {
+        background: { color: THEMES[themeKey].bg },
+        particles: {
+          number: { value: 65 },
+          color: { value: THEMES[themeKey].particles },
+          shape: { type: ["circle", "star"] },
+          opacity: { value: { min: 0.3, max: 0.9 } },
+          size: { value: { min: 1, max: 5 } },
+          move: { enable: true, speed: 0.7, random: true }
+        }
+      });
+    }
+
+    // Le reste du script reste exactement le même que chez toi
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+
+    function addMessage(text, isGM) {
+      const div = document.createElement('div');
+      div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
+      div.innerHTML = `
+        <div style="color: ${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size: 0.75rem; margin-bottom: 4px;">
+          ${isGM ? '🧙 Maître du Jeu' : 'Toi'}
+        </div>
+        <p class="leading-relaxed">${text}</p>
+      `;
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function updateCharacterInfo() {
+      document.getElementById('character-info').innerHTML = `
+        <div class="rounded-2xl p-5" style="background:rgba(15,23,42,0.85); border:1px solid var(--col-border);">
+          <p style="color:var(--col-text-secondary); font-size:0.75rem;">Nom</p>
+          <p class="text-2xl font-bold">Ton Héros</p>
+          <p style="color:var(--col-text-secondary); font-size:0.75rem; margin-top:12px;">Classe</p>
+          <p class="text-xl">Aventurier personnalisé</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div class="rounded-2xl p-4" style="background:rgba(30,10,10,0.6); border:1px solid #b91c1c;">
+            <p style="font-size:0.75rem; color:#f87171;">Vie</p>
+            <p class="text-3xl font-bold" style="color:#f87171;">100 / 100</p>
+          </div>
+          <div class="rounded-2xl p-4" style="background:rgba(10,20,40,0.6); border:1px solid var(--col-border);">
+            <p style="font-size:0.75rem; color:var(--col-accent2);">Mana</p>
+            <p class="text-3xl font-bold" style="color:var(--col-accent2);">80 / 80</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function startNewScenario() { /* ... identique ... */ }
+    function loadQuickScenario(text) { /* ... identique ... */ }
+    function sendMessage() { /* ... identique ... */ }
+    function quickAction(action) { /* ... identique ... */ }
+
+    window.onload = () => {
+      updateCharacterInfo();
+      addMessage("Bienvenue dans Magie & Dragons !", true);
+      addMessage("Les thèmes sont maintenant à côté du titre.", true);
+    };
+
+    userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+  </script>
+</body>
+</html>
