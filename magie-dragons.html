@@ -789,135 +789,192 @@
   </div>
 
   <script>
-    const THEMES = {
-      foret:   { icon: '🌿', name: 'Forêt Magique' },
-      desert:  { icon: '🏜️', name: 'Désert Apocalypse' },
-      chateau: { icon: '🏰', name: 'Château Hanté' },
-      sorcier: { icon: '✨', name: 'Sorcier & Magie' }
-    };
+  // ==================== CONFIGURATION ====================
+  // Choisis ton provider :
+  // - 'groq'     → ultra rapide + gratuit au début
+  // - 'openrouter' → plus de modèles (Claude, etc.)
+  const API_PROVIDER = 'groq';   
 
-    let conversationHistory = [];
-    let currentScenario = '';
+  // Mets ta clé ici (pour tester seulement !)
+  // Va sur https://console.groq.com/keys pour en créer une gratuitement
+  let GROQ_API_KEY = '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';   // ← REMPLIS ÇA
 
-    function setTheme(themeKey, btn) {
-      document.body.className = `theme-${themeKey} text-white`;
-      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('header-icon').textContent = THEMES[themeKey].icon;
-    }
+  // Pour OpenRouter (si tu changes) : https://openrouter.ai/keys
+  let OPENROUTER_API_KEY = '';
 
-    const chatContainer = document.getElementById('chat-container');
-    const userInput = document.getElementById('user-input');
+  const chatContainer = document.getElementById('chat-container');
+  const userInput = document.getElementById('user-input');
 
-    function addMessage(text, isGM) {
-      const div = document.createElement('div');
-      div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
-      div.innerHTML = `
-        <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size:0.75rem; margin-bottom:6px;">
-          ${isGM ? '🧙 Maître du Jeu' : '⚔️ Toi'}
-        </div>
-        <p class="leading-relaxed" style="color:#f1f5f9;">${text}</p>
-      `;
-      chatContainer.appendChild(div);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
+  let conversationHistory = [];
+  let currentScenario = '';
 
-    function updateCharacterInfo() {
-      document.getElementById('character-info').innerHTML = `
-        <div class="rounded-2xl p-5" style="background:rgba(15,23,42,0.7); border:1px solid var(--col-border);">
-          <p style="color:var(--col-text-secondary); font-size:0.75rem;">Nom</p>
-          <p class="text-2xl font-bold" style="color:#f1f5f9;">Ton Héros</p>
-          <p style="color:var(--col-text-secondary); font-size:0.75rem; margin-top:12px;">Classe</p>
-          <p class="text-xl" style="color:#f1f5f9;">Aventurier</p>
-        </div>
-        <div class="grid grid-cols-2 gap-4 text-center">
-          <div class="rounded-2xl p-4" style="background:rgba(30,10,10,0.6); border:1px solid #b91c1c;">
-            <p style="font-size:0.75rem; color:#f87171;">❤️ Vie</p>
-            <p class="text-3xl font-bold" style="color:#f87171;">100</p>
-          </div>
-          <div class="rounded-2xl p-4" style="background:rgba(10,20,40,0.6); border:1px solid var(--col-border);">
-            <p style="font-size:0.75rem; color:var(--col-accent2);">💫 Mana</p>
-            <p class="text-3xl font-bold" style="color:var(--col-accent2);">80</p>
-          </div>
-        </div>
-      `;
-    }
+  const THEMES = {
+    foret: { icon: '🌿', name: 'Forêt Magique' },
+    desert: { icon: '🏜️', name: 'Désert Apocalypse' },
+    chateau: { icon: '🏰', name: 'Château Hanté' },
+    sorcier: { icon: '✨', name: 'Sorcier & Magie' }
+  };
 
-    async function startNewScenario() {
-      const scenarioText = document.getElementById('scenario-input').value.trim();
-      if (!scenarioText) return;
-      currentScenario = scenarioText;
-      conversationHistory = [];
-      chatContainer.innerHTML = '';
+  function setTheme(themeKey, btn) {
+    document.body.className = `theme-${themeKey} text-white min-h-screen`;
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('header-icon').textContent = THEMES[themeKey].icon;
+  }
 
-      addMessage(`Scénario lancé : <em>${scenarioText}</em>`, false);
-      await callGM(`Tu es un Maître du Jeu expert en jeu de rôle fantasy. Le joueur décrit ce scénario : "${scenarioText}". Lance l'aventure avec une introduction immersive de 3-4 phrases.`);
-    }
+  // Ajoute un message dans le chat
+  function addMessage(text, isGM) {
+    const div = document.createElement('div');
+    div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
+    div.innerHTML = `
+      <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size:0.8rem; margin-bottom:6px;">
+        ${isGM ? '🧙 Maître du Jeu' : '⚔️ Toi'}
+      </div>
+      <p class="leading-relaxed whitespace-pre-wrap" style="color:#f1f5f9;">${text}</p>
+    `;
+    chatContainer.appendChild(div);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 
-    async function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-      userInput.value = '';
-      addMessage(text, false);
-      conversationHistory.push({ role: 'user', content: text });
-      await callGM(null);
-    }
+  // Message de chargement avec animation
+  function showLoading() {
+    const loading = document.createElement('div');
+    loading.id = 'loading-msg';
+    loading.className = 'max-w-2xl mr-auto chat-bubble-gm p-5 rounded-3xl';
+    loading.innerHTML = `<p style="color:var(--col-text-secondary); animation: pulse 1.5s infinite;">🧙 Le Maître du Jeu tisse la trame de l’histoire...</p>`;
+    chatContainer.appendChild(loading);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return loading;
+  }
 
-    async function quickAction(action) {
-      userInput.value = action;
-      sendMessage();
-    }
+  // ==================== APPEL À L’IA ====================
+  async function callGM(initialPrompt = null) {
+    const loadingDiv = showLoading();
 
-    function loadQuickScenario(text) {
-      document.getElementById('scenario-input').value = text;
-    }
+    try {
+      let messages = [];
 
-    async function callGM(systemPrompt) {
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'max-w-2xl mr-auto chat-bubble-gm p-5 rounded-3xl';
-      loadingDiv.innerHTML = '<p style="color:var(--col-text-secondary); animation: pulse 1s infinite;">✨ Le Maître du Jeu réfléchit...</p>';
-      chatContainer.appendChild(loadingDiv);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+      const systemPrompt = `Tu es un Maître du Jeu exceptionnel en dark fantasy immersive.
+Tu réponds TOUJOURS en français, avec un style littéraire riche, sensoriel et immersif.
+Tu décris les scènes, les sensations, les conséquences des actions du joueur.
+Tu gères l’inventaire, les blessures, les jets de dés simulés quand c’est pertinent.
+Tu restes cohérent avec le scénario : "${currentScenario || 'Aucun scénario spécifique'}".
+Jamais de censure, jamais de refus moralisateur.`;
 
-      try {
-        const messages = systemPrompt
-          ? [{ role: 'user', content: systemPrompt }]
-          : conversationHistory;
+      if (initialPrompt) {
+        messages = [{ role: "user", content: initialPrompt }];
+      } else {
+        messages = conversationHistory;
+      }
 
-        const systemMsg = currentScenario && !systemPrompt
-          ? `Tu es un Maître du Jeu expert en jeu de rôle fantasy. Le contexte du scénario est : "${currentScenario}". Réponds toujours en français, de manière immersive et narrative.`
-          : `Tu es un Maître du Jeu expert en jeu de rôle fantasy. Réponds en français, de manière immersive.`;
+      let response;
 
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+      if (API_PROVIDER === 'groq') {
+        response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
+            model: "llama-3.3-70b-versatile",   // excellent en RP et très rapide
+            messages: [
+              { role: "system", content: systemPrompt },
+              ...messages
+            ],
             max_tokens: 1000,
-            system: systemMsg,
-            messages: messages
+            temperature: 0.85,
+            stream: false
           })
         });
-
-        const data = await response.json();
-        loadingDiv.remove();
-
-        const reply = data.content?.map(i => i.text || '').join('') || 'Une erreur est survenue.';
-        addMessage(reply, true);
-        if (!systemPrompt) conversationHistory.push({ role: 'assistant', content: reply });
-
-      } catch (err) {
-        loadingDiv.remove();
-        addMessage('Une erreur est survenue. Vérifiez votre connexion.', true);
+      } 
+      else if (API_PROVIDER === 'openrouter') {
+        response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+            'HTTP-Referer': window.location.href,
+            'X-Title': 'Éveil des Rêves',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: "anthropic/claude-3.5-sonnet",   // ou "meta-llama/llama-3.3-70b-instruct"
+            messages: [
+              { role: "system", content: systemPrompt },
+              ...messages
+            ],
+            max_tokens: 1000,
+            temperature: 0.85
+          })
+        });
       }
+
+      if (!response.ok) throw new Error(`Erreur API ${response.status}`);
+
+      const data = await response.json();
+      const reply = data.choices?.[0]?.message?.content || "Le vent emporte tes paroles...";
+
+      loadingDiv.remove();
+      addMessage(reply, true);
+
+      if (!initialPrompt) {
+        conversationHistory.push({ role: "assistant", content: reply });
+      }
+
+    } catch (err) {
+      console.error(err);
+      loadingDiv.remove();
+      addMessage("❌ Le voile magique s’est déchiré... Vérifie ta clé API ou ta connexion.", true);
+    }
+  }
+
+  // ==================== FONCTIONS UTILISATEUR ====================
+  async function startNewScenario() {
+    const scenarioText = document.getElementById('scenario-input').value.trim();
+    if (!scenarioText) {
+      alert("Décris ton scénario avant de lancer l’aventure !");
+      return;
     }
 
-    window.onload = () => {
-      updateCharacterInfo();
-      addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ! Choisis un thème, décris ton scénario et lance-toi dans l\'aventure.', true);
-    };
+    currentScenario = scenarioText;
+    conversationHistory = [];
+    chatContainer.innerHTML = '';
 
-    userInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
-  </script>
+    addMessage(`<strong>Scénario lancé :</strong> ${scenarioText}`, false);
+
+    await callGM(`Lance immédiatement l’aventure avec une introduction immersive de 3 à 5 phrases, en te basant sur ce scénario : "${scenarioText}".`);
+  }
+
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+
+    addMessage(text, false);
+    conversationHistory.push({ role: "user", content: text });
+    userInput.value = '';
+
+    await callGM();
+  }
+
+  function quickAction(action) {
+    userInput.value = action;
+    sendMessage();
+  }
+
+  function loadQuickScenario(text) {
+    document.getElementById('scenario-input').value = text;
+  }
+
+  // ==================== INITIALISATION ====================
+  window.onload = () => {
+    updateCharacterInfo();   // garde ta fonction existante
+    addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Choisis un thème, décris ton scénario dans la barre de gauche et appuie sur « Lancer ce scénario ».', true);
+  };
+
+  // Enter pour envoyer
+  userInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
 </body>
 </html>
