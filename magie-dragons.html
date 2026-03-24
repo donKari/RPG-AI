@@ -8,111 +8,338 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
-    body { font-family: 'Cinzel', serif; }
+    :root {
+      --col-accent:       #a855f7;
+      --col-accent2:      #22d3ee;
+      --col-accent-dark:  #6b21a8;
+      --col-border:       #7c3aed;
+      --col-border-light: #a855f7;
+      --col-bg:           #0a0a0a;
+      --col-sidebar:      rgba(15,23,42,0.95);
+      --col-btn-from:     #7c3aed;
+      --col-btn-to:       #4f46e5;
+      --col-bubble-gm-from: #1e1b4b;
+      --col-bubble-gm-to:   #312e81;
+      --col-bubble-gm-border:#6366f1;
+      --col-bubble-pl-from: #4c1d95;
+      --col-bubble-pl-to:   #6b21a8;
+      --col-bubble-pl-border:#c026d3;
+      --col-text-accent:  #c4b5fd;
+      --col-text-secondary:#a78bfa;
+      --col-glow1:        #a855f7;
+      --col-glow2:        #22d3ee;
+      --col-header-bg:    rgba(0,0,0,0.80);
+    }
+
+    /* ─── FORÊT ─── */
+    body.theme-foret {
+      --col-accent:       #4ade80;
+      --col-accent2:      #86efac;
+      --col-accent-dark:  #166534;
+      --col-border:       #16a34a;
+      --col-border-light: #4ade80;
+      --col-bg:           #030f05;
+      --col-sidebar:      rgba(5,22,11,0.97);
+      --col-btn-from:     #15803d;
+      --col-btn-to:       #166534;
+      --col-bubble-gm-from: #052e16;
+      --col-bubble-gm-to:   #14532d;
+      --col-bubble-gm-border:#16a34a;
+      --col-bubble-pl-from: #14532d;
+      --col-bubble-pl-to:   #166534;
+      --col-bubble-pl-border:#4ade80;
+      --col-text-accent:  #bbf7d0;
+      --col-text-secondary:#86efac;
+      --col-glow1:        #4ade80;
+      --col-glow2:        #a3e635;
+      --col-header-bg:    rgba(0,8,2,0.88);
+    }
+
+    /* ─── DÉSERT ─── */
+    body.theme-desert {
+      --col-accent:       #fb923c;
+      --col-accent2:      #fbbf24;
+      --col-accent-dark:  #92400e;
+      --col-border:       #b45309;
+      --col-border-light: #fb923c;
+      --col-bg:           #0f0700;
+      --col-sidebar:      rgba(20,10,0,0.97);
+      --col-btn-from:     #b45309;
+      --col-btn-to:       #92400e;
+      --col-bubble-gm-from: #1c0f00;
+      --col-bubble-gm-to:   #451a03;
+      --col-bubble-gm-border:#b45309;
+      --col-bubble-pl-from: #451a03;
+      --col-bubble-pl-to:   #78350f;
+      --col-bubble-pl-border:#fb923c;
+      --col-text-accent:  #fed7aa;
+      --col-text-secondary:#fdba74;
+      --col-glow1:        #fb923c;
+      --col-glow2:        #fbbf24;
+      --col-header-bg:    rgba(10,4,0,0.88);
+    }
+
+    /* ─── CHÂTEAU ─── */
+    body.theme-chateau {
+      --col-accent:       #60a5fa;
+      --col-accent2:      #818cf8;
+      --col-accent-dark:  #1e3a5f;
+      --col-border:       #1d4ed8;
+      --col-border-light: #60a5fa;
+      --col-bg:           #020408;
+      --col-sidebar:      rgba(2,4,14,0.97);
+      --col-btn-from:     #1d4ed8;
+      --col-btn-to:       #1e3a8a;
+      --col-bubble-gm-from: #0f172a;
+      --col-bubble-gm-to:   #1e3a8a;
+      --col-bubble-gm-border:#1d4ed8;
+      --col-bubble-pl-from: #1e3a8a;
+      --col-bubble-pl-to:   #1e40af;
+      --col-bubble-pl-border:#60a5fa;
+      --col-text-accent:  #bfdbfe;
+      --col-text-secondary:#93c5fd;
+      --col-glow1:        #60a5fa;
+      --col-glow2:        #818cf8;
+      --col-header-bg:    rgba(1,2,8,0.90);
+    }
+
+    /* ─── SORCIER ─── */
+    body.theme-sorcier {
+      --col-accent:       #e879f9;
+      --col-accent2:      #a855f7;
+      --col-accent-dark:  #6b21a8;
+      --col-border:       #9333ea;
+      --col-border-light: #e879f9;
+      --col-bg:           #0b0010;
+      --col-sidebar:      rgba(11,0,20,0.97);
+      --col-btn-from:     #9333ea;
+      --col-btn-to:       #7e22ce;
+      --col-bubble-gm-from: #1a0030;
+      --col-bubble-gm-to:   #3b0764;
+      --col-bubble-gm-border:#9333ea;
+      --col-bubble-pl-from: #3b0764;
+      --col-bubble-pl-to:   #581c87;
+      --col-bubble-pl-border:#e879f9;
+      --col-text-accent:  #f5d0fe;
+      --col-text-secondary:#d946ef;
+      --col-glow1:        #e879f9;
+      --col-glow2:        #a855f7;
+      --col-header-bg:    rgba(5,0,12,0.90);
+    }
+
+    body { 
+      font-family: 'Cinzel', serif;
+      background-color: var(--col-bg);
+      transition: background-color 0.5s ease;
+    }
+
     .rune-font { font-family: 'UnifrakturMaguntia', cursive; }
-    .magic-glow { text-shadow: 0 0 15px #a855f7, 0 0 30px #22d3ee; }
+
+    .magic-glow {
+      text-shadow: 0 0 15px var(--col-glow1), 0 0 30px var(--col-glow2);
+      transition: text-shadow 0.5s ease;
+    }
+
     .chat-bubble-gm {
-      background: linear-gradient(145deg, #1e1b4b, #312e81);
-      border: 2px solid #6366f1;
-      box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
+      background: linear-gradient(145deg, var(--col-bubble-gm-from), var(--col-bubble-gm-to));
+      border: 2px solid var(--col-bubble-gm-border);
+      box-shadow: 0 0 25px rgba(99,102,241,0.3);
+      transition: background 0.5s, border-color 0.5s;
     }
+
     .chat-bubble-player {
-      background: linear-gradient(145deg, #4c1d95, #6b21a8);
-      border: 2px solid #c026d3;
+      background: linear-gradient(145deg, var(--col-bubble-pl-from), var(--col-bubble-pl-to));
+      border: 2px solid var(--col-bubble-pl-border);
+      transition: background 0.5s, border-color 0.5s;
     }
-    .parchment { 
-      background: #0f172a;
-      background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px);
+
+    .parchment {
+      background-color: #0f172a;
+      background-image:
+        linear-gradient(rgba(51,65,85,0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(51,65,85,0.4) 1px, transparent 1px);
       background-size: 30px 30px;
     }
-    .sidebar { background: rgba(15, 23, 42, 0.95); }
+
+    .sidebar {
+      background: var(--col-sidebar);
+      transition: background 0.5s;
+    }
+
+    /* ─── THEME BAND ─── */
+    #theme-band {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(0,0,0,0.85);
+      border-bottom: 1px solid var(--col-border);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 16px;
+      transition: border-color 0.5s;
+    }
+
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: rgba(255,255,255,0.05);
+      color: #d1d5db;
+    }
+    .theme-btn:hover { transform: scale(1.08); }
+    .theme-btn.active { border-color: currentColor; background: rgba(255,255,255,0.12); }
+
+    .theme-btn.t-foret  { color: #4ade80; }
+    .theme-btn.t-desert { color: #fb923c; }
+    .theme-btn.t-chateau{ color: #60a5fa; }
+    .theme-btn.t-sorcier{ color: #e879f9; }
+
+    /* ─── DYNAMIC BORDER / ACCENT CLASSES ─── */
+    .dyn-border  { border-color: var(--col-border) !important; transition: border-color 0.5s; }
+    .dyn-border-l{ border-color: var(--col-border-light) !important; transition: border-color 0.5s; }
+    .dyn-text    { color: var(--col-text-secondary) !important; transition: color 0.5s; }
+    .dyn-text-acc{ color: var(--col-text-accent) !important; transition: color 0.5s; }
+
+    .dyn-btn {
+      background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to)) !important;
+      transition: background 0.5s, filter 0.2s;
+    }
+    .dyn-btn:hover { filter: brightness(1.15); }
+
+    .dyn-input {
+      border-color: var(--col-border) !important;
+      transition: border-color 0.5s;
+    }
+    .dyn-input:focus { border-color: var(--col-border-light) !important; outline: none; }
+
+    /* Sidebar quick-action buttons */
+    .qa-btn {
+      background: rgba(30,30,50,0.8);
+      border: 1px solid transparent;
+      border-color: var(--col-border);
+      transition: background 0.3s, border-color 0.5s;
+    }
+    .qa-btn:hover { background: rgba(60,60,90,0.9); }
+
+    .scenario-btn {
+      background: rgba(20,20,40,0.8);
+      border: 1px solid var(--col-border);
+      transition: background 0.3s, border-color 0.5s;
+    }
+    .scenario-btn:hover { background: rgba(50,50,80,0.9); }
   </style>
 </head>
-<body class="bg-[#0a0a0a] text-white min-h-screen overflow-hidden">
+<body class="text-white min-h-screen overflow-hidden">
 
-  <!-- Fond particules -->
   <div id="tsparticles" class="fixed inset-0 z-0"></div>
 
   <div class="relative z-10 flex flex-col h-screen">
 
-    <!-- Header -->
-    <header class="bg-black/80 border-b border-purple-700 py-4 px-6 flex items-center justify-between backdrop-blur-md">
+    <!-- ─── BANDEAU THÈMES ─── -->
+    <div id="theme-band">
+      <button class="theme-btn t-foret active" onclick="setTheme('foret', this)">
+        🌿 <span>Forêt Magique</span>
+      </button>
+      <button class="theme-btn t-desert" onclick="setTheme('desert', this)">
+        🏜️ <span>Désert Apocalypse</span>
+      </button>
+      <button class="theme-btn t-chateau" onclick="setTheme('chateau', this)">
+        🏰 <span>Château Hanté</span>
+      </button>
+      <button class="theme-btn t-sorcier" onclick="setTheme('sorcier', this)">
+        ✨ <span>Sorcier & Magie</span>
+      </button>
+    </div>
+
+    <!-- ─── HEADER ─── -->
+    <header id="main-header" class="border-b dyn-border py-4 px-6 flex items-center justify-between backdrop-blur-md"
+            style="background: var(--col-header-bg); transition: background 0.5s, border-color 0.5s;">
       <div class="flex items-center gap-4">
-        <span class="text-4xl">🗡️</span>
+        <span id="header-icon" class="text-4xl">🗡️</span>
         <div>
           <h1 class="rune-font text-4xl tracking-widest magic-glow">Magie & Dragons</h1>
-          <p class="text-purple-300 text-sm">Crée ton scénario • L’IA devient ton Maître du Jeu</p>
+          <p class="dyn-text text-sm">Crée ton scénario • L'IA devient ton Maître du Jeu</p>
         </div>
       </div>
-      <button onclick="window.location.href='index.html'" 
-              class="px-5 py-2 bg-purple-900 hover:bg-purple-800 rounded-xl text-sm flex items-center gap-2 transition">
-        ← Retour à l’accueil
+      <button onclick="window.location.href='index.html'"
+              class="px-5 py-2 rounded-xl text-sm flex items-center gap-2 transition dyn-btn">
+        ← Retour à l'accueil
       </button>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
 
-      <!-- Sidebar GAUCHE : Création de scénario -->
-      <div class="w-80 sidebar border-r border-purple-700 p-6 overflow-y-auto flex flex-col">
-        <h3 class="text-xl font-bold mb-4 text-purple-300">Ton Scénario</h3>
-        
+      <!-- ─── SIDEBAR GAUCHE ─── -->
+      <div class="w-80 sidebar border-r dyn-border p-6 overflow-y-auto flex flex-col">
+        <h3 class="text-xl font-bold mb-4 dyn-text">Ton Scénario</h3>
+
         <textarea id="scenario-input" rows="6"
-          class="bg-slate-900 border border-purple-600 rounded-2xl p-4 text-sm focus:outline-none focus:border-purple-400 resize-none"
+          class="bg-slate-900 border dyn-input rounded-2xl p-4 text-sm resize-none dyn-input"
+          style="background:rgba(15,23,42,0.9);"
           placeholder="Décris ton scénario ou ton personnage ici...&#10;Exemple : Je suis une sorcière des ombres qui entre dans une forêt hantée à la recherche d'un artefact oublié."></textarea>
 
-        <button onclick="startNewScenario()" 
-                class="mt-4 w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-4 rounded-2xl font-bold hover:brightness-110 transition">
+        <button onclick="startNewScenario()"
+                class="mt-4 w-full dyn-btn py-4 rounded-2xl font-bold transition">
           Lancer ce scénario
         </button>
 
         <div class="mt-8">
-          <h4 class="text-purple-300 mb-3 text-sm">Scénarios rapides</h4>
+          <h4 class="dyn-text mb-3 text-sm">Scénarios rapides</h4>
           <div class="space-y-2">
-            <button onclick="loadQuickScenario('Je suis un guerrier qui affronte un dragon dans une montagne enneigée')" 
-                    class="w-full text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm transition">🐉 Combat contre un dragon</button>
-            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d’une ancienne cité elfique')" 
-                    class="w-full text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm transition">🏛️ Ruines elfiques</button>
-            <button onclick="loadQuickScenario('Je suis un apprenti sorcier dans une académie de magie où un traître se cache')" 
-                    class="w-full text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm transition">🏫 Académie de magie</button>
+            <button onclick="loadQuickScenario('Je suis un guerrier qui affronte un dragon dans une montagne enneigée')"
+                    class="scenario-btn w-full text-left px-4 py-3 rounded-xl text-sm transition">🐉 Combat contre un dragon</button>
+            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d\'une ancienne cité elfique')"
+                    class="scenario-btn w-full text-left px-4 py-3 rounded-xl text-sm transition">🏛️ Ruines elfiques</button>
+            <button onclick="loadQuickScenario('Je suis un apprenti sorcier dans une académie de magie où un traître se cache')"
+                    class="scenario-btn w-full text-left px-4 py-3 rounded-xl text-sm transition">🏫 Académie de magie</button>
           </div>
         </div>
       </div>
 
-      <!-- Zone centrale : Chat -->
+      <!-- ─── ZONE CHAT ─── -->
       <div class="flex-1 flex flex-col">
-        <div id="chat-container" class="flex-1 overflow-y-auto p-6 parchment space-y-6" style="scrollbar-width: thin; scrollbar-color: #6366f1 #1e2937;">
-          <!-- Messages ici -->
+        <div id="chat-container" class="flex-1 overflow-y-auto p-6 parchment space-y-6"
+             style="scrollbar-width: thin; scrollbar-color: var(--col-border) #1e2937;">
         </div>
 
-        <!-- Input chat -->
-        <div class="bg-black/95 border-t border-purple-700 p-6">
+        <div class="border-t dyn-border p-6"
+             style="background: rgba(0,0,0,0.95); transition: border-color 0.5s;">
           <div class="max-w-3xl mx-auto flex gap-3">
-            <input id="user-input" type="text" 
-                   placeholder="Que fais-tu maintenant ?" 
-                   class="flex-1 bg-slate-900 border border-purple-600 rounded-3xl px-6 py-4 text-lg focus:outline-none focus:border-purple-400 transition">
-            <button onclick="sendMessage()" 
-                    class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 px-10 rounded-3xl font-bold text-lg transition">
+            <input id="user-input" type="text"
+                   placeholder="Que fais-tu maintenant ?"
+                   class="flex-1 rounded-3xl px-6 py-4 text-lg dyn-input border"
+                   style="background: rgba(15,23,42,0.9);">
+            <button onclick="sendMessage()"
+                    class="dyn-btn px-10 rounded-3xl font-bold text-lg transition">
               Envoyer
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Sidebar DROITE : Personnage -->
-      <div class="w-72 sidebar border-l border-purple-700 p-6 overflow-y-auto">
-        <h3 class="text-xl font-bold mb-4 text-purple-300">Ton Personnage</h3>
-        
-        <div id="character-info" class="space-y-6">
-          <!-- Rempli par JS -->
-        </div>
+      <!-- ─── SIDEBAR DROITE ─── -->
+      <div class="w-72 sidebar border-l dyn-border p-6 overflow-y-auto">
+        <h3 class="text-xl font-bold mb-4 dyn-text">Ton Personnage</h3>
 
-        <div class="mt-10 pt-6 border-t border-purple-700">
-          <h4 class="text-purple-300 mb-3 text-sm">Actions rapides</h4>
+        <div id="character-info" class="space-y-6"></div>
+
+        <div class="mt-10 pt-6 border-t dyn-border">
+          <h4 class="dyn-text mb-3 text-sm">Actions rapides</h4>
           <div class="grid grid-cols-2 gap-3 text-sm">
-            <button onclick="quickAction('Explorer autour de moi')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Explorer</button>
-            <button onclick="quickAction('Lancer un sort')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Lancer un sort</button>
-            <button onclick="quickAction('Attaquer')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Attaquer</button>
-            <button onclick="quickAction('Parler à quelqu’un')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Parler</button>
+            <button onclick="quickAction('Explorer autour de moi')" class="qa-btn p-3 rounded-xl transition">Explorer</button>
+            <button onclick="quickAction('Lancer un sort')"         class="qa-btn p-3 rounded-xl transition">Lancer un sort</button>
+            <button onclick="quickAction('Attaquer')"               class="qa-btn p-3 rounded-xl transition">Attaquer</button>
+            <button onclick="quickAction('Parler à quelqu\'un')"    class="qa-btn p-3 rounded-xl transition">Parler</button>
           </div>
         </div>
       </div>
@@ -120,28 +347,110 @@
   </div>
 
   <script>
-    // Particules
-    tsParticles.load("tsparticles", {
-      background: { color: "#0a0a0a" },
-      particles: {
-        number: { value: 60 },
-        color: { value: ["#a855f7", "#6366f1", "#22d3ee"] },
-        shape: { type: ["circle", "star"] },
-        opacity: { value: { min: 0.3, max: 0.9 } },
-        size: { value: { min: 1, max: 5 } },
-        move: { enable: true, speed: 0.6, random: true }
+    /* ══════════════════════════════════════════════
+       THEME CONFIG
+    ══════════════════════════════════════════════ */
+    const THEMES = {
+      foret: {
+        name: 'Forêt Magique',
+        icon: '🌿',
+        headerIcon: '🗡️',
+        particles: ['#4ade80', '#86efac', '#a3e635', '#34d399'],
+        particleBg: '#030f05',
+        bodyClass: 'theme-foret'
+      },
+      desert: {
+        name: 'Désert Apocalypse',
+        icon: '🏜️',
+        headerIcon: '☀️',
+        particles: ['#fb923c', '#fbbf24', '#f97316', '#fcd34d'],
+        particleBg: '#0f0700',
+        bodyClass: 'theme-desert'
+      },
+      chateau: {
+        name: 'Château Hanté',
+        icon: '🏰',
+        headerIcon: '🏰',
+        particles: ['#60a5fa', '#818cf8', '#a5b4fc', '#38bdf8'],
+        particleBg: '#020408',
+        bodyClass: 'theme-chateau'
+      },
+      sorcier: {
+        name: 'Sorcier & Magie',
+        icon: '✨',
+        headerIcon: '🔮',
+        particles: ['#e879f9', '#a855f7', '#c084fc', '#f0abfc'],
+        particleBg: '#0b0010',
+        bodyClass: 'theme-sorcier'
       }
-    });
+    };
 
+    let currentTheme = 'foret';
+    let particlesInstance = null;
+
+    /* ══════════════════════════════════════════════
+       PARTICLES
+    ══════════════════════════════════════════════ */
+    async function loadParticles(theme) {
+      const cfg = THEMES[theme];
+      if (particlesInstance) {
+        await particlesInstance.destroy();
+        particlesInstance = null;
+      }
+      particlesInstance = await tsParticles.load("tsparticles", {
+        background: { color: cfg.particleBg },
+        particles: {
+          number: { value: 65 },
+          color: { value: cfg.particles },
+          shape: { type: ["circle", "star"] },
+          opacity: { value: { min: 0.25, max: 0.85 } },
+          size:    { value: { min: 1, max: 5 } },
+          move:    { enable: true, speed: 0.65, random: true }
+        }
+      });
+    }
+
+    /* ══════════════════════════════════════════════
+       THEME SWITCHER
+    ══════════════════════════════════════════════ */
+    function setTheme(key, btn) {
+      const cfg = THEMES[key];
+      if (!cfg) return;
+
+      // body class
+      document.body.className = '';
+      document.body.classList.add(cfg.bodyClass);
+
+      // header icon
+      document.getElementById('header-icon').textContent = cfg.headerIcon;
+
+      // active tab
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // particles
+      loadParticles(key);
+
+      currentTheme = key;
+
+      // re-render character to pick up new CSS vars
+      updateCharacterInfo(lastCharName, lastCharClass);
+    }
+
+    /* ══════════════════════════════════════════════
+       CHAT
+    ══════════════════════════════════════════════ */
     const chatContainer = document.getElementById('chat-container');
-    const userInput = document.getElementById('user-input');
+    const userInput     = document.getElementById('user-input');
     let currentScenario = "";
+    let lastCharName    = "Aventurier";
+    let lastCharClass   = "Inconnu";
 
     function addMessage(text, isGM) {
       const div = document.createElement('div');
-      div.className = `max-w-2xl ${isGM ? 'mr-auto' : 'ml-auto'} chat-bubble-${isGM ? 'gm' : 'player'} p-5 rounded-3xl`;
+      div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
       div.innerHTML = `
-        <div class="${isGM ? 'text-purple-300 text-xs mb-1' : 'text-pink-300 text-xs mb-1'}">
+        <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size:0.7rem; margin-bottom:4px;">
           ${isGM ? '🧙 Maître du Jeu' : 'Toi'}
         </div>
         <p class="leading-relaxed">${text}</p>
@@ -151,21 +460,23 @@
     }
 
     function updateCharacterInfo(name = "Aventurier", className = "Inconnu") {
+      lastCharName  = name;
+      lastCharClass = className;
       document.getElementById('character-info').innerHTML = `
-        <div class="bg-slate-900 rounded-2xl p-5 border border-purple-600">
-          <p class="text-purple-400 text-xs">Nom</p>
+        <div class="rounded-2xl p-5" style="background:rgba(15,23,42,0.85); border:1px solid var(--col-border);">
+          <p style="color:var(--col-text-secondary); font-size:0.7rem;">Nom</p>
           <p class="text-2xl font-bold">${name}</p>
-          <p class="text-purple-400 text-xs mt-4">Classe</p>
+          <p style="color:var(--col-text-secondary); font-size:0.7rem; margin-top:12px;">Classe</p>
           <p class="text-xl">${className}</p>
         </div>
         <div class="grid grid-cols-2 gap-4 text-center">
-          <div class="bg-red-950/50 border border-red-700 rounded-2xl p-4">
-            <p class="text-xs text-red-400">Vie</p>
-            <p class="text-3xl font-bold text-red-400">100 / 100</p>
+          <div class="rounded-2xl p-4" style="background:rgba(30,10,10,0.6); border:1px solid #b91c1c;">
+            <p style="font-size:0.7rem; color:#f87171;">Vie</p>
+            <p class="text-3xl font-bold" style="color:#f87171;">100 / 100</p>
           </div>
-          <div class="bg-blue-950/50 border border-blue-700 rounded-2xl p-4">
-            <p class="text-xs text-blue-400">Mana</p>
-            <p class="text-3xl font-bold text-blue-400">80 / 80</p>
+          <div class="rounded-2xl p-4" style="background:rgba(10,20,40,0.6); border:1px solid var(--col-border);">
+            <p style="font-size:0.7rem; color:var(--col-accent2);">Mana</p>
+            <p class="text-3xl font-bold" style="color:var(--col-accent2);">80 / 80</p>
           </div>
         </div>
       `;
@@ -174,31 +485,26 @@
     function startNewScenario() {
       const scenario = document.getElementById('scenario-input').value.trim();
       if (!scenario) return alert("Décris ton scénario dans la zone de gauche !");
-      
       currentScenario = scenario;
       chatContainer.innerHTML = '';
       updateCharacterInfo("Ton héros", "Personnalisé");
-
-      addMessage("Le royaume d’Elyndor t’écoute...", true);
+      addMessage("Le royaume d'Elyndor t'écoute...", true);
       addMessage(`Scénario chargé : <strong>${scenario}</strong>`, true);
       addMessage("Que fais-tu en premier ?", true);
     }
 
-    function loadQuickScenario(scenarioText) {
-      document.getElementById('scenario-input').value = scenarioText;
+    function loadQuickScenario(text) {
+      document.getElementById('scenario-input').value = text;
       startNewScenario();
     }
 
     function sendMessage() {
       const text = userInput.value.trim();
       if (!text) return;
-
       addMessage(text, false);
       userInput.value = '';
-
-      // Simulation réponse (on branchera la vraie IA plus tard)
       setTimeout(() => {
-        addMessage("L’IA génère la suite de ton histoire en fonction de ton scénario...", true);
+        addMessage("L'IA génère la suite de ton histoire en fonction de ton scénario...", true);
       }, 700);
     }
 
@@ -209,14 +515,19 @@
       }, 600);
     }
 
-    // Lancer au chargement
-    window.onload = () => {
+    userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+
+    /* ══════════════════════════════════════════════
+       INIT  – start with Forêt theme
+    ══════════════════════════════════════════════ */
+    window.onload = async () => {
+      // apply default theme class
+      document.body.classList.add('theme-foret');
+      await loadParticles('foret');
       updateCharacterInfo();
       addMessage("Bienvenue dans Magie & Dragons !", true);
       addMessage("Utilise la colonne de gauche pour décrire ton propre scénario ou choisis un scénario rapide.", true);
     };
-
-    userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
   </script>
 </body>
 </html>
