@@ -66,13 +66,13 @@
 
     body {
       background-color: var(--col-bg);
-      color: #ffffff;                    /* Force le texte principal en blanc */
+      color: #ffffff;
       font-family: 'Cinzel', serif;
       transition: background-color 0.6s ease;
     }
 
-    /* On force aussi les textes secondaires à rester très clairs sur tous les thèmes */
-    .text-slate-300, .text-gray-300, p, h1, h2, h3, h4, button, input::placeholder {
+    /* Force le texte à rester blanc sur tous les thèmes */
+    p, h1, h2, h3, h4, button, input::placeholder, .text-slate-300, .text-gray-300 {
       color: #f1f5f9 !important;
     }
 
@@ -82,7 +82,7 @@
       color: #ffffff !important;
     }
 
-    /* === BANDEAU THÈMES DÉPLACÉ DANS LE HEADER === */
+    /* Bandeau Thèmes */
     #theme-band {
       display: flex;
       gap: 12px;
@@ -118,7 +118,7 @@
   <div id="tsparticles" class="fixed inset-0 z-0"></div>
 
   <div class="pt-0 relative z-10 flex flex-col h-screen">
-    <!-- Header modifié : titre + bandeau thèmes côte à côte -->
+    <!-- Header avec titre + bandeau thèmes côte à côte -->
     <header class="border-b py-4 px-6 flex items-center justify-between backdrop-blur-md" 
             style="background: var(--col-header-bg); border-color: var(--col-border);">
       
@@ -132,7 +132,7 @@
           </div>
         </div>
 
-        <!-- Bandeau des thèmes (maintenant à côté) -->
+        <!-- Bandeau des thèmes -->
         <div id="theme-band">
           <button class="theme-btn active" onclick="setTheme('foret', this)">🌿 Forêt Magique</button>
           <button class="theme-btn" onclick="setTheme('desert', this)">🏜️ Désert Apocalypse</button>
@@ -148,7 +148,6 @@
       </button>
     </header>
 
-    <!-- Le reste de la page reste identique -->
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar GAUCHE -->
       <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col" style="border-color: var(--col-border);">
@@ -211,10 +210,63 @@
 
   <script>
     const THEMES = {
-      foret: { name: 'Forêt Magique', particles: ['#4ade80', '#86efac', '#a3e635'], bg: '#030f05' },
-      desert: { name: 'Désert Apocalypse', particles: ['#fb923c', '#fbbf24', '#f97316'], bg: '#0f0700' },
-      chateau: { name: 'Château Hanté', particles: ['#60a5fa', '#818cf8', '#a5b4fc'], bg: '#020408' },
-      sorcier: { name: 'Sorcier & Magie', particles: ['#e879f9', '#a855f7', '#c084fc'], bg: '#0b0010' }
+      foret: { 
+        name: 'Forêt Magique', 
+        particles: ['#4ade80', '#86efac', '#a3e635', '#bef575'],
+        bg: '#030f05',
+        config: {
+          number: { value: 80 },
+          shape: { type: ["circle", "star"] },
+          size: { value: { min: 1, max: 4 } },
+          move: { enable: true, speed: 0.6, direction: "none", random: true, outModes: "out" },
+          opacity: { value: { min: 0.4, max: 0.9 } }
+        }
+      },
+      desert: { 
+        name: 'Désert Apocalypse', 
+        particles: ['#fb923c', '#fbbf24', '#f97316', '#fcd34d'],
+        bg: '#0f0700',
+        config: {
+          number: { value: 130 },
+          shape: { type: ["triangle", "polygon"], polygon: { sides: 5 } },
+          size: { value: { min: 1.5, max: 6.5 } },
+          move: { 
+            enable: true, 
+            speed: 0.85, 
+            direction: "right", 
+            random: true, 
+            straight: false,
+            outModes: "out"
+          },
+          opacity: { value: { min: 0.3, max: 0.85 } },
+          rotate: { value: { min: 0, max: 360 }, animation: { enable: true, speed: 4, sync: false } }
+        }
+      },
+      chateau: { 
+        name: 'Château Hanté', 
+        particles: ['#60a5fa', '#818cf8', '#a5b4fc', '#c4d0ff'],
+        bg: '#020408',
+        config: {
+          number: { value: 60 },
+          shape: { type: ["star", "polygon"], polygon: { sides: 6 } },
+          size: { value: { min: 1, max: 5 } },
+          move: { enable: true, speed: 0.4, random: true },
+          opacity: { value: { min: 0.2, max: 0.7 } }
+        }
+      },
+      sorcier: { 
+        name: 'Sorcier & Magie', 
+        particles: ['#e879f9', '#a855f7', '#c084fc', '#d8b4fe'],
+        bg: '#0b0010',
+        config: {
+          number: { value: 90 },
+          shape: { type: ["circle", "star"] },
+          size: { value: { min: 2, max: 7 } },
+          move: { enable: true, speed: 1.2, random: true },
+          opacity: { value: { min: 0.5, max: 1 } },
+          twinkle: { enable: true, frequency: 0.05 }
+        }
+      }
     };
 
     function setTheme(themeKey, btn) {
@@ -223,20 +275,26 @@
       document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
+      const theme = THEMES[themeKey];
+
       tsParticles.load("tsparticles", {
-        background: { color: THEMES[themeKey].bg },
+        background: { color: theme.bg },
+        fpsLimit: 60,
         particles: {
-          number: { value: 65 },
-          color: { value: THEMES[themeKey].particles },
-          shape: { type: ["circle", "star"] },
-          opacity: { value: { min: 0.3, max: 0.9 } },
-          size: { value: { min: 1, max: 5 } },
-          move: { enable: true, speed: 0.7, random: true }
-        }
+          number: theme.config.number,
+          color: { value: theme.particles },
+          shape: theme.config.shape || { type: ["circle", "star"] },
+          opacity: theme.config.opacity,
+          size: theme.config.size,
+          move: theme.config.move || { enable: true, speed: 0.7, random: true },
+          rotate: theme.config.rotate || { value: 0 },
+          twinkle: theme.config.twinkle || { enable: false }
+        },
+        detectRetina: true
       });
     }
 
-    // Le reste du script reste exactement le même que chez toi
+    // ==================== CHAT & FONCTIONS ====================
     const chatContainer = document.getElementById('chat-container');
     const userInput = document.getElementById('user-input');
 
@@ -274,15 +332,44 @@
       `;
     }
 
-    function startNewScenario() { /* ... identique ... */ }
-    function loadQuickScenario(text) { /* ... identique ... */ }
-    function sendMessage() { /* ... identique ... */ }
-    function quickAction(action) { /* ... identique ... */ }
+    function startNewScenario() {
+      const scenario = document.getElementById('scenario-input').value.trim();
+      if (!scenario) return alert("Décris ton scénario dans la zone de gauche !");
+     
+      chatContainer.innerHTML = '';
+      updateCharacterInfo();
+      addMessage("Le royaume d’Elyndor t’écoute...", true);
+      addMessage(`Scénario chargé : <strong>${scenario}</strong>`, true);
+      addMessage("Que fais-tu en premier ?", true);
+    }
 
+    function loadQuickScenario(text) {
+      document.getElementById('scenario-input').value = text;
+      startNewScenario();
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      addMessage(text, false);
+      userInput.value = '';
+      setTimeout(() => {
+        addMessage("L’IA génère la suite de ton histoire en fonction de ton scénario...", true);
+      }, 700);
+    }
+
+    function quickAction(action) {
+      addMessage(action, false);
+      setTimeout(() => {
+        addMessage(`Tu décides de ${action.toLowerCase()}. La suite arrive...`, true);
+      }, 600);
+    }
+
+    // Initialisation
     window.onload = () => {
       updateCharacterInfo();
       addMessage("Bienvenue dans Magie & Dragons !", true);
-      addMessage("Les thèmes sont maintenant à côté du titre.", true);
+      addMessage("Clique sur les thèmes pour changer l’ambiance et les particules.", true);
     };
 
     userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
