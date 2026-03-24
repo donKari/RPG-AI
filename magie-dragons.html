@@ -711,38 +711,19 @@
     </header>
 
     <div class="flex flex-1 overflow-hidden">
-      <!-- Sidebar gauche -->
+                  <!-- Sidebar gauche - Création de Personnage -->
       <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col" style="border-color: var(--col-border);">
-        <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Scénario</h3>
-        <textarea id="scenario-input" rows="6"
-          class="border rounded-2xl p-4 text-sm resize-none focus:outline-none"
-          style="border-color: var(--col-border); background: rgba(15,23,42,0.7);"
-          placeholder="Décris ton scénario ou ton personnage ici..."></textarea>
-        <button onclick="startNewScenario()"
-                class="mt-4 w-full py-4 rounded-2xl font-bold transition"
+        <h3 class="text-2xl font-bold mb-6" style="color: var(--col-text-accent);">Création de Personnage</h3>
+        
+        <button onclick="openCharacterCreationModal()"
+                class="w-full py-5 rounded-2xl font-bold text-lg transition mb-8"
                 style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
-          ▶ Lancer ce scénario
+          👤 Créer mon Personnage
         </button>
-        <div class="mt-8">
-          <h4 class="mb-3 text-sm" style="color: var(--col-text-secondary);">Scénarios rapides</h4>
-          <div class="space-y-2">
-            <button onclick="loadQuickScenario('Je suis un guerrier qui affronte un dragon dans une montagne enneigée')"
-                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition"
-                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">
-              🐉 Combat contre un dragon
-            </button>
-            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d\'une ancienne cité elfique')"
-                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition"
-                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">
-              🏛️ Ruines elfiques
-            </button>
-            <button onclick="loadQuickScenario('Je suis un apprenti sorcier dans une académie de magie où un traître se cache')"
-                    class="w-full text-left px-4 py-3 rounded-xl text-sm transition"
-                    style="background: rgba(30,30,50,0.6); border: 1px solid var(--col-border);">
-              🏫 Académie de magie
-            </button>
-          </div>
-        </div>
+
+        <p class="text-center text-sm px-4" style="color: var(--col-text-secondary);">
+          Crée ton héros pour commencer l'aventure avec le Maître du Jeu
+        </p>
       </div>
 
       <!-- Chat central -->
