@@ -77,45 +77,46 @@
     </section>
 
     <!-- Section Thèmes -->
-    <section class="py-24 px-8 bg-black/80">
-      <div class="max-w-6xl mx-auto">
-        <h3 class="title-font text-5xl font-bold text-center mb-16 tracking-wide">Choisis ton univers</h3>
+    <!-- Section Thèmes (remplace toute la section des cartes) -->
+<section class="py-24 px-8 bg-black/80">
+  <div class="max-w-6xl mx-auto">
+    <h3 class="title-font text-5xl font-bold text-center mb-16 tracking-wide">Choisis ton univers</h3>
 
-        <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-          
-          <!-- Carte Fantasy Magique -->
-          <div onclick="alert('Thème Magie & Dragons sélectionné – on va créer cette page ensuite !')" 
-               class="card group bg-gradient-to-br from-purple-950 to-black border border-purple-500/40 rounded-3xl p-12 cursor-pointer">
-            <div class="text-7xl mb-8">🗡️</div>
-            <h4 class="title-font text-5xl font-bold mb-6">Magie & Dragons</h4>
-            <p class="text-gray-300 text-lg leading-relaxed">
-              Deviens sorcier, guerrier légendaire ou explorateur des royaumes oubliés.<br><br>
-              Quêtes épiques, combats mythiques, artefacts puissants… L’IA raconte ton histoire en temps réel.
-            </p>
-            <div class="mt-12 text-purple-400 group-hover:text-white flex items-center gap-3 text-xl">
-              Entrer dans le royaume 
-              <span class="text-2xl transition-transform group-hover:translate-x-3">→</span>
-            </div>
-          </div>
-
-          <!-- Carte Romance Mystique -->
-          <div onclick="alert('Thème Romance & Destin sélectionné – on va créer cette page ensuite !')" 
-               class="card group bg-gradient-to-br from-pink-950 to-black border border-pink-500/40 rounded-3xl p-12 cursor-pointer">
-            <div class="text-7xl mb-8">❤️</div>
-            <h4 class="title-font text-5xl font-bold mb-6">Romance & Destin</h4>
-            <p class="text-gray-300 text-lg leading-relaxed">
-              Rencontres passionnées, amours interdites, romances sombres ou lumineuses.<br><br>
-              Laisse l’IA t’emporter dans une histoire d’amour inoubliable et personnalisée.
-            </p>
-            <div class="mt-12 text-pink-400 group-hover:text-white flex items-center gap-3 text-xl">
-              Ouvrir le grimoire des cœurs 
-              <span class="text-2xl transition-transform group-hover:translate-x-3">→</span>
-            </div>
-          </div>
-
+    <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+      
+      <!-- Carte Fantasy Magique - LIEN CORRECT -->
+      <div onclick="window.location.href='magie-dragons.html'" 
+           class="card group bg-gradient-to-br from-purple-950 to-black border border-purple-500/40 rounded-3xl p-12 cursor-pointer">
+        <div class="text-7xl mb-8">🗡️</div>
+        <h4 class="title-font text-5xl font-bold mb-6">Magie & Dragons</h4>
+        <p class="text-gray-300 text-lg leading-relaxed">
+          Deviens sorcier, guerrier légendaire ou explorateur des royaumes oubliés.<br><br>
+          Crée ton propre scénario et laisse l’IA devenir ton Maître du Jeu.
+        </p>
+        <div class="mt-12 text-purple-400 group-hover:text-white flex items-center gap-3 text-xl">
+          Entrer dans le royaume 
+          <span class="text-2xl transition-transform group-hover:translate-x-3">→</span>
         </div>
       </div>
-    </section>
+
+      <!-- Carte Romance (on la laisse pour l’instant, tu pourras la connecter plus tard) -->
+      <div onclick="alert('La page Romance arrive bientôt !')" 
+           class="card group bg-gradient-to-br from-pink-950 to-black border border-pink-500/40 rounded-3xl p-12 cursor-pointer">
+        <div class="text-7xl mb-8">❤️</div>
+        <h4 class="title-font text-5xl font-bold mb-6">Romance & Destin</h4>
+        <p class="text-gray-300 text-lg leading-relaxed">
+          Rencontres passionnées, amours interdites, romances sombres ou lumineuses.<br><br>
+          Laisse l’IA t’emporter dans une histoire d’amour inoubliable.
+        </p>
+        <div class="mt-12 text-pink-400 group-hover:text-white flex items-center gap-3 text-xl">
+          Ouvrir le grimoire des cœurs 
+          <span class="text-2xl transition-transform group-hover:translate-x-3">→</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
     <!-- Footer -->
     <footer class="py-12 text-center text-gray-500 border-t border-white/10">
