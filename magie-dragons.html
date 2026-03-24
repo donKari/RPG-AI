@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magie & Dragons • Éveil des Rêves</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+  <style>
+    body { font-family: 'Cinzel', serif; }
+    .rune-font { font-family: 'UnifrakturMaguntia', cursive; }
+    .magic-glow { text-shadow: 0 0 15px #a855f7, 0 0 30px #22d3ee; }
+    .chat-bubble-gm {
+      background: linear-gradient(145deg, #1e1b4b, #312e81);
+      border: 2px solid #6366f1;
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
+    }
+    .chat-bubble-player {
+      background: linear-gradient(145deg, #4c1d95, #6b21a8);
+      border: 2px solid #c026d3;
+    }
+    .parchment { 
+      background: #0f172a;
+      background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .sidebar { background: rgba(15, 23, 42, 0.95); }
+  </style>
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen overflow-hidden">
+
+  <!-- Fond particules -->
+  <div id="tsparticles" class="fixed inset-0 z-0"></div>
+
+  <div class="relative z-10 flex flex-col h-screen">
+
+    <!-- Header -->
+    <header class="bg-black/80 border-b border-purple-700 py-4 px-6 flex items-center justify-between backdrop-blur-md">
+      <div class="flex items-center gap-4">
+        <span class="text-4xl">🗡️</span>
+        <div>
+          <h1 class="rune-font text-4xl tracking-widest magic-glow">Magie & Dragons</h1>
+          <p class="text-purple-300 text-sm">Crée ton scénario • L’IA devient ton Maître du Jeu</p>
+        </div>
+      </div>
+      <button onclick="window.location.href='index.html'" 
+              class="px-5 py-2 bg-purple-900 hover:bg-purple-800 rounded-xl text-sm flex items-center gap-2 transition">
+        ← Retour à l’accueil
+      </button>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+
+      <!-- Sidebar GAUCHE : Création de scénario -->
+      <div class="w-80 sidebar border-r border-purple-700 p-6 overflow-y-auto flex flex-col">
+        <h3 class="text-xl font-bold mb-4 text-purple-300">Ton Scénario</h3>
+        
+        <textarea id="scenario-input" rows="6"
+          class="bg-slate-900 border border-purple-600 rounded-2xl p-4 text-sm focus:outline-none focus:border-purple-400 resize-none"
+          placeholder="Décris ton scénario ou ton personnage ici...&#10;Exemple : Je suis une sorcière des ombres qui entre dans une forêt hantée à la recherche d'un artefact oublié."></textarea>
+
+        <button onclick="startNewScenario()" 
+                class="mt-4 w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-4 rounded-2xl font-bold hover:brightness-110 transition">
+          Lancer ce scénario
+        </button>
+
+        <div class="mt-8">
+          <h4 class="text-purple-300 mb-3 text-sm">Scénarios rapides</h4>
+          <div class="space-y-2">
+            <button onclick="loadQuickScenario('Je suis un guerrier qui affronte un dragon dans une montagne enneigée')" 
+                    class="w-full text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm transition">🐉 Combat contre un dragon</button>
+            <button onclick="loadQuickScenario('Je suis un voleur qui explore les ruines d’une ancienne cité elfique')" 
+                    class="w-full text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm transition">🏛️ Ruines elfiques</button>
+            <button onclick="loadQuickScenario('Je suis un apprenti sorcier dans une académie de magie où un traître se cache')" 
+                    class="w-full text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm transition">🏫 Académie de magie</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zone centrale : Chat -->
+      <div class="flex-1 flex flex-col">
+        <div id="chat-container" class="flex-1 overflow-y-auto p-6 parchment space-y-6" style="scrollbar-width: thin; scrollbar-color: #6366f1 #1e2937;">
+          <!-- Messages ici -->
+        </div>
+
+        <!-- Input chat -->
+        <div class="bg-black/95 border-t border-purple-700 p-6">
+          <div class="max-w-3xl mx-auto flex gap-3">
+            <input id="user-input" type="text" 
+                   placeholder="Que fais-tu maintenant ?" 
+                   class="flex-1 bg-slate-900 border border-purple-600 rounded-3xl px-6 py-4 text-lg focus:outline-none focus:border-purple-400 transition">
+            <button onclick="sendMessage()" 
+                    class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 px-10 rounded-3xl font-bold text-lg transition">
+              Envoyer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar DROITE : Personnage -->
+      <div class="w-72 sidebar border-l border-purple-700 p-6 overflow-y-auto">
+        <h3 class="text-xl font-bold mb-4 text-purple-300">Ton Personnage</h3>
+        
+        <div id="character-info" class="space-y-6">
+          <!-- Rempli par JS -->
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-purple-700">
+          <h4 class="text-purple-300 mb-3 text-sm">Actions rapides</h4>
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <button onclick="quickAction('Explorer autour de moi')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Explorer</button>
+            <button onclick="quickAction('Lancer un sort')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Lancer un sort</button>
+            <button onclick="quickAction('Attaquer')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Attaquer</button>
+            <button onclick="quickAction('Parler à quelqu’un')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl transition">Parler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Particules
+    tsParticles.load("tsparticles", {
+      background: { color: "#0a0a0a" },
+      particles: {
+        number: { value: 60 },
+        color: { value: ["#a855f7", "#6366f1", "#22d3ee"] },
+        shape: { type: ["circle", "star"] },
+        opacity: { value: { min: 0.3, max: 0.9 } },
+        size: { value: { min: 1, max: 5 } },
+        move: { enable: true, speed: 0.6, random: true }
+      }
+    });
+
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    let currentScenario = "";
+
+    function addMessage(text, isGM) {
+      const div = document.createElement('div');
+      div.className = `max-w-2xl ${isGM ? 'mr-auto' : 'ml-auto'} chat-bubble-${isGM ? 'gm' : 'player'} p-5 rounded-3xl`;
+      div.innerHTML = `
+        <div class="${isGM ? 'text-purple-300 text-xs mb-1' : 'text-pink-300 text-xs mb-1'}">
+          ${isGM ? '🧙 Maître du Jeu' : 'Toi'}
+        </div>
+        <p class="leading-relaxed">${text}</p>
+      `;
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function updateCharacterInfo(name = "Aventurier", className = "Inconnu") {
+      document.getElementById('character-info').innerHTML = `
+        <div class="bg-slate-900 rounded-2xl p-5 border border-purple-600">
+          <p class="text-purple-400 text-xs">Nom</p>
+          <p class="text-2xl font-bold">${name}</p>
+          <p class="text-purple-400 text-xs mt-4">Classe</p>
+          <p class="text-xl">${className}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div class="bg-red-950/50 border border-red-700 rounded-2xl p-4">
+            <p class="text-xs text-red-400">Vie</p>
+            <p class="text-3xl font-bold text-red-400">100 / 100</p>
+          </div>
+          <div class="bg-blue-950/50 border border-blue-700 rounded-2xl p-4">
+            <p class="text-xs text-blue-400">Mana</p>
+            <p class="text-3xl font-bold text-blue-400">80 / 80</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function startNewScenario() {
+      const scenario = document.getElementById('scenario-input').value.trim();
+      if (!scenario) return alert("Décris ton scénario dans la zone de gauche !");
+      
+      currentScenario = scenario;
+      chatContainer.innerHTML = '';
+      updateCharacterInfo("Ton héros", "Personnalisé");
+
+      addMessage("Le royaume d’Elyndor t’écoute...", true);
+      addMessage(`Scénario chargé : <strong>${scenario}</strong>`, true);
+      addMessage("Que fais-tu en premier ?", true);
+    }
+
+    function loadQuickScenario(scenarioText) {
+      document.getElementById('scenario-input').value = scenarioText;
+      startNewScenario();
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, false);
+      userInput.value = '';
+
+      // Simulation réponse (on branchera la vraie IA plus tard)
+      setTimeout(() => {
+        addMessage("L’IA génère la suite de ton histoire en fonction de ton scénario...", true);
+      }, 700);
+    }
+
+    function quickAction(action) {
+      addMessage(action, false);
+      setTimeout(() => {
+        addMessage(`Tu décides de ${action.toLowerCase()}. La suite dépend de ton scénario...`, true);
+      }, 600);
+    }
+
+    // Lancer au chargement
+    window.onload = () => {
+      updateCharacterInfo();
+      addMessage("Bienvenue dans Magie & Dragons !", true);
+      addMessage("Utilise la colonne de gauche pour décrire ton propre scénario ou choisis un scénario rapide.", true);
+    };
+
+    userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+  </script>
+</body>
+</html>
