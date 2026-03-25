@@ -4,55 +4,43 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 9999;
+    z-index: 10000;
+    perspective: 1000px;
+}
+
+.dice-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 3s cubic-bezier(0.1, 0.5, 0.1, 1);
+}
+
+.face {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 12px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
-}
-
-.dice-wrapper {
-    background: rgba(10, 10, 20, 0.9);
-    padding: 50px;
-    border-radius: 40px;
-    border: 3px solid #a855f7;
-    box-shadow: 0 0 60px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.2);
-    backdrop-filter: blur(15px);
-    text-align: center;
-    min-width: 250px;
-}
-
-.dice-icon {
-    font-size: 7rem;
-    display: inline-block;
-    /* Animation de 2.5 secondes pour le roulement */
-    animation: heavy-roll 2.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
-}
-
-.dice-result-text {
-    margin-top: 25px;
-    font-family: 'Cinzel', serif;
-    font-size: 2.2rem;
+    font-size: 3rem;
     font-weight: bold;
-    color: #f3e8ff;
-    text-shadow: 0 0 15px #a855f7;
-    opacity: 0;
-    /* Apparition après 2.2 secondes de roulement */
-    animation: fade-in-result 0.8s ease-out 2.2s forwards;
+    color: #1a1a1a;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
 }
 
-@keyframes heavy-roll {
-    0% { transform: rotate(0deg) scale(0.3); opacity: 0; }
-    15% { transform: rotate(720deg) scale(1.4); opacity: 1; }
-    40% { transform: rotate(1440deg) scale(0.9); }
-    70% { transform: rotate(2160deg) scale(1.1); }
-    100% { transform: rotate(2520deg) scale(1); }
-}
-
-@keyframes fade-in-result {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+/* Positionnement des faces du cube */
+.face-1 { transform: translateZ(50px); }
+.face-2 { transform: rotateY(180deg) translateZ(50px); }
+.face-3 { transform: rotateY(90deg) translateZ(50px); }
+.face-4 { transform: rotateY(-90deg) translateZ(50px); }
+.face-5 { transform: rotateX(90deg) translateZ(50px); }
+.face-6 { transform: rotateX(-90deg) translateZ(50px); }
 
 .hidden { display: none !important; }
+
+/* Les points du dé (optionnel, ici on utilise des chiffres pour la clarté) */
+.face::after { content: attr(data-value); }
