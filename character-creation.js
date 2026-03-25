@@ -2,7 +2,6 @@
 //  character-creation.js
 // ======================
 
-// Stats de base par classe (somme totale = 42 pour chaque classe)
 const classStats = {
     "Guerrier": { force: 16, defense: 15, dexterite: 9,  intelligence: 2  },
     "Mage":     { force: 4,  defense: 8,  dexterite: 10, intelligence: 20 },
@@ -12,7 +11,6 @@ const classStats = {
     "Clerc":    { force: 10, defense: 14, dexterite: 8,  intelligence: 10 }
 };
 
-// Bonus selon la race (petits ajustements)
 const raceBonuses = {
     "Humain":    { force: 1, defense: 1, dexterite: 1, intelligence: 1 },
     "Elfe":      { force: -1, defense: -1, dexterite: 3, intelligence: 2 },
@@ -26,6 +24,58 @@ function getClassStats(charClass) {
     return classStats[charClass] || { force: 10, defense: 10, dexterite: 10, intelligence: 10 };
 }
 
+// ======================
+//  MISE À JOUR DE LA PAGE PRINCIPALE
+// ======================
+function updateMainPageWithCharacter(character) {
+    // 1. Mise à jour du titre / identité du personnage
+    const characterHeader = document.getElementById('character-header');
+    if (characterHeader) {
+        characterHeader.innerHTML = `
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">👤</span>
+                <div>
+                    <h1 class="text-2xl font-bold">${character.name}</h1>
+                    <p class="text-violet-400">${character.race} ${character.class}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // 2. Affichage des statistiques
+    const statsContainer = document.getElementById('character-stats');
+    if (statsContainer) {
+        const stats = character.stats;
+        statsContainer.innerHTML = `
+            <div class="grid grid-cols-2 gap-4 bg-[#1e2937] p-6 rounded-3xl">
+                <div class="flex justify-between items-center">
+                    <span class="text-red-400 flex items-center gap-2">⚔️ FORCE</span>
+                    <span class="font-mono font-bold text-xl">${stats.force}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-blue-400 flex items-center gap-2">🛡️ DÉFENSE</span>
+                    <span class="font-mono font-bold text-xl">${stats.defense}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-emerald-400 flex items-center gap-2">🏹 DEXTÉRITÉ</span>
+                    <span class="font-mono font-bold text-xl">${stats.dexterite}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-purple-400 flex items-center gap-2">✨ INTELLIGENCE</span>
+                    <span class="font-mono font-bold text-xl">${stats.intelligence}</span>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center text-sm text-gray-400">
+                Niveau ${character.level} • PV : ${character.hp} / ${character.maxHp}
+            </div>
+        `;
+    }
+}
+
+// ======================
+//  OUVERTURE DU MODAL
+// ======================
 function openCharacterCreationModal() {
     let existing = document.getElementById('character-modal');
     if (existing) existing.remove();
@@ -34,7 +84,6 @@ function openCharacterCreationModal() {
         <div id="character-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
             <div class="bg-[#0f172a] border border-[var(--col-border)] rounded-3xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
                 
-                <!-- Header -->
                 <div class="px-8 py-6 border-b border-[var(--col-border)] flex items-center justify-between">
                     <h2 class="text-2xl font-bold magic-glow">👤 Création de Personnage</h2>
                     <button onclick="closeCharacterModal()" 
@@ -42,20 +91,16 @@ function openCharacterCreationModal() {
                 </div>
 
                 <div class="p-8 space-y-6">
-                    
-                    <!-- Nom -->
                     <div>
                         <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Nom du héros</label>
                         <input id="char-name" type="text" placeholder="Ex: Elara Shadowveil"
                                class="w-full bg-[#1e2937] border border-[var(--col-border)] rounded-2xl px-5 py-4 focus:outline-none text-lg">
                     </div>
 
-                    <!-- Classe + Race -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Classe</label>
-                            <select id="char-class" 
-                                    class="w-full bg-[#1e2937] border border-[var(--col-border)] rounded-2xl px-5 py-4 focus:outline-none">
+                            <select id="char-class" class="w-full bg-[#1e2937] border border-[var(--col-border)] rounded-2xl px-5 py-4">
                                 <option value="Guerrier">Guerrier</option>
                                 <option value="Mage">Mage</option>
                                 <option value="Voleur">Voleur</option>
@@ -66,8 +111,7 @@ function openCharacterCreationModal() {
                         </div>
                         <div>
                             <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Race</label>
-                            <select id="char-race" 
-                                    class="w-full bg-[#1e2937] border border-[var(--col-border)] rounded-2xl px-5 py-4 focus:outline-none">
+                            <select id="char-race" class="w-full bg-[#1e2937] border border-[var(--col-border)] rounded-2xl px-5 py-4">
                                 <option value="Humain">Humain</option>
                                 <option value="Elfe">Elfe</option>
                                 <option value="Nain">Nain</option>
@@ -78,10 +122,8 @@ function openCharacterCreationModal() {
                         </div>
                     </div>
 
-                    <!-- Aperçu des stats -->
-                    <div id="stats-preview" class="space-y-2"></div>
+                    <div id="stats-preview"></div>
 
-                    <!-- Background -->
                     <div>
                         <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Background (optionnel)</label>
                         <textarea id="char-background" rows="3" placeholder="Un ancien mercenaire traqué par son passé..."
@@ -89,7 +131,6 @@ function openCharacterCreationModal() {
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <div class="px-8 py-6 border-t border-[var(--col-border)] flex gap-4">
                     <button onclick="closeCharacterModal()"
                             class="flex-1 py-4 rounded-2xl font-medium transition"
@@ -108,14 +149,12 @@ function openCharacterCreationModal() {
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Écouteurs d'événements pour mise à jour en direct
     const classSelect = document.getElementById('char-class');
     const raceSelect = document.getElementById('char-race');
 
     classSelect.addEventListener('change', updateStatsPreview);
     raceSelect.addEventListener('change', updateStatsPreview);
 
-    // Affichage initial des stats
     updateStatsPreview();
 }
 
@@ -136,26 +175,11 @@ function updateStatsPreview() {
     const html = `
         <div class="text-xs uppercase tracking-widest mb-2 text-violet-400">Stats du personnage</div>
         <div class="bg-[#1e2937] rounded-2xl p-5 space-y-3 text-sm">
-            <div class="flex justify-between items-center">
-                <span class="text-red-400 flex items-center gap-2">⚔️ FORCE</span>
-                <span class="font-mono font-bold">${finalStats.force}</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="text-blue-400 flex items-center gap-2">🛡️ DÉFENSE</span>
-                <span class="font-mono font-bold">${finalStats.defense}</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="text-emerald-400 flex items-center gap-2">🏹 DEXTÉRITÉ</span>
-                <span class="font-mono font-bold">${finalStats.dexterite}</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="text-purple-400 flex items-center gap-2">✨ INTELLIGENCE</span>
-                <span class="font-mono font-bold">${finalStats.intelligence}</span>
-            </div>
+            <div class="flex justify-between"><span class="text-red-400">⚔️ FORCE</span><span class="font-mono">${finalStats.force}</span></div>
+            <div class="flex justify-between"><span class="text-blue-400">🛡️ DÉFENSE</span><span class="font-mono">${finalStats.defense}</span></div>
+            <div class="flex justify-between"><span class="text-emerald-400">🏹 DEXTÉRITÉ</span><span class="font-mono">${finalStats.dexterite}</span></div>
+            <div class="flex justify-between"><span class="text-purple-400">✨ INTELLIGENCE</span><span class="font-mono">${finalStats.intelligence}</span></div>
         </div>
-        <p class="text-[10px] text-center text-gray-500 mt-2">
-            Stats de base (${charClass}) + bonus de race (${race})
-        </p>
     `;
 
     document.getElementById('stats-preview').innerHTML = html;
@@ -166,6 +190,9 @@ function closeCharacterModal() {
     if (modal) modal.remove();
 }
 
+// ======================
+//  CRÉATION DU PERSONNAGE + MISE À JOUR PAGE
+// ======================
 async function createCharacterAndStart() {
     const name = document.getElementById('char-name').value.trim() || "Ton Héros";
     const race = document.getElementById('char-race').value;
@@ -182,7 +209,6 @@ async function createCharacterAndStart() {
         intelligence: Math.max(1, baseStats.intelligence + bonus.intelligence)
     };
 
-    // Création de l'objet personnage complet
     const character = {
         name: name,
         race: race,
@@ -192,16 +218,20 @@ async function createCharacterAndStart() {
         stats: finalStats,
         hp: 20 + finalStats.defense * 2,
         maxHp: 20 + finalStats.defense * 2,
-        // Tu pourras ajouter plus tard : mana, xp, gold, inventaire, etc.
     };
 
-    // Sauvegarde dans le localStorage
+    // Sauvegarde
     localStorage.setItem('currentCharacter', JSON.stringify(character));
 
-    // Description pour le scénario
+    // Mise à jour immédiate de la page principale
+    updateMainPageWithCharacter(character);
+
+    // Description pour le scénario (si tu l'utilises toujours)
     const characterDesc = `${name}, un ${race} ${charClass.toLowerCase()}${background ? ' — ' + background : ''}`;
-    document.getElementById('scenario-input').value = characterDesc;
+    if (document.getElementById('scenario-input')) {
+        document.getElementById('scenario-input').value = characterDesc;
+    }
 
     closeCharacterModal();
-    await startNewScenario(); // Appel à ta fonction principale
+    await startNewScenario();   // Ta fonction existante
 }
