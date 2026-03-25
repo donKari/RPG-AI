@@ -16,11 +16,10 @@
 
 <body class="theme-sorcier text-white min-h-screen">
 
-    <!-- COUCHE DE FOND -->
+    <!-- ═══════════ COUCHE DE FOND ═══════════ -->
     <div id="bg-layer">
         <div class="desert-bg">
-            <div class="desert-sky"></div>
-            <div class="desert-grain"></div>
+            <div class="desert-sky"></div><div class="desert-grain"></div>
             <div class="sand-wind">
                 <div class="wind-streak"></div><div class="wind-streak"></div><div class="wind-streak"></div>
                 <div class="wind-streak"></div><div class="wind-streak"></div><div class="wind-streak"></div>
@@ -39,8 +38,7 @@
             <div class="leaves-layer">
                 <div class="leaf">🍃</div><div class="leaf">🌿</div><div class="leaf">🍂</div>
                 <div class="leaf">🍃</div><div class="leaf">🌿</div><div class="leaf">🍃</div>
-                <div class="leaf">🍂</div><div class="leaf">🍃</div><div class="leaf">🌿</div>
-                <div class="leaf">🍃</div>
+                <div class="leaf">🍂</div><div class="leaf">🍃</div><div class="leaf">🌿</div><div class="leaf">🍃</div>
             </div>
             <div class="forest-mist">
                 <div class="mist-cloud"></div><div class="mist-cloud"></div><div class="mist-cloud"></div>
@@ -78,7 +76,7 @@
 
     <div class="relative z-10 flex flex-col h-screen">
 
-        <!-- HEADER -->
+        <!-- ═══════════ HEADER ═══════════ -->
         <header class="border-b py-4 px-6 flex items-center justify-between backdrop-blur-md"
                 style="background: var(--col-header-bg); border-color: var(--col-border);">
             <div class="flex items-center gap-6 flex-wrap">
@@ -105,25 +103,25 @@
 
         <div class="flex flex-1 overflow-hidden">
 
-            <!-- SIDEBAR GAUCHE : Personnage -->
-            <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col" style="border-color: var(--col-border);">
-                <h3 class="text-2xl font-bold mb-6" style="color: var(--col-text-accent);">Création de Personnage</h3>
-                <button onclick="openCharacterCreationModal()"
-                        class="w-full py-5 rounded-2xl font-bold text-lg transition mb-8"
-                        style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
-                    👤 Créer mon Personnage
-                </button>
-                <p class="text-center text-sm px-4" style="color: var(--col-text-secondary);">
-                    Crée ton héros pour commencer l'aventure avec le Maître du Jeu
-                </p>
+            <!-- ═══════════ SIDEBAR GAUCHE ═══════════ -->
+            <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col gap-6" style="border-color: var(--col-border);">
+
+                <!-- Création personnage -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--col-text-accent);">Personnage</h3>
+                    <button onclick="openCharacterCreationModal()"
+                            class="w-full py-4 rounded-2xl font-bold text-base transition"
+                            style="background: linear-gradient(to right, var(--col-btn-from), var(--col-btn-to));">
+                        👤 Créer mon Personnage
+                    </button>
+                </div>
 
                 <!-- État du monde -->
-                <div id="world-state-panel" class="mt-8 hidden">
+                <div id="world-state-panel" class="hidden">
                     <h4 class="text-sm font-bold mb-3" style="color: var(--col-text-secondary);">🗺️ État du Monde</h4>
                     <div class="rounded-xl p-4 space-y-2 text-sm" style="background: rgba(15,23,42,0.7); border: 1px solid var(--col-border);">
                         <div class="flex items-center gap-2">
-                            <span>📍</span>
-                            <span id="ws-location" class="text-white/80">—</span>
+                            <span>📍</span><span id="ws-location" class="text-white/80">—</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span id="ws-situation-icon">⚙️</span>
@@ -133,23 +131,34 @@
                             <span>📜</span>
                             <span id="ws-event" class="text-white/60 text-xs leading-relaxed">—</span>
                         </div>
-                        <div id="ws-inventory-row" class="hidden flex items-start gap-2">
-                            <span>🎒</span>
-                            <span id="ws-inventory" class="text-white/60 text-xs">—</span>
-                        </div>
                     </div>
                 </div>
+
+                <!-- Barre XP -->
+                <div id="xp-panel" class="hidden">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-sm font-bold" style="color: var(--col-text-secondary);">✨ Expérience</h4>
+                        <span id="xp-level" class="text-xs font-mono px-2 py-0.5 rounded-full"
+                              style="background:rgba(168,85,247,0.2);color:#c084fc;">Niv. 1</span>
+                    </div>
+                    <div class="h-2 rounded-full overflow-hidden" style="background:rgba(30,30,60,0.8);border:1px solid var(--col-border);">
+                        <div id="xp-bar" class="h-full rounded-full transition-all duration-700"
+                             style="width:0%;background:linear-gradient(to right,#a855f7,#6366f1);">
+                        </div>
+                    </div>
+                    <p id="xp-text" class="text-xs mt-1 text-right font-mono" style="color:#a78bfa;">0 / 100 XP</p>
+                </div>
+
             </div>
 
-            <!-- CHAT CENTRAL -->
+            <!-- ═══════════ CHAT CENTRAL ═══════════ -->
             <div class="flex-1 flex flex-col min-w-0">
-                <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6"></div>
+                <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
 
-                <!-- Zone de saisie -->
-                <div class="border-t p-6" style="border-color: var(--col-border); background: rgba(0,0,0,0.85);">
+                <div class="border-t p-5" style="border-color: var(--col-border); background: rgba(0,0,0,0.85);">
                     <div class="max-w-3xl mx-auto flex gap-3">
                         <input id="user-input" type="text"
-                               placeholder="Décris ton action ou utilise un choix ci-dessous…"
+                               placeholder="Décris ton action ou clique sur un choix…"
                                class="flex-1 rounded-3xl px-6 py-4 text-lg border focus:outline-none"
                                style="background: rgba(15,23,42,0.85); border-color: var(--col-border);">
                         <button onclick="sendMessage()"
@@ -161,57 +170,60 @@
                 </div>
             </div>
 
-            <!-- SIDEBAR DROITE : Stats + Choix -->
-            <div class="w-72 sidebar border-l p-6 overflow-y-auto flex flex-col gap-6" style="border-color: var(--col-border);">
+            <!-- ═══════════ SIDEBAR DROITE ═══════════ -->
+            <div class="w-72 sidebar border-l p-5 overflow-y-auto flex flex-col gap-5" style="border-color: var(--col-border);">
 
                 <!-- Stats personnage -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Personnage</h3>
-                    <div id="character-info" class="space-y-6"></div>
+                    <h3 class="text-lg font-bold mb-3" style="color: var(--col-text-accent);">Ton Personnage</h3>
+                    <div id="character-info"></div>
                 </div>
 
-                <!-- Barre ennemi (affichée dynamiquement) -->
+                <!-- Barre ennemi -->
                 <div id="enemy-bar-container"></div>
 
-                <!-- Choix dynamiques (remplace les actions rapides) -->
+                <!-- Choix (copie sidebar) -->
                 <div>
-                    <h4 class="text-sm font-bold mb-3" style="color: var(--col-text-secondary);">🎲 Tes Choix</h4>
-                    <div id="choices-container" class="space-y-2"></div>
-                    <p id="choices-hint" class="text-xs mt-3 text-center" style="color: var(--col-text-secondary);">
-                        Les choix apparaîtront ici après chaque réponse du MJ
+                    <h4 class="text-xs font-bold mb-2" style="color: var(--col-text-secondary);">🎲 Actions</h4>
+                    <div id="choices-container"></div>
+                    <p id="choices-hint" class="text-xs mt-2 text-center" style="color: var(--col-text-secondary);">
+                        Les actions apparaîtront après chaque réponse du MJ
                     </p>
                 </div>
 
-                <!-- Inventaire rapide -->
-                <div id="quick-inventory" class="hidden">
-                    <h4 class="text-sm font-bold mb-2" style="color: var(--col-text-secondary);">🎒 Inventaire</h4>
-                    <div id="inventory-list" class="text-sm space-y-1" style="color: var(--col-text-secondary);"></div>
+                <!-- Inventaire interactif -->
+                <div>
+                    <h4 class="text-xs font-bold mb-2" style="color: var(--col-text-secondary);">🎒 Inventaire</h4>
+                    <div id="inventory-panel">
+                        <p style="color:#64748b;font-size:0.82rem;text-align:center;padding:8px;">Inventaire vide</p>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <!-- ==================== SCRIPTS ==================== -->
+    <!-- ═══════════ SCRIPTS ═══════════ -->
     <script>
         injectThemeStyles();
 
-        // ====== CONFIG API ======
+        // ── Config API ──
         const API_PROVIDER = 'groq';
         let GROQ_API_KEY = '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';
 
-        // ====== VARIABLES GLOBALES ======
+        // ── Variables globales ──
         const chatContainer = document.getElementById('chat-container');
-        const userInput = document.getElementById('user-input');
+        const userInput     = document.getElementById('user-input');
         let conversationHistory = [];
-        let currentScenario = '';
-        let currentCharacter = null;
+        let currentScenario     = '';
+        let currentCharacter    = null;
 
-        // ====== MESSAGES CHAT ======
+        // ── Messages ──
         function addMessage(text, isGM) {
             const div = document.createElement('div');
             div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
             div.innerHTML = `
-                <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size:0.8rem; margin-bottom:6px;">
+                <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'};font-size:0.8rem;margin-bottom:6px;">
                     ${isGM ? '🧙 Maître du Jeu' : '⚔️ Toi'}
                 </div>
                 <p class="leading-relaxed whitespace-pre-wrap" style="color:#f1f5f9;">${text}</p>
@@ -224,152 +236,135 @@
             const loading = document.createElement('div');
             loading.id = 'loading-msg';
             loading.className = 'max-w-2xl mr-auto chat-bubble-gm p-5 rounded-3xl';
-            loading.innerHTML = `<p style="color:var(--col-text-secondary); animation: pulse 1.5s infinite;">🧙 Le Maître du Jeu tisse la trame de l'histoire...</p>`;
+            loading.innerHTML = `<p style="color:var(--col-text-secondary);animation:pulse 1.5s infinite;">🧙 Le Maître du Jeu tisse la trame…</p>`;
             chatContainer.appendChild(loading);
             chatContainer.scrollTop = chatContainer.scrollHeight;
             return loading;
         }
 
-        // ====== PERSONNAGE ======
+        // ── Personnage ──
         function updateMainPageWithCharacter(character) {
-            currentCharacter = character;
-            gameState.player = { hp: character.hp, maxHp: character.maxHp };
+            currentCharacter  = character;
+            gameState.player  = { hp: character.hp, maxHp: character.maxHp };
 
             const container = document.getElementById('character-info');
             if (!container) return;
             const stats = character.stats || {};
 
             container.innerHTML = `
-                <div class="rounded-3xl p-6" style="background:rgba(15,23,42,0.85); border:2px solid var(--col-border);">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-3xl shadow-lg">👤</div>
+                <div class="rounded-3xl p-5" style="background:rgba(15,23,42,0.88);border:2px solid var(--col-border);">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-2xl shadow-lg">👤</div>
                         <div>
-                            <h2 class="text-2xl font-bold magic-glow">${character.name}</h2>
-                            <p class="text-violet-300">${character.race} • ${character.class}</p>
+                            <h2 class="text-xl font-bold magic-glow">${character.name}</h2>
+                            <p class="text-violet-300 text-sm">${character.race} • ${character.class}</p>
                         </div>
                     </div>
-                    <div class="mb-6">
-                        <div class="flex justify-between text-sm mb-1">
+
+                    <!-- HP -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-xs mb-1">
                             <span style="color:#f87171;">❤️ Points de Vie</span>
                             <span id="hp-text" class="font-mono">${character.hp} / ${character.maxHp}</span>
                         </div>
-                        <div class="h-3 bg-zinc-900 rounded-full overflow-hidden border border-red-900/50">
+                        <div class="h-2.5 bg-zinc-900 rounded-full overflow-hidden border border-red-900/40">
                             <div id="hp-bar"
-                                 class="h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all duration-500"
-                                 style="width: ${Math.max(0,(character.hp/character.maxHp)*100)}%;">
+                                 class="h-full bg-gradient-to-r from-rose-500 to-pink-600 rounded-full transition-all duration-500"
+                                 style="width:${Math.max(0,(character.hp/character.maxHp)*100)}%;">
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div class="bg-[#1e2937] rounded-2xl p-4">
-                            <div class="flex items-center gap-2 text-red-400 mb-1">⚔️ FORCE</div>
-                            <div class="text-3xl font-bold font-mono">${stats.force || 10}</div>
+
+                    <!-- Stats 2×2 -->
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="bg-[#1e2937] rounded-xl p-3">
+                            <div class="text-red-400 text-xs mb-1">⚔️ Force</div>
+                            <div class="text-2xl font-bold font-mono">${stats.force || 10}</div>
                         </div>
-                        <div class="bg-[#1e2937] rounded-2xl p-4">
-                            <div class="flex items-center gap-2 text-blue-400 mb-1">🛡️ DÉFENSE</div>
-                            <div class="text-3xl font-bold font-mono">${stats.defense || 10}</div>
+                        <div class="bg-[#1e2937] rounded-xl p-3">
+                            <div class="text-blue-400 text-xs mb-1">🛡️ Défense</div>
+                            <div class="text-2xl font-bold font-mono">${stats.defense || 10}</div>
                         </div>
-                        <div class="bg-[#1e2937] rounded-2xl p-4">
-                            <div class="flex items-center gap-2 text-emerald-400 mb-1">🏹 DEXTÉRITÉ</div>
-                            <div class="text-3xl font-bold font-mono">${stats.dexterite || 10}</div>
+                        <div class="bg-[#1e2937] rounded-xl p-3">
+                            <div class="text-emerald-400 text-xs mb-1">🏹 Dextérité</div>
+                            <div class="text-2xl font-bold font-mono">${stats.dexterite || 10}</div>
                         </div>
-                        <div class="bg-[#1e2937] rounded-2xl p-4">
-                            <div class="flex items-center gap-2 text-purple-400 mb-1">✨ INTELLIGENCE</div>
-                            <div class="text-3xl font-bold font-mono">${stats.intelligence || 10}</div>
+                        <div class="bg-[#1e2937] rounded-xl p-3">
+                            <div class="text-purple-400 text-xs mb-1">✨ Intel.</div>
+                            <div class="text-2xl font-bold font-mono">${stats.intelligence || 10}</div>
                         </div>
                     </div>
-                    ${character.background && character.background !== "Aucun background renseigné" ? `
-                    <div class="mt-6 pt-4 border-t border-[var(--col-border)] text-xs leading-relaxed" style="color: var(--col-text-secondary);">
+
+                    ${character.background && character.background !== 'Aucun background renseigné' ? `
+                    <div class="mt-4 pt-3 border-t border-[var(--col-border)] text-xs leading-relaxed" style="color:var(--col-text-secondary);">
                         ${character.background}
                     </div>` : ''}
                 </div>
             `;
 
+            // Révéler les panneaux cachés
+            ['world-state-panel','xp-panel'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('hidden');
+            });
+
+            updateXPBar();
+            renderInventory();
             updateWorldStatePanel();
         }
 
-        // ====== PANNEAU ÉTAT DU MONDE ======
+        // ── Panneau état du monde ──
         function updateWorldStatePanel() {
-            const panel = document.getElementById('world-state-panel');
-            if (panel) panel.classList.remove('hidden');
-
-            const sitIcons = {
-                'Combat': '⚔️', 'Calme': '🌙', 'Exploration': '🔭',
-                'Dialogue': '💬', 'Danger': '⚠️'
-            };
-
-            const loc = document.getElementById('ws-location');
-            const sit = document.getElementById('ws-situation');
-            const sitIcon = document.getElementById('ws-situation-icon');
-            const evt = document.getElementById('ws-event');
-            const invRow = document.getElementById('ws-inventory-row');
-            const inv = document.getElementById('ws-inventory');
-
-            if (loc) loc.textContent = gameState.location;
-            if (sit) sit.textContent = gameState.situation;
-            if (sitIcon) sitIcon.textContent = sitIcons[gameState.situation] || '⚙️';
-            if (evt) evt.textContent = gameState.lastEvent;
-
-            if (gameState.inventory.length > 0) {
-                if (invRow) invRow.classList.remove('hidden');
-                if (inv) inv.textContent = gameState.inventory.join(', ');
-                // Aussi mettre à jour l'inventaire latéral
-                const qinv = document.getElementById('quick-inventory');
-                const ilist = document.getElementById('inventory-list');
-                if (qinv) qinv.classList.remove('hidden');
-                if (ilist) ilist.innerHTML = gameState.inventory.map(i => `<div>• ${i}</div>`).join('');
-            }
+            const icons = { 'Combat':'⚔️', 'Calme':'🌙', 'Exploration':'🔭', 'Dialogue':'💬', 'Danger':'⚠️' };
+            const loc  = document.getElementById('ws-location');
+            const sit  = document.getElementById('ws-situation');
+            const icon = document.getElementById('ws-situation-icon');
+            const evt  = document.getElementById('ws-event');
+            if (loc)  loc.textContent  = gameState.location;
+            if (sit)  sit.textContent  = gameState.situation;
+            if (icon) icon.textContent = icons[gameState.situation] || '⚙️';
+            if (evt)  evt.textContent  = gameState.lastEvent;
         }
 
-        // ====== DÉMARRAGE SCÉNARIO ======
+        // ── Démarrage scénario ──
         async function startNewScenario() {
             const scenarioText = document.getElementById('scenario-input')?.value.trim();
-            if (!scenarioText) {
-                alert("Crée ton personnage avant de lancer l'aventure !");
-                return;
-            }
+            if (!scenarioText) { alert('Crée ton personnage avant de lancer l\'aventure !'); return; }
 
             currentScenario = scenarioText;
             conversationHistory = [];
             chatContainer.innerHTML = '';
-            renderChoices([]);
 
-            // Réinitialiser le gameState
-            gameState.location = "Lieu de départ";
-            gameState.situation = "Calme";
-            gameState.enemy = null;
+            gameState.location  = 'Lieu de départ';
+            gameState.situation = 'Calme';
+            gameState.enemy     = null;
             gameState.inventory = [];
-            gameState.lastEvent = "Début de l'aventure";
-            gameState.turn = 0;
+            gameState.lastEvent = 'Début de l\'aventure';
+            gameState.turn      = 0;
             saveGameState();
 
-            const savedCharacter = localStorage.getItem('currentCharacter');
-            if (savedCharacter) {
-                const character = JSON.parse(savedCharacter);
-                updateMainPageWithCharacter(character);
-            }
+            const saved = localStorage.getItem('currentCharacter');
+            if (saved) updateMainPageWithCharacter(JSON.parse(saved));
 
-            addMessage(`<strong>Personnage créé :</strong> ${scenarioText}`, false);
-            await callGM(`Lance immédiatement l'aventure avec une introduction immersive de 4 à 5 phrases. Propose 3 choix d'actions pour débuter. Le joueur incarne ${scenarioText}. Réponds en JSON structuré.`);
+            renderInventory();
+            renderEnemyBar();
+            updateXPBar();
+
+            addMessage(`<strong>Aventure débutée :</strong> ${scenarioText}`, false);
+            await callGM(`Lance immédiatement l'aventure avec une introduction immersive de 4 à 5 phrases. Le joueur incarne ${scenarioText}. Réponds en JSON structuré.`);
         }
 
-        // ====== ENVOYER MESSAGE ======
+        // ── Envoi message libre ──
         async function sendMessage() {
             const text = userInput.value.trim();
-            if (!text) return;
-
+            if (!text || playerIsDead) return;
             addMessage(text, false);
-            conversationHistory.push({ role: "user", content: text });
+            conversationHistory.push({ role: 'user', content: text });
             userInput.value = '';
             await callGM();
         }
 
-        function quickAction(action) {
-            userInput.value = action;
-            sendMessage();
-        }
-
-        // ====== INIT ======
+        // ── Init ──
         window.onload = () => {
             loadGameState();
             addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Crée ton personnage à gauche pour commencer l\'aventure !', true);
@@ -380,7 +375,7 @@
         });
     </script>
 
-    <!-- Game Engine Structuré -->
+    <!-- Game Engine v3.0 -->
     <script src="game-engine.js"></script>
 
     <!-- Modal création personnage -->
