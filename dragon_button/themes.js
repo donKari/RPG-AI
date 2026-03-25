@@ -130,15 +130,15 @@ body.theme-desert .desert-bg { display: block; }
   position: absolute; height: 1px; background: linear-gradient(90deg, transparent, rgba(251,191,36,0.5), transparent);
   animation: windBlow linear infinite; border-radius: 2px;
 }
-.wind-streak:nth-child(1) { top: 15%; width: 60%; animation-duration: 2.1s; animation-delay: 0s; opacity: 0.6; }
-.wind-streak:nth-child(2) { top: 22%; width: 40%; animation-duration: 1.7s; animation-delay: 0.3s; opacity: 0.4; }
-.wind-streak:nth-child(3) { top: 30%; width: 70%; animation-duration: 2.5s; animation-delay: 0.8s; opacity: 0.5; height: 2px; }
-.wind-streak:nth-child(4) { top: 40%; width: 50%; animation-duration: 1.9s; animation-delay: 1.2s; opacity: 0.35; }
-.wind-streak:nth-child(5) { top: 50%; width: 80%; animation-duration: 3.1s; animation-delay: 0.5s; opacity: 0.6; height: 2px; }
-.wind-streak:nth-child(6) { top: 58%; width: 45%; animation-duration: 2.3s; animation-delay: 1.5s; opacity: 0.45; }
-.wind-streak:nth-child(7) { top: 67%; width: 65%; animation-duration: 1.8s; animation-delay: 0.2s; opacity: 0.55; }
-.wind-streak:nth-child(8) { top: 75%; width: 35%; animation-duration: 2.8s; animation-delay: 1.0s; opacity: 0.4; }
-.wind-streak:nth-child(9) { top: 10%; width: 55%; animation-duration: 2.0s; animation-delay: 0.7s; opacity: 0.3; }
+.wind-streak:nth-child(1)  { top: 15%; width: 60%; animation-duration: 2.1s; animation-delay: 0s;   opacity: 0.6; }
+.wind-streak:nth-child(2)  { top: 22%; width: 40%; animation-duration: 1.7s; animation-delay: 0.3s; opacity: 0.4; }
+.wind-streak:nth-child(3)  { top: 30%; width: 70%; animation-duration: 2.5s; animation-delay: 0.8s; opacity: 0.5; height: 2px; }
+.wind-streak:nth-child(4)  { top: 40%; width: 50%; animation-duration: 1.9s; animation-delay: 1.2s; opacity: 0.35; }
+.wind-streak:nth-child(5)  { top: 50%; width: 80%; animation-duration: 3.1s; animation-delay: 0.5s; opacity: 0.6; height: 2px; }
+.wind-streak:nth-child(6)  { top: 58%; width: 45%; animation-duration: 2.3s; animation-delay: 1.5s; opacity: 0.45; }
+.wind-streak:nth-child(7)  { top: 67%; width: 65%; animation-duration: 1.8s; animation-delay: 0.2s; opacity: 0.55; }
+.wind-streak:nth-child(8)  { top: 75%; width: 35%; animation-duration: 2.8s; animation-delay: 1.0s; opacity: 0.4; }
+.wind-streak:nth-child(9)  { top: 10%; width: 55%; animation-duration: 2.0s; animation-delay: 0.7s; opacity: 0.3; }
 .wind-streak:nth-child(10) { top: 85%; width: 75%; animation-duration: 1.6s; animation-delay: 0.4s; opacity: 0.5; height: 2px; }
 @keyframes windBlow { 0% { transform: translateX(110vw); } 100% { transform: translateX(-150vw); } }
 .heat-haze {
@@ -160,31 +160,31 @@ body.theme-foret .foret-bg { display: block; }
   position: absolute; top: -10%; width: 60px; height: 120%; background: linear-gradient(180deg, rgba(134,239,172,0.18), transparent);
   transform-origin: top center; filter: blur(8px); animation: rayFlicker ease-in-out infinite;
 }
-.ray:nth-child(1) { left: 8%; transform: rotate(-15deg); animation-duration: 7s; animation-delay: 0s; opacity: 0.7; }
-.ray:nth-child(2) { left: 20%; transform: rotate(-8deg); animation-duration: 9s; animation-delay: 1.5s; opacity: 0.5; width: 40px; }
-.ray:nth-child(3) { left: 35%; transform: rotate(5deg); animation-duration: 11s; animation-delay: 3s; opacity: 0.6; width: 80px; }
-.ray:nth-child(4) { left: 55%; transform: rotate(-12deg); animation-duration: 8s; animation-delay: 2s; opacity: 0.4; }
-.ray:nth-child(5) { left: 70%; transform: rotate(10deg); animation-duration: 13s; animation-delay: 0.5s; opacity: 0.65; width: 50px; }
-.ray:nth-child(6) { left: 85%; transform: rotate(-5deg); animation-duration: 6s; animation-delay: 4s; opacity: 0.5; width: 35px; }
-@keyframes rayFlicker { 0%, 100% { opacity: var(--ray-op, 0.5); } 50% { opacity: calc(var(--ray-op, 0.5) * 0.3); } }
+.ray:nth-child(1) { left: 8%;  transform: rotate(-15deg); animation-duration: 7s;  animation-delay: 0s;   opacity: 0.7; }
+.ray:nth-child(2) { left: 20%; transform: rotate(-8deg);  animation-duration: 9s;  animation-delay: 1.5s; opacity: 0.5; width: 40px; }
+.ray:nth-child(3) { left: 35%; transform: rotate(5deg);   animation-duration: 11s; animation-delay: 3s;   opacity: 0.6; width: 80px; }
+.ray:nth-child(4) { left: 55%; transform: rotate(-12deg); animation-duration: 8s;  animation-delay: 2s;   opacity: 0.4; }
+.ray:nth-child(5) { left: 70%; transform: rotate(10deg);  animation-duration: 13s; animation-delay: 0.5s; opacity: 0.65; width: 50px; }
+.ray:nth-child(6) { left: 85%; transform: rotate(-5deg);  animation-duration: 6s;  animation-delay: 4s;   opacity: 0.5; width: 35px; }
+@keyframes rayFlicker { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.15; } }
 .leaves-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .leaf {
   position: absolute; top: -30px; font-size: 14px; animation: leafFall linear infinite; will-change: transform;
 }
-.leaf:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; font-size: 12px; }
-.leaf:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 2s; font-size: 16px; }
-.leaf:nth-child(3) { left: 25%; animation-duration: 9s; animation-delay: 4s; font-size: 10px; }
-.leaf:nth-child(4) { left: 38%; animation-duration: 14s; animation-delay: 1s; font-size: 14px; }
-.leaf:nth-child(5) { left: 50%; animation-duration: 10s; animation-delay: 6s; font-size: 18px; }
-.leaf:nth-child(6) { left: 62%; animation-duration: 11s; animation-delay: 3s; font-size: 12px; }
-.leaf:nth-child(7) { left: 74%; animation-duration: 7s; animation-delay: 5s; font-size: 10px; }
-.leaf:nth-child(8) { left: 85%; animation-duration: 13s; animation-delay: 0.5s; font-size: 16px; }
-.leaf:nth-child(9) { left: 92%; animation-duration: 9s; animation-delay: 7s; font-size: 14px; }
+.leaf:nth-child(1)  { left: 5%;  animation-duration: 8s;  animation-delay: 0s;   font-size: 12px; }
+.leaf:nth-child(2)  { left: 15%; animation-duration: 12s; animation-delay: 2s;   font-size: 16px; }
+.leaf:nth-child(3)  { left: 25%; animation-duration: 9s;  animation-delay: 4s;   font-size: 10px; }
+.leaf:nth-child(4)  { left: 38%; animation-duration: 14s; animation-delay: 1s;   font-size: 14px; }
+.leaf:nth-child(5)  { left: 50%; animation-duration: 10s; animation-delay: 6s;   font-size: 18px; }
+.leaf:nth-child(6)  { left: 62%; animation-duration: 11s; animation-delay: 3s;   font-size: 12px; }
+.leaf:nth-child(7)  { left: 74%; animation-duration: 7s;  animation-delay: 5s;   font-size: 10px; }
+.leaf:nth-child(8)  { left: 85%; animation-duration: 13s; animation-delay: 0.5s; font-size: 16px; }
+.leaf:nth-child(9)  { left: 92%; animation-duration: 9s;  animation-delay: 7s;   font-size: 14px; }
 .leaf:nth-child(10) { left: 45%; animation-duration: 15s; animation-delay: 2.5s; font-size: 11px; }
 @keyframes leafFall {
-  0% { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 0.7; }
+  0%   { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.7; }
   100% { transform: translateY(110vh) rotate(720deg) translateX(80px); opacity: 0; }
 }
 .forest-mist { position: absolute; bottom: 0; left: 0; right: 0; height: 200px; overflow: hidden; }
@@ -194,8 +194,8 @@ body.theme-foret .foret-bg { display: block; }
   filter: blur(20px); animation: mistDrift ease-in-out infinite;
 }
 .mist-cloud:nth-child(1) { width: 500px; left: -100px; animation-duration: 14s; animation-delay: 0s; }
-.mist-cloud:nth-child(2) { width: 400px; left: 30%; animation-duration: 18s; animation-delay: 3s; }
-.mist-cloud:nth-child(3) { width: 600px; left: 60%; animation-duration: 12s; animation-delay: 6s; }
+.mist-cloud:nth-child(2) { width: 400px; left: 30%;    animation-duration: 18s; animation-delay: 3s; }
+.mist-cloud:nth-child(3) { width: 600px; left: 60%;    animation-duration: 12s; animation-delay: 6s; }
 @keyframes mistDrift { 0%, 100% { transform: translateX(0) scaleY(1); opacity: 0.6; } 50% { transform: translateX(40px) scaleY(1.3); opacity: 1; } }
 
 /* CHÂTEAU */
@@ -207,22 +207,28 @@ body.theme-chateau .chateau-bg { display: block; }
 }
 .chateau-mist { position: absolute; bottom: 0; left: 0; right: 0; height: 300px; overflow: hidden; }
 .mist-strip {
-  position: absolute; bottom: 0; height: 80px; background: linear-gradient(90deg, transparent, rgba(96,165,250,0.08), rgba(148,163,184,0.12), transparent);
+  position: absolute; bottom: 0; height: 80px;
+  background: linear-gradient(90deg, transparent, rgba(96,165,250,0.08), rgba(148,163,184,0.12), transparent);
   filter: blur(15px); animation: mistCrawl linear infinite; border-radius: 50%;
 }
-.mist-strip:nth-child(1) { width: 120%; left: -10%; animation-duration: 20s; animation-delay: 0s; bottom: 0; }
-.mist-strip:nth-child(2) { width: 140%; left: -20%; animation-duration: 27s; animation-delay: 5s; bottom: 30px; height: 60px; opacity: 0.7; }
-.mist-strip:nth-child(3) { width: 110%; left: -5%; animation-duration: 16s; animation-delay: 10s; bottom: 60px; height: 50px; opacity: 0.5; }
-.mist-strip:nth-child(4) { width: 130%; left: -15%; animation-duration: 22s; animation-delay: 2s; bottom: 100px; height: 40px; opacity: 0.4; }
+.mist-strip:nth-child(1) { width: 120%; left: -10%; animation-duration: 20s; animation-delay: 0s;  bottom: 0;    }
+.mist-strip:nth-child(2) { width: 140%; left: -20%; animation-duration: 27s; animation-delay: 5s;  bottom: 30px; height: 60px; opacity: 0.7; }
+.mist-strip:nth-child(3) { width: 110%; left: -5%;  animation-duration: 16s; animation-delay: 10s; bottom: 60px; height: 50px; opacity: 0.5; }
+.mist-strip:nth-child(4) { width: 130%; left: -15%; animation-duration: 22s; animation-delay: 2s;  bottom: 100px; height: 40px; opacity: 0.4; }
 @keyframes mistCrawl { 0% { transform: translateX(-20%); } 100% { transform: translateX(20%); } }
 .lightning-layer { position: absolute; inset: 0; pointer-events: none; }
 .lightning-flash {
   position: absolute; inset: 0; background: rgba(147,197,253,0.03); animation: lightningFlicker ease-in-out infinite;
 }
-.lightning-flash:nth-child(1) { animation-duration: 7s; animation-delay: 0s; }
+.lightning-flash:nth-child(1) { animation-duration: 7s;  animation-delay: 0s; }
 .lightning-flash:nth-child(2) { animation-duration: 11s; animation-delay: 3.5s; }
 .lightning-flash:nth-child(3) { animation-duration: 13s; animation-delay: 7s; }
-@keyframes lightningFlicker { 0%, 92%, 96%, 100% { opacity: 0; } 93% { opacity: 1; background: rgba(147,197,253,0.08); } 94% { opacity: 0; } 95% { opacity: 0.7; } }
+@keyframes lightningFlicker {
+  0%, 92%, 96%, 100% { opacity: 0; }
+  93% { opacity: 1; background: rgba(147,197,253,0.08); }
+  94% { opacity: 0; }
+  95% { opacity: 0.7; }
+}
 .castle-silhouette {
   position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%);
   width: 600px; height: 200px; opacity: 0.15; background: #0a0e1a;
@@ -252,24 +258,41 @@ body.theme-sorcier .sorcier-bg { display: block; }
 .rune-circle::before {
   content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 1px dashed rgba(168,85,247,0.1);
 }
-.rune-circle:nth-child(1) { width: 600px; height: 600px; top: 50%; left: 50%; margin: -300px; animation-duration: 60s; }
-.rune-circle:nth-child(2) { width: 400px; height: 400px; top: 20%; left: 20%; animation-duration: 45s; animation-direction: reverse; border-color: rgba(168,85,247,0.1); }
-.rune-circle:nth-child(3) { width: 250px; height: 250px; top: 60%; left: 70%; animation-duration: 30s; border-color: rgba(232,121,249,0.08); }
+.rune-circle:nth-child(1) { width: 600px; height: 600px; top: 50%; left: 50%; margin: -300px;  animation-duration: 60s; }
+.rune-circle:nth-child(2) { width: 400px; height: 400px; top: 20%; left: 20%;                  animation-duration: 45s; animation-direction: reverse; border-color: rgba(168,85,247,0.1); }
+.rune-circle:nth-child(3) { width: 250px; height: 250px; top: 60%; left: 70%;                  animation-duration: 30s; border-color: rgba(232,121,249,0.08); }
 @keyframes runeSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .magic-flux { position: absolute; inset: 0; overflow: hidden; }
 .flux-line {
-  position: absolute; border-radius: 50%; border: 1px solid transparent; border-top-color: rgba(232,121,249,0.4);
-  border-left-color: rgba(168,85,247,0.2); animation: fluxOrbit linear infinite;
+  position: absolute; border-radius: 50%; border: 1px solid transparent;
+  border-top-color: rgba(232,121,249,0.4); border-left-color: rgba(168,85,247,0.2);
+  animation: fluxOrbit linear infinite;
 }
-.flux-line:nth-child(1) { width: 300px; height: 100px; top: 30%; left: 50%; margin-left: -150px; animation-duration: 8s; }
-.flux-line:nth-child(2) { width: 200px; height: 60px; top: 60%; left: 30%; animation-duration: 5s; animation-direction: reverse; border-top-color: rgba(168,85,247,0.5); }
-.flux-line:nth-child(3) { width: 400px; height: 150px; top: 50%; left: 50%; margin: -75px -200px; animation-duration: 12s; opacity: 0.6; }
-.flux-line:nth-child(4) { width: 150px; height: 50px; top: 15%; left: 70%; animation-duration: 6s; border-top-color: rgba(232,121,249,0.6); }
+.flux-line:nth-child(1) { width: 300px; height: 100px; top: 30%; left: 50%; margin-left: -150px;   animation-duration: 8s; }
+.flux-line:nth-child(2) { width: 200px; height: 60px;  top: 60%; left: 30%;                        animation-duration: 5s; animation-direction: reverse; border-top-color: rgba(168,85,247,0.5); }
+.flux-line:nth-child(3) { width: 400px; height: 150px; top: 50%; left: 50%; margin: -75px -200px;  animation-duration: 12s; opacity: 0.6; }
+.flux-line:nth-child(4) { width: 150px; height: 50px;  top: 15%; left: 70%;                        animation-duration: 6s; border-top-color: rgba(232,121,249,0.6); }
 @keyframes fluxOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .sparks-layer { position: absolute; inset: 0; overflow: hidden; }
 .spark {
   position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #e879f9;
   box-shadow: 0 0 6px #e879f9, 0 0 12px #a855f7; animation: sparkTwinkle ease-in-out infinite;
+}
+.spark:nth-child(1)  { top: 15%; left: 10%; animation-duration: 2.5s; animation-delay: 0s;    }
+.spark:nth-child(2)  { top: 30%; left: 25%; animation-duration: 3.1s; animation-delay: 0.4s;  }
+.spark:nth-child(3)  { top: 20%; left: 45%; animation-duration: 2.8s; animation-delay: 0.9s;  }
+.spark:nth-child(4)  { top: 60%; left: 60%; animation-duration: 3.5s; animation-delay: 1.3s;  }
+.spark:nth-child(5)  { top: 75%; left: 30%; animation-duration: 2.2s; animation-delay: 0.6s;  }
+.spark:nth-child(6)  { top: 45%; left: 75%; animation-duration: 4.0s; animation-delay: 1.8s;  }
+.spark:nth-child(7)  { top: 85%; left: 80%; animation-duration: 2.7s; animation-delay: 0.2s;  }
+.spark:nth-child(8)  { top: 10%; left: 55%; animation-duration: 3.3s; animation-delay: 1.0s;  }
+.spark:nth-child(9)  { top: 50%; left: 15%; animation-duration: 2.9s; animation-delay: 2.1s;  }
+.spark:nth-child(10) { top: 35%; left: 88%; animation-duration: 3.7s; animation-delay: 0.7s;  }
+.spark:nth-child(11) { top: 65%; left: 50%; animation-duration: 2.4s; animation-delay: 1.5s;  }
+.spark:nth-child(12) { top: 90%; left: 20%; animation-duration: 3.0s; animation-delay: 0.3s;  }
+@keyframes sparkTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50%       { opacity: 1; transform: scale(1.5); }
 }
 .magic-aura {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -298,9 +321,6 @@ body.theme-sorcier .sorcier-bg { display: block; }
   background: linear-gradient(135deg, var(--col-bubble-pl-from), var(--col-bubble-pl-to));
   border: 1px solid var(--col-bubble-pl-border);
 }
-#chat-container::-webkit-scrollbar { width: 4px; }
-#chat-container::-webkit-scrollbar-track { background: transparent; }
-#chat-container::-webkit-scrollbar-thumb { background: var(--col-border); border-radius: 2px; }
 `;
 
 // ====================== FONCTIONS ======================
@@ -314,13 +334,14 @@ function injectThemeStyles() {
 
 function setTheme(themeKey, btn = null) {
   if (!THEMES_CONFIG[themeKey]) return;
-  
+
   document.body.className = `${THEMES_CONFIG[themeKey].className} text-white min-h-screen`;
-  
+
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  document.getElementById('header-icon').textContent = THEMES_CONFIG[themeKey].icon;
+  const headerIcon = document.getElementById('header-icon');
+  if (headerIcon) headerIcon.textContent = THEMES_CONFIG[themeKey].icon;
 }
 
 window.THEMES_CONFIG = THEMES_CONFIG;
