@@ -1,5 +1,5 @@
 To do list
-Phase 0 – Ce qui est déjà fait (✅)
+Phase 0 ✅
 
 Design global + thèmes animés magnifiques
 Interface chat 3 colonnes (sidebar gauche / chat / sidebar droite)
@@ -16,7 +16,7 @@ Ajouter un effet "typing" réaliste quand le MJ répond (très immersif)
 Améliorer le prompt système pour qu’il soit vraiment excellent en Maître du Jeu
 Gérer proprement l’historique (limiter la taille pour ne pas exploser le contexte)
 
-2. Création de personnage (très important)
+2. Création de personnage ✅
 
 Formulaire au démarrage (ou bouton "Créer mon personnage")
 Nom, Race, Classe, Backstory courte
@@ -47,3 +47,18 @@ Mode "Combat" avec système de tours plus structuré
 Responsive mobile amélioré
 Système de niveaux / XP léger
 Export de l’aventure en texte ou PDF
+
+
+
+
+Système de dés (priorité 1 — le plus rapide à implémenter)
+Avant chaque action à risque, l'IA détermine le type de jet nécessaire (Force, Dextérité, Intelligence...), 
+une animation de dé 3D s'affiche, et le résultat est injecté dans le prompt pour que le récit s'adapte. 
+Si tu rates ton jet de Force, l'IA raconte l'échec. Un succès critique déclenche un bonus narratif.
+
+🗺️ Carte procédurale (priorité 2 — le plus impactant visuellement)
+À chaque nouveau lieu découvert, l'IA génère une description structurée du lieu (type, ambiance, points d'intérêt), et un script dessine la carte en SVG dans la sidebar droite. La carte se révèle progressivement au fil des explorations et garde en mémoire les lieux visités.
+🖼️ Illustration de scène (priorité 3)
+Après chaque message GM important, l'IA génère en parallèle un prompt d'image (style dark fantasy) et appelle une API de génération d'image (Pollinations.ai — gratuite, sans clé) pour afficher une illustration au-dessus du texte.
+🎵 Ambiance musicale (priorité 4 — le plus complexe)
+L'IA tag chaque scène (combat, exploration, tension, repos...) et sélectionne automatiquement une piste musicale via des fichiers audio libres de droits. Volume adaptatif selon l'intensité de la scène.
