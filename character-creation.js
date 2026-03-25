@@ -2,6 +2,7 @@
 //  character-creation.js
 // ======================
 
+// Stats de base par classe
 const classStats = {
     "Guerrier": { force: 16, defense: 15, dexterite: 9,  intelligence: 2  },
     "Mage":     { force: 4,  defense: 8,  dexterite: 10, intelligence: 20 },
@@ -11,6 +12,7 @@ const classStats = {
     "Clerc":    { force: 10, defense: 14, dexterite: 8,  intelligence: 10 }
 };
 
+// Bonus selon la race
 const raceBonuses = {
     "Humain":    { force: 1, defense: 1, dexterite: 1, intelligence: 1 },
     "Elfe":      { force: -1, defense: -1, dexterite: 3, intelligence: 2 },
@@ -22,55 +24,6 @@ const raceBonuses = {
 
 function getClassStats(charClass) {
     return classStats[charClass] || { force: 10, defense: 10, dexterite: 10, intelligence: 10 };
-}
-
-// ======================
-//  MISE À JOUR DE LA PAGE PRINCIPALE
-// ======================
-function updateMainPageWithCharacter(character) {
-    // 1. Mise à jour du titre / identité du personnage
-    const characterHeader = document.getElementById('character-header');
-    if (characterHeader) {
-        characterHeader.innerHTML = `
-            <div class="flex items-center gap-3">
-                <span class="text-3xl">👤</span>
-                <div>
-                    <h1 class="text-2xl font-bold">${character.name}</h1>
-                    <p class="text-violet-400">${character.race} ${character.class}</p>
-                </div>
-            </div>
-        `;
-    }
-
-    // 2. Affichage des statistiques
-    const statsContainer = document.getElementById('character-stats');
-    if (statsContainer) {
-        const stats = character.stats;
-        statsContainer.innerHTML = `
-            <div class="grid grid-cols-2 gap-4 bg-[#1e2937] p-6 rounded-3xl">
-                <div class="flex justify-between items-center">
-                    <span class="text-red-400 flex items-center gap-2">⚔️ FORCE</span>
-                    <span class="font-mono font-bold text-xl">${stats.force}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-blue-400 flex items-center gap-2">🛡️ DÉFENSE</span>
-                    <span class="font-mono font-bold text-xl">${stats.defense}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-emerald-400 flex items-center gap-2">🏹 DEXTÉRITÉ</span>
-                    <span class="font-mono font-bold text-xl">${stats.dexterite}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-purple-400 flex items-center gap-2">✨ INTELLIGENCE</span>
-                    <span class="font-mono font-bold text-xl">${stats.intelligence}</span>
-                </div>
-            </div>
-            
-            <div class="mt-4 text-center text-sm text-gray-400">
-                Niveau ${character.level} • PV : ${character.hp} / ${character.maxHp}
-            </div>
-        `;
-    }
 }
 
 // ======================
@@ -91,12 +44,14 @@ function openCharacterCreationModal() {
                 </div>
 
                 <div class="p-8 space-y-6">
+                    <!-- Nom -->
                     <div>
                         <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Nom du héros</label>
                         <input id="char-name" type="text" placeholder="Ex: Elara Shadowveil"
                                class="w-full bg-[#1e2937] border border-[var(--col-border)] rounded-2xl px-5 py-4 focus:outline-none text-lg">
                     </div>
 
+                    <!-- Classe + Race -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Classe</label>
@@ -122,8 +77,10 @@ function openCharacterCreationModal() {
                         </div>
                     </div>
 
+                    <!-- Aperçu des stats en direct -->
                     <div id="stats-preview"></div>
 
+                    <!-- Background -->
                     <div>
                         <label class="block text-sm mb-2" style="color: var(--col-text-secondary);">Background (optionnel)</label>
                         <textarea id="char-background" rows="3" placeholder="Un ancien mercenaire traqué par son passé..."
@@ -149,15 +106,19 @@ function openCharacterCreationModal() {
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
+    // Mise à jour des stats en temps réel
     const classSelect = document.getElementById('char-class');
     const raceSelect = document.getElementById('char-race');
 
     classSelect.addEventListener('change', updateStatsPreview);
     raceSelect.addEventListener('change', updateStatsPreview);
 
-    updateStatsPreview();
+    updateStatsPreview(); // Affichage initial
 }
 
+// ======================
+//  APERÇU DES STATS EN DIRECT
+// ======================
 function updateStatsPreview() {
     const charClass = document.getElementById('char-class').value;
     const race = document.getElementById('char-race').value;
@@ -175,23 +136,26 @@ function updateStatsPreview() {
     const html = `
         <div class="text-xs uppercase tracking-widest mb-2 text-violet-400">Stats du personnage</div>
         <div class="bg-[#1e2937] rounded-2xl p-5 space-y-3 text-sm">
-            <div class="flex justify-between"><span class="text-red-400">⚔️ FORCE</span><span class="font-mono">${finalStats.force}</span></div>
-            <div class="flex justify-between"><span class="text-blue-400">🛡️ DÉFENSE</span><span class="font-mono">${finalStats.defense}</span></div>
-            <div class="flex justify-between"><span class="text-emerald-400">🏹 DEXTÉRITÉ</span><span class="font-mono">${finalStats.dexterite}</span></div>
-            <div class="flex justify-between"><span class="text-purple-400">✨ INTELLIGENCE</span><span class="font-mono">${finalStats.intelligence}</span></div>
+            <div class="flex justify-between"><span class="text-red-400">⚔️ FORCE</span><span class="font-mono font-bold">${finalStats.force}</span></div>
+            <div class="flex justify-between"><span class="text-blue-400">🛡️ DÉFENSE</span><span class="font-mono font-bold">${finalStats.defense}</span></div>
+            <div class="flex justify-between"><span class="text-emerald-400">🏹 DEXTÉRITÉ</span><span class="font-mono font-bold">${finalStats.dexterite}</span></div>
+            <div class="flex justify-between"><span class="text-purple-400">✨ INTELLIGENCE</span><span class="font-mono font-bold">${finalStats.intelligence}</span></div>
         </div>
     `;
 
     document.getElementById('stats-preview').innerHTML = html;
 }
 
+// ======================
+//  FERMETURE DU MODAL
+// ======================
 function closeCharacterModal() {
     const modal = document.getElementById('character-modal');
     if (modal) modal.remove();
 }
 
 // ======================
-//  CRÉATION DU PERSONNAGE + MISE À JOUR PAGE
+//  CRÉATION DU PERSONNAGE + IMPORT SUR LA PAGE PRINCIPALE
 // ======================
 async function createCharacterAndStart() {
     const name = document.getElementById('char-name').value.trim() || "Ton Héros";
@@ -220,18 +184,20 @@ async function createCharacterAndStart() {
         maxHp: 20 + finalStats.defense * 2,
     };
 
-    // Sauvegarde
+    // Sauvegarde du personnage
     localStorage.setItem('currentCharacter', JSON.stringify(character));
 
-    // Mise à jour immédiate de la page principale
-    updateMainPageWithCharacter(character);
+    // Mise à jour immédiate de la sidebar droite sur la page principale
+    if (typeof updateMainPageWithCharacter === 'function') {
+        updateMainPageWithCharacter(character);
+    }
 
-    // Description pour le scénario (si tu l'utilises toujours)
+    // Description pour le scénario
     const characterDesc = `${name}, un ${race} ${charClass.toLowerCase()}${background ? ' — ' + background : ''}`;
     if (document.getElementById('scenario-input')) {
         document.getElementById('scenario-input').value = characterDesc;
     }
 
     closeCharacterModal();
-    await startNewScenario();   // Ta fonction existante
+    await startNewScenario();   // Lance l'aventure
 }
