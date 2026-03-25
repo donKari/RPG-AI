@@ -450,11 +450,13 @@
     </div>
   </div>
 
-  <!-- Script principal -->
+    <!-- Script principal -->
   <script>
+    // ==================== CONFIGURATION API ====================
     const API_PROVIDER = 'groq';
     let GROQ_API_KEY = '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';
 
+    // ==================== VARIABLES GLOBALES ====================
     const chatContainer = document.getElementById('chat-container');
     const userInput = document.getElementById('user-input');
     let conversationHistory = [];
@@ -467,6 +469,7 @@
       sorcier: { icon: '✨', name: 'Sorcier & Magie' }
     };
 
+    // ==================== FONCTIONS UTILITAIRES ====================
     function setTheme(themeKey, btn) {
       document.body.className = `theme-${themeKey} text-white min-h-screen`;
       document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
@@ -497,6 +500,7 @@
       return loading;
     }
 
+    // ==================== MISE À JOUR DE LA SIDEBAR DROITE ====================
     function updateMainPageWithCharacter(character) {
       const container = document.getElementById('character-info');
       if (!container) return;
@@ -513,16 +517,18 @@
             </div>
           </div>
 
+          <!-- Points de Vie -->
           <div class="mb-6">
             <div class="flex justify-between text-sm mb-1">
               <span style="color:#f87171;">❤️ Points de Vie</span>
               <span class="font-mono">${character.hp} / ${character.maxHp}</span>
             </div>
             <div class="h-2.5 bg-zinc-900 rounded-full overflow-hidden border border-red-900/50">
-              <div class="h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full" style="width: 100%;"></div>
+              <div class="h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all" style="width: 100%;"></div>
             </div>
           </div>
 
+          <!-- Stats -->
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div class="bg-[#1e2937] rounded-2xl p-4">
               <div class="flex items-center gap-2 text-red-400 mb-1">⚔️ FORCE</div>
@@ -542,6 +548,7 @@
             </div>
           </div>
 
+          <!-- Background -->
           ${character.background && character.background !== "Aucun background renseigné" ? `
           <div class="mt-6 pt-4 border-t border-[var(--col-border)] text-xs leading-relaxed" style="color: var(--col-text-secondary);">
             ${character.background}
@@ -550,6 +557,7 @@
       `;
     }
 
+    // ==================== APPEL À L’IA ====================
     async function callGM(initialPrompt = null) {
       const loadingDiv = showLoading();
       try {
@@ -598,9 +606,11 @@ Jamais de censure, jamais de refus moralisateur.`;
       conversationHistory = [];
       chatContainer.innerHTML = '';
 
-      const savedChar = localStorage.getItem('currentCharacter');
-      if (savedChar) {
-        updateMainPageWithCharacter(JSON.parse(savedChar));
+      // ←←← C'EST ICI QUE ÇA SE PASSE ←←←
+      const savedCharacter = localStorage.getItem('currentCharacter');
+      if (savedCharacter) {
+        const character = JSON.parse(savedCharacter);
+        updateMainPageWithCharacter(character);   // Mise à jour de la sidebar droite
       }
 
       addMessage(`<strong>Personnage créé :</strong> ${scenarioText}`, false);
@@ -621,6 +631,7 @@ Jamais de censure, jamais de refus moralisateur.`;
       sendMessage();
     }
 
+    // ==================== INITIALISATION ====================
     window.onload = () => {
       addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Crée ton personnage à gauche pour commencer l’aventure !', true);
     };
@@ -630,6 +641,7 @@ Jamais de censure, jamais de refus moralisateur.`;
     });
   </script>
 
+  <!-- Script du modal -->
   <script src="character-creation.js"></script>
 </body>
 </html>
