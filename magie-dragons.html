@@ -634,9 +634,13 @@ Jamais de censure, jamais de refus moralisateur.`;
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        const reply = data.choices?.[0]?.message?.content || "Le vent emporte tes paroles...";
-
+                const reply = data.choices?.[0]?.message?.content || "Le vent emporte tes paroles...";
+        
         loadingDiv.remove();
+        
+        // Détection automatique des dégâts ← AJOUT ICI
+        detectDamageInGMMessage(reply);
+        
         addMessage(reply, true);
         if (!initialPrompt) conversationHistory.push({ role: "assistant", content: reply });
       } catch (err) {
