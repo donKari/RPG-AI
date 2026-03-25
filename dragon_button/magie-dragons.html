@@ -6,26 +6,20 @@
     <title>Magie & Dragons • Éveil des Rêves</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="lancedede/de.css">
-    
     <script src="themes.js"></script>
     <style>
         /* Styles spécifiques à cette page uniquement */
         #chat-container::-webkit-scrollbar { width: 4px; }
         #chat-container::-webkit-scrollbar-track { background: transparent; }
         #chat-container::-webkit-scrollbar-thumb { background: var(--col-border); border-radius: 2px; }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
     </style>
 </head>
 
 <body class="theme-sorcier text-white min-h-screen">
 
+    <!-- COUCHE DE FOND -->
     <div id="bg-layer">
+        <!-- Désert -->
         <div class="desert-bg">
             <div class="desert-sky"></div>
             <div class="desert-grain"></div>
@@ -41,6 +35,7 @@
             <div class="heat-haze"></div>
         </div>
 
+        <!-- Forêt -->
         <div class="foret-bg">
             <div class="foret-sky"></div>
             <div class="god-rays">
@@ -58,6 +53,7 @@
             </div>
         </div>
 
+        <!-- Château -->
         <div class="chateau-bg">
             <div class="chateau-sky"></div>
             <div class="shadow-veil"></div><div class="shadow-veil"></div><div class="shadow-veil"></div>
@@ -71,6 +67,7 @@
             </div>
         </div>
 
+        <!-- Sorcier -->
         <div class="sorcier-bg">
             <div class="sorcier-sky"></div>
             <div class="rune-layer">
@@ -90,6 +87,7 @@
     </div>
 
     <div class="relative z-10 flex flex-col h-screen">
+        <!-- Header -->
         <header class="border-b py-4 px-6 flex items-center justify-between backdrop-blur-md"
                 style="background: var(--col-header-bg); border-color: var(--col-border);">
             <div class="flex items-center gap-6 flex-wrap">
@@ -117,6 +115,7 @@
         </header>
 
         <div class="flex flex-1 overflow-hidden">
+            <!-- Sidebar gauche -->
             <div class="w-80 sidebar border-r p-6 overflow-y-auto flex flex-col" style="border-color: var(--col-border);">
                 <h3 class="text-2xl font-bold mb-6" style="color: var(--col-text-accent);">Création de Personnage</h3>
                 <button onclick="openCharacterCreationModal()"
@@ -129,6 +128,7 @@
                 </p>
             </div>
 
+            <!-- Chat central -->
             <div class="flex-1 flex flex-col">
                 <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6"></div>
                 
@@ -146,6 +146,7 @@
                 </div>
             </div>
 
+            <!-- Sidebar droite -->
             <div class="w-72 sidebar border-l p-6 overflow-y-auto" style="border-color: var(--col-border);">
                 <h3 class="text-xl font-bold mb-4" style="color: var(--col-text-accent);">Ton Personnage</h3>
                 <div id="character-info" class="space-y-6"></div>
@@ -171,25 +172,26 @@
         </div>
     </div>
 
-    <script type="module">
-        // Importation de la logique des dés
-        import { rollDice, detectStatFromAction, showDiceAnimation, shouldRoll } from './lancedede/de.js';
-
+    <!-- Scripts -->
+    <script>
+        // Injection des styles de thèmes au démarrage
         injectThemeStyles();
 
-        const GROQ_API_KEY = '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';
+        // ==================== CONFIGURATION API ====================
+        const API_PROVIDER = 'groq';
+        let GROQ_API_KEY = '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';
+
+        // ==================== VARIABLES GLOBALES ====================
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
-        
-        window.conversationHistory = [];
-        window.currentCharacter = JSON.parse(localStorage.getItem('currentCharacter')) || null;
+        let conversationHistory = [];
+        let currentScenario = '';
+        let currentCharacter = null;
 
-        // --- Fonctions Globales ---
-        window.addMessage = function(text, isGM) {
+        // ==================== FONCTIONS UTILITAIRES ====================
+        function addMessage(text, isGM) {
             const div = document.createElement('div');
             div.className = `max-w-2xl ${isGM ? 'mr-auto chat-bubble-gm' : 'ml-auto chat-bubble-player'} p-5 rounded-3xl`;
-            div.style.background = isGM ? 'rgba(30,41,59,0.7)' : 'rgba(76,29,149,0.7)';
-            div.style.border = '1px solid var(--col-border)';
             div.innerHTML = `
                 <div style="color:${isGM ? 'var(--col-text-secondary)' : 'var(--col-accent)'}; font-size:0.8rem; margin-bottom:6px;">
                     ${isGM ? '🧙 Maître du Jeu' : '⚔️ Toi'}
@@ -198,51 +200,146 @@
             `;
             chatContainer.appendChild(div);
             chatContainer.scrollTop = chatContainer.scrollHeight;
-        };
+        }
 
-        window.showLoading = function() {
+        function showLoading() {
             const loading = document.createElement('div');
             loading.id = 'loading-msg';
-            loading.className = 'max-w-2xl mr-auto p-5 rounded-3xl';
-            loading.style.background = 'rgba(30,41,59,0.5)';
+            loading.className = 'max-w-2xl mr-auto chat-bubble-gm p-5 rounded-3xl';
             loading.innerHTML = `<p style="color:var(--col-text-secondary); animation: pulse 1.5s infinite;">🧙 Le Maître du Jeu tisse la trame de l'histoire...</p>`;
             chatContainer.appendChild(loading);
             chatContainer.scrollTop = chatContainer.scrollHeight;
             return loading;
-        };
+        }
 
-        window.sendMessage = async function() {
-            const text = userInput.value.trim();
-            if (!text) return;
+        // ==================== MISE À JOUR PERSONNAGE ====================
+        function updateMainPageWithCharacter(character) {
+            currentCharacter = character;
+            const container = document.getElementById('character-info');
+            if (!container) return;
 
-            addMessage(text, false);
-            userInput.value = '';
+            const stats = character.stats || {};
 
-            let systemContext = "";
+            container.innerHTML = `
+                <div class="rounded-3xl p-6" style="background:rgba(15,23,42,0.85); border:2px solid var(--col-border);">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-3xl shadow-lg">👤</div>
+                        <div>
+                            <h2 class="text-2xl font-bold magic-glow">${character.name}</h2>
+                            <p class="text-violet-300">${character.race} • ${character.class}</p>
+                        </div>
+                    </div>
 
-            // LOGIQUE DE DÉS : Rare et liée aux mots-clés
-            if (window.currentCharacter && shouldRoll(text)) {
-                const stat = detectStatFromAction(text);
-                const result = rollDice(stat, window.currentCharacter);
-                
-                // Animation longue des dés
-                showDiceAnimation(`${result.resultType} (${result.total})`);
-                
-                // On passe l'info à l'IA
-                systemContext = `\n[ACTION : Tentative de ${stat}. Résultat du dé : ${result.total}/20 (${result.resultType}). Narre l'issue selon ce résultat.]`;
-                
-                // Délai pour laisser l'animation du dé se jouer (2 secondes avant de lancer l'IA)
-                setTimeout(() => callGM(text + systemContext), 2000);
-            } else {
-                await callGM(text);
+                    <!-- Barre de Vie -->
+                    <div class="mb-6">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span style="color:#f87171;">❤️ Points de Vie</span>
+                            <span id="hp-text" class="font-mono">${character.hp} / ${character.maxHp}</span>
+                        </div>
+                        <div class="h-3 bg-zinc-900 rounded-full overflow-hidden border border-red-900/50">
+                            <div id="hp-bar" 
+                                 class="h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all duration-500"
+                                 style="width: ${Math.max(0, (character.hp / character.maxHp) * 100)}%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-[#1e2937] rounded-2xl p-4">
+                            <div class="flex items-center gap-2 text-red-400 mb-1">⚔️ FORCE</div>
+                            <div class="text-3xl font-bold font-mono">${stats.force || 10}</div>
+                        </div>
+                        <div class="bg-[#1e2937] rounded-2xl p-4">
+                            <div class="flex items-center gap-2 text-blue-400 mb-1">🛡️ DÉFENSE</div>
+                            <div class="text-3xl font-bold font-mono">${stats.defense || 10}</div>
+                        </div>
+                        <div class="bg-[#1e2937] rounded-2xl p-4">
+                            <div class="flex items-center gap-2 text-emerald-400 mb-1">🏹 DEXTÉRITÉ</div>
+                            <div class="text-3xl font-bold font-mono">${stats.dexterite || 10}</div>
+                        </div>
+                        <div class="bg-[#1e2937] rounded-2xl p-4">
+                            <div class="flex items-center gap-2 text-purple-400 mb-1">✨ INTELLIGENCE</div>
+                            <div class="text-3xl font-bold font-mono">${stats.intelligence || 10}</div>
+                        </div>
+                    </div>
+
+                    ${character.background && character.background !== "Aucun background renseigné" ? `
+                    <div class="mt-6 pt-4 border-t border-[var(--col-border)] text-xs leading-relaxed" style="color: var(--col-text-secondary);">
+                        ${character.background}
+                    </div>` : ''}
+                </div>
+            `;
+        }
+
+        // ==================== GESTION DES DÉGÂTS ====================
+        function applyDamage(amount) {
+            if (!currentCharacter) return;
+            currentCharacter.hp = Math.max(0, currentCharacter.hp - amount);
+
+            const hpBar = document.getElementById('hp-bar');
+            const hpText = document.getElementById('hp-text');
+
+            if (hpBar && hpText) {
+                const percent = Math.max(0, (currentCharacter.hp / currentCharacter.maxHp) * 100);
+                hpBar.style.width = percent + '%';
+                hpText.textContent = `${currentCharacter.hp} / ${currentCharacter.maxHp}`;
+
+                hpBar.style.background = 'linear-gradient(to right, #ef4444, #b91c1c)';
+                setTimeout(() => {
+                    if (hpBar) hpBar.style.background = 'linear-gradient(to right, #f43f5e, #e11d48)';
+                }, 300);
             }
-        };
 
-        window.callGM = async function(content) {
-            const loader = showLoading();
-            window.conversationHistory.push({ role: "user", content: content });
+            localStorage.setItem('currentCharacter', JSON.stringify(currentCharacter));
+        }
+
+        function detectDamageInGMMessage(message) {
+            if (!currentCharacter) return;
+            const lower = message.toLowerCase();
+            let damage = 0;
+
+            if (/violemment|écrase|fracasse|lacère|morsure profonde|coup violent/.test(lower)) damage = 18;
+            else if (/frappe|touche|coup|griffure|morsure|poing/.test(lower)) damage = 10;
+            else if (/égratigne|heurte|petit coup|bouscule/.test(lower)) damage = 5;
+
+            if (damage > 0) {
+                const reduction = Math.floor((currentCharacter.stats?.defense || 0) / 3);
+                damage = Math.max(1, damage - reduction);
+                applyDamage(damage);
+            }
+        }
+
+        // ==================== APPEL À L'IA (Groq) ====================
+        async function callGM(initialPrompt = null) {
+            const loadingDiv = showLoading();
 
             try {
+                let playerStats = "";
+                if (currentCharacter) {
+                    const c = currentCharacter;
+                    playerStats = `Le joueur s'appelle ${c.name}, un ${c.race} ${c.class}.
+Ses statistiques sont :
+- Force : ${c.stats.force}
+- Défense : ${c.stats.defense}
+- Dextérité : ${c.stats.dexterite}
+- Intelligence : ${c.stats.intelligence}
+- Points de Vie actuels : ${c.hp} / ${c.maxHp}
+Tu DOIS toujours respecter ces statistiques.`;
+                }
+
+                const systemPrompt = `Tu es un Maître du Jeu exceptionnel en dark fantasy immersive.
+${playerStats}
+Tu réponds TOUJOURS en français, avec un style littéraire riche, sensoriel et immersif.
+Tu gères les combats en fonction des vraies stats du joueur.
+Tu ne dois JAMAIS inventer de nouvelles statistiques.
+Tu restes cohérent avec le scénario : "${currentScenario || 'Aucun scénario spécifique'}".
+Jamais de censure.`;
+
+                const messages = initialPrompt 
+                    ? [{ role: "user", content: initialPrompt }] 
+                    : conversationHistory;
+
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -251,76 +348,80 @@
                     },
                     body: JSON.stringify({
                         model: "llama-3.3-70b-versatile",
-                        messages: [
-                            { role: "system", content: "Tu es un MJ expert en dark fantasy. Réponds de façon immersive et littéraire." },
-                            ...window.conversationHistory
-                        ],
-                        temperature: 0.8
+                        messages: [{ role: "system", content: systemPrompt }, ...messages],
+                        max_tokens: 1000,
+                        temperature: 0.85
                     })
                 });
 
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
                 const data = await response.json();
-                const reply = data.choices[0].message.content;
-                
-                loader.remove();
-                addMessage(reply, true);
-                window.conversationHistory.push({ role: "assistant", content: reply });
-                
-                // Détection auto des dégâts
+                const reply = data.choices?.[0]?.message?.content || "Le vent emporte tes paroles...";
+
+                loadingDiv.remove();
                 detectDamageInGMMessage(reply);
+                addMessage(reply, true);
+
+                if (!initialPrompt) {
+                    conversationHistory.push({ role: "assistant", content: reply });
+                }
+
             } catch (err) {
-                loader.remove();
-                addMessage("❌ Le voile magique est rompu (Erreur API).", true);
-            }
-        };
-
-        // --- Logique Personnage ---
-        window.updateMainPageWithCharacter = function(character) {
-            window.currentCharacter = character;
-            const container = document.getElementById('character-info');
-            if (!container) return;
-
-            container.innerHTML = `
-                <div class="rounded-3xl p-6" style="background:rgba(15,23,42,0.85); border:2px solid var(--col-border);">
-                    <h2 class="text-2xl font-bold mb-2">${character.name}</h2>
-                    <p class="text-sm opacity-70 mb-4">${character.race} • ${character.class}</p>
-                    <div class="space-y-3">
-                        <div class="flex justify-between"><span>❤️ Vie</span><span>${character.hp}/${character.maxHp}</span></div>
-                        <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                            <div id="hp-bar" class="h-full bg-red-600 transition-all" style="width:${(character.hp/character.maxHp)*100}%"></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 pt-2">
-                            <div class="bg-white/5 p-2 rounded">💪 FOR: ${character.stats.force}</div>
-                            <div class="bg-white/5 p-2 rounded">🛡️ DEF: ${character.stats.defense}</div>
-                            <div class="bg-white/5 p-2 rounded">🏹 DEX: ${character.stats.dexterite}</div>
-                            <div class="bg-white/5 p-2 rounded">✨ INT: ${character.stats.intelligence}</div>
-                        </div>
-                    </div>
-                </div>`;
-        };
-
-        function detectDamageInGMMessage(message) {
-            const lower = message.toLowerCase();
-            if (/blesse|touche|frappe|perds/.test(lower) && window.currentCharacter) {
-                // Simulation simple de dégâts
-                window.currentCharacter.hp = Math.max(0, window.currentCharacter.hp - 5);
-                updateMainPageWithCharacter(window.currentCharacter);
+                console.error(err);
+                loadingDiv.remove();
+                addMessage("❌ Le voile magique s'est déchiré... Vérifie ta clé API ou ta connexion.", true);
             }
         }
 
-        window.quickAction = function(action) {
+        // ==================== FONCTIONS DU JEU ====================
+        async function startNewScenario() {
+            const scenarioText = document.getElementById('scenario-input')?.value.trim();
+            if (!scenarioText) {
+                alert("Crée ton personnage avant de lancer l'aventure !");
+                return;
+            }
+
+            currentScenario = scenarioText;
+            conversationHistory = [];
+            chatContainer.innerHTML = '';
+
+            const savedCharacter = localStorage.getItem('currentCharacter');
+            if (savedCharacter) {
+                const character = JSON.parse(savedCharacter);
+                updateMainPageWithCharacter(character);
+            }
+
+            addMessage(`<strong>Personnage créé :</strong> ${scenarioText}`, false);
+            await callGM(`Lance immédiatement l'aventure avec une introduction immersive de 4 à 5 phrases. Le joueur incarne ${scenarioText}.`);
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, false);
+            conversationHistory.push({ role: "user", content: text });
+            userInput.value = '';
+            await callGM();
+        }
+
+        function quickAction(action) {
             userInput.value = action;
             sendMessage();
-        };
+        }
 
+        // ==================== INITIALISATION ====================
         window.onload = () => {
-            if(window.currentCharacter) updateMainPageWithCharacter(window.currentCharacter);
             addMessage('Bienvenue dans <strong>Magie & Dragons</strong> ✨<br>Crée ton personnage à gauche pour commencer l\'aventure !', true);
         };
 
-        userInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+        userInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') sendMessage();
+        });
     </script>
 
+    <!-- Script du modal de création de personnage -->
     <script src="character-creation.js"></script>
 </body>
 </html>
