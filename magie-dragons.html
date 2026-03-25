@@ -588,36 +588,71 @@ function applyDamage(amount) {
 
 // ==================== DÉTECTION AUTOMATIQUE DES DÉGÂTS ====================
 function detectDamageInGMMessage(message) {
-    const lowerMsg = message.toLowerCase();
+    if (!window.currentCharacter) return;
 
-    // Mots-clés forts → gros dégâts
-    if (lowerMsg.includes("frappé violemment") || lowerMsg.includes("coup violent") || 
-        lowerMsg.includes("te lacère") || lowerMsg.includes("te mord profondément")) {
-        applyDamage(25);
+    const lowerMsg = message.toLowerCase();
+    let damage = 0;
+
+    // Dégâts forts
+    if (lowerMsg.includes("violemment") || lowerMsg.includes("coup violent") || 
+        lowerMsg.includes("écrase") || lowerMsg.includes("fracasse") || 
+        lowerMsg.includes("te lacère") || lowerMsg.includes("morsure profonde")) {
+        damage = 18;
     }
-    // Dégâts moyens
+    // Dégâts normaux
     else if (lowerMsg.includes("te frappe") || lowerMsg.includes("te touche") || 
              lowerMsg.includes("coup") || lowerMsg.includes("griffure") || 
-             lowerMsg.includes("morsure")) {
-        applyDamage(12);
+             lowerMsg.includes("morsure") || lowerMsg.includes("coup de poing")) {
+        damage = 10;
     }
     // Dégâts légers
-    else if (lowerMsg.includes("égratigne") || lowerMsg.includes("te heurte") || 
-             lowerMsg.includes("petit coup")) {
-        applyDamage(5);
+    else if (lowerMsg.includes("égratigne") || lowerMsg.includes("heurte") || 
+             lowerMsg.includes("petit coup") || lowerMsg.includes("te bouscule")) {
+        damage = 5;
+    }
+
+    // Réduction par la Défense
+    if (damage > 0) {
+        const defenseReduction = Math.floor(window.currentCharacter.stats.defense / 3);
+        damage = Math.max(1, damage - defenseReduction);
+        applyDamage(damage);
     }
 }
 
     // ==================== APPEL À L’IA ====================
     async function callGM(initialPrompt = null) {
-      const loadingDiv = showLoading();
-      try {
+    const loadingDiv = showLoading();
+    try {
+        // Récupération des stats actuelles du personnage
+        let playerStats = "";
+        if (window.currentCharacter) {
+            const c = window.currentCharacter;
+            playerStats = `Le joueur s'appelle ${c.name}, un ${c.race} ${c.class}.
+Ses statistiques sont :
+- Force : ${c.stats.force}
+- Défense : ${c.stats.defense}
+- Dextérité : ${c.stats.dexterite}
+- Intelligence : ${c.stats.intelligence}
+- Points de Vie actuels : ${c.hp} / ${c.maxHp}
+
+Tu DOIS toujours respecter ces statistiques. Tu ne dois jamais inventer d'autres stats pour le joueur.`;
+        }
+
         const systemPrompt = `Tu es un Maître du Jeu exceptionnel en dark fantasy immersive.
+
+${playerStats}
+
 Tu réponds TOUJOURS en français, avec un style littéraire riche, sensoriel et immersif.
 Tu décris les scènes, les sensations, les conséquences des actions du joueur.
-Tu gères l’inventaire, les blessures, les jets de dés simulés quand c’est pertinent.
+Tu gères les combats en fonction des vraies stats du joueur (surtout la Défense et la Force).
+Quand le joueur subit des dégâts, tu dois les décrire de façon réaliste en fonction de sa Défense.
+Tu ne dois JAMAIS inventer de nouvelles statistiques pour le joueur (pas de "Santé : 90/100", pas de nouvelle Force, etc.).
+Utilise uniquement les stats fournies ci-dessus.
+
 Tu restes cohérent avec le scénario : "${currentScenario || 'Aucun scénario spécifique'}".
 Jamais de censure, jamais de refus moralisateur.`;
+
+        // ... le reste de la fonction reste identique
 
         let messages = initialPrompt ? [{ role: "user", content: initialPrompt }] : conversationHistory;
 
