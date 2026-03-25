@@ -1,0 +1,30 @@
+#dice-animation {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+}
+
+#dice-animation.hidden {
+    display: none;
+}
+
+.dice-box {
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+}
+
+.dice {
+    font-size: 100px;
+    animation: spin 1s ease;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg) scale(0.5); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
