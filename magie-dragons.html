@@ -500,62 +500,113 @@
       return loading;
     }
 
-    // ==================== MISE À JOUR DE LA SIDEBAR DROITE ====================
-    function updateMainPageWithCharacter(character) {
-      const container = document.getElementById('character-info');
-      if (!container) return;
+    // ==================== MISE À JOUR DU PERSONNAGE (Sidebar Droite) ====================
+function updateMainPageWithCharacter(character) {
+    const container = document.getElementById('character-info');
+    if (!container) return;
 
-      const stats = character.stats;
+    const stats = character.stats;
+    window.currentCharacter = character;   // On garde le personnage en mémoire globale
 
-      container.innerHTML = `
+    container.innerHTML = `
         <div class="rounded-3xl p-6" style="background:rgba(15,23,42,0.85); border:2px solid var(--col-border);">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-3xl shadow-lg">👤</div>
-            <div>
-              <h2 class="text-2xl font-bold magic-glow">${character.name}</h2>
-              <p class="text-violet-300">${character.race} • ${character.class}</p>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-3xl shadow-lg">👤</div>
+                <div>
+                    <h2 class="text-2xl font-bold magic-glow">${character.name}</h2>
+                    <p class="text-violet-300">${character.race} • ${character.class}</p>
+                </div>
             </div>
-          </div>
 
-          <!-- Points de Vie -->
-          <div class="mb-6">
-            <div class="flex justify-between text-sm mb-1">
-              <span style="color:#f87171;">❤️ Points de Vie</span>
-              <span class="font-mono">${character.hp} / ${character.maxHp}</span>
+            <!-- Barre de Vie Dynamique -->
+            <div class="mb-6">
+                <div class="flex justify-between text-sm mb-1">
+                    <span style="color:#f87171;">❤️ Points de Vie</span>
+                    <span id="hp-text" class="font-mono">${character.hp} / ${character.maxHp}</span>
+                </div>
+                <div class="h-3 bg-zinc-900 rounded-full overflow-hidden border border-red-900/50">
+                    <div id="hp-bar" 
+                         class="h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all duration-500"
+                         style="width: ${Math.max(0, (character.hp / character.maxHp) * 100)}%;">
+                    </div>
+                </div>
             </div>
-            <div class="h-2.5 bg-zinc-900 rounded-full overflow-hidden border border-red-900/50">
-              <div class="h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all" style="width: 100%;"></div>
-            </div>
-          </div>
 
-          <!-- Stats -->
-          <div class="grid grid-cols-2 gap-4 text-sm">
-            <div class="bg-[#1e2937] rounded-2xl p-4">
-              <div class="flex items-center gap-2 text-red-400 mb-1">⚔️ FORCE</div>
-              <div class="text-3xl font-bold font-mono">${stats.force}</div>
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="bg-[#1e2937] rounded-2xl p-4">
+                    <div class="flex items-center gap-2 text-red-400 mb-1">⚔️ FORCE</div>
+                    <div class="text-3xl font-bold font-mono">${stats.force}</div>
+                </div>
+                <div class="bg-[#1e2937] rounded-2xl p-4">
+                    <div class="flex items-center gap-2 text-blue-400 mb-1">🛡️ DÉFENSE</div>
+                    <div class="text-3xl font-bold font-mono">${stats.defense}</div>
+                </div>
+                <div class="bg-[#1e2937] rounded-2xl p-4">
+                    <div class="flex items-center gap-2 text-emerald-400 mb-1">🏹 DEXTÉRITÉ</div>
+                    <div class="text-3xl font-bold font-mono">${stats.dexterite}</div>
+                </div>
+                <div class="bg-[#1e2937] rounded-2xl p-4">
+                    <div class="flex items-center gap-2 text-purple-400 mb-1">✨ INTELLIGENCE</div>
+                    <div class="text-3xl font-bold font-mono">${stats.intelligence}</div>
+                </div>
             </div>
-            <div class="bg-[#1e2937] rounded-2xl p-4">
-              <div class="flex items-center gap-2 text-blue-400 mb-1">🛡️ DÉFENSE</div>
-              <div class="text-3xl font-bold font-mono">${stats.defense}</div>
-            </div>
-            <div class="bg-[#1e2937] rounded-2xl p-4">
-              <div class="flex items-center gap-2 text-emerald-400 mb-1">🏹 DEXTÉRITÉ</div>
-              <div class="text-3xl font-bold font-mono">${stats.dexterite}</div>
-            </div>
-            <div class="bg-[#1e2937] rounded-2xl p-4">
-              <div class="flex items-center gap-2 text-purple-400 mb-1">✨ INTELLIGENCE</div>
-              <div class="text-3xl font-bold font-mono">${stats.intelligence}</div>
-            </div>
-          </div>
 
-          <!-- Background -->
-          ${character.background && character.background !== "Aucun background renseigné" ? `
-          <div class="mt-6 pt-4 border-t border-[var(--col-border)] text-xs leading-relaxed" style="color: var(--col-text-secondary);">
-            ${character.background}
-          </div>` : ''}
+            ${character.background && character.background !== "Aucun background renseigné" ? `
+            <div class="mt-6 pt-4 border-t border-[var(--col-border)] text-xs leading-relaxed" style="color: var(--col-text-secondary);">
+                ${character.background}
+            </div>` : ''}
         </div>
-      `;
+    `;
+}
+
+// ==================== FONCTION POUR APPLIQUER DES DÉGÂTS ====================
+function applyDamage(amount) {
+    if (!window.currentCharacter) return;
+
+    window.currentCharacter.hp = Math.max(0, window.currentCharacter.hp - amount);
+
+    // Mise à jour visuelle
+    const hpBar = document.getElementById('hp-bar');
+    const hpText = document.getElementById('hp-text');
+
+    if (hpBar && hpText) {
+        const percent = Math.max(0, (window.currentCharacter.hp / window.currentCharacter.maxHp) * 100);
+        hpBar.style.width = percent + '%';
+        hpText.textContent = `${window.currentCharacter.hp} / ${window.currentCharacter.maxHp}`;
+
+        // Effet de flash rouge quand dégât
+        hpBar.style.background = 'linear-gradient(to right, #ef4444, #b91c1c)';
+        setTimeout(() => {
+            if (hpBar) hpBar.style.background = 'linear-gradient(to right, #f43f5e, #e11d48)';
+        }, 300);
     }
+
+    // Sauvegarde
+    localStorage.setItem('currentCharacter', JSON.stringify(window.currentCharacter));
+}
+
+// ==================== DÉTECTION AUTOMATIQUE DES DÉGÂTS ====================
+function detectDamageInGMMessage(message) {
+    const lowerMsg = message.toLowerCase();
+
+    // Mots-clés forts → gros dégâts
+    if (lowerMsg.includes("frappé violemment") || lowerMsg.includes("coup violent") || 
+        lowerMsg.includes("te lacère") || lowerMsg.includes("te mord profondément")) {
+        applyDamage(25);
+    }
+    // Dégâts moyens
+    else if (lowerMsg.includes("te frappe") || lowerMsg.includes("te touche") || 
+             lowerMsg.includes("coup") || lowerMsg.includes("griffure") || 
+             lowerMsg.includes("morsure")) {
+        applyDamage(12);
+    }
+    // Dégâts légers
+    else if (lowerMsg.includes("égratigne") || lowerMsg.includes("te heurte") || 
+             lowerMsg.includes("petit coup")) {
+        applyDamage(5);
+    }
+}
 
     // ==================== APPEL À L’IA ====================
     async function callGM(initialPrompt = null) {
